@@ -245,6 +245,7 @@
 	;; Call the main function
 	CALL	_main
 99$:
+	HALT
 	JR	99$		; Wait forever
 
 	.org	.MODE_TABLE
@@ -261,6 +262,7 @@
 	;; Constant data used to init _DATA
 	.area	_GSINIT
 	.area	_GSINITTAIL
+	.area	_GSFINAL
 	;; Initialised in ram data
 	.area	_DATA
 	;; Uninitialised ram data
