@@ -60,6 +60,10 @@ sapphire-full-build: native-build binary cross-clean cross-linux-mingw32-build
 # Build rule for michaelh's newer machine to spin a release
 vroom-full-build: native-build binary
 
+usf-cf-1-full-build:
+	$(MAKE) HOSTOS=i586-pc-linux TARGETOS=i586-pc-linux \
+		native-build binary cross-clean cross-linux-mingw32-build
+
 # Cross-compilation targets
 FIXUPMASKS = *.c *.h .bat *.s ChangeLog README
 
