@@ -4,6 +4,7 @@ PORTS = gbz80 z80
 PLATFORMS = gb consolez80 rrgb
 
 SCC = /home/michaelh/projects/sdcc/bin/sdcc
+GBCC = /home/michaelh/projects/gbdk-lib/bin/lcc
 
 AS_Z80 = as-z80
 AS_GBZ80 = as-gb

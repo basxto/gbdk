@@ -253,14 +253,20 @@
 	;; ****************************************
 
 	;; Ordering of segments for the linker
+	;; Code
 	.area	_CODE
+	;; Constant data
 	.area	_LIT
+	;; Constant data used to init _DATA
+	.area	_GSINIT
+	;; Initialised in ram data
 	.area	_DATA
+	;; Uninitialised ram data
 	.area	_BSS
-	.area	_HEAP		; HEAP is for malloc
+	;; For malloc
+	.area	_HEAP
 
 	.area	_BSS
-
 __cpu::
 	.ds	0x01		; GB type (GB, PGB, CGB)
 .mode::
@@ -558,8 +564,14 @@ _add_JOY::
 	POP	BC
 	RET
 
-__clock::
-	ld	de,#0
+_clock::
+	ld	hl,#.sys_time
+	di
+	ld	a,(hl+)
+	ei
+	;; Interrupts are disabled for the next instruction...
+	ld	d,(hl)
+	ld	e,a
 	ret
 
 __printTStates::

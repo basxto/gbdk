@@ -21,6 +21,16 @@ typedef UINT32             ULWORD;
 typedef INT32		   DWORD;
 typedef UINT32		   UDWORD;
 
+/* Useful definition for fixed point values */
+
+typedef union _fixed {
+  struct {
+    UBYTE l;
+    UBYTE h;
+  } b;
+  UWORD w;
+} fixed;
+
 #else
 
 typedef UINT8		BYTE;

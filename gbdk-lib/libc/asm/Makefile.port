@@ -1,9 +1,11 @@
 # Shared Makefile for all the ports.
 # Provides a way of building the lib with little brains.
 
-all:
-	@echo error: Dont call this file directly.
-	@false
+ifndef PORT
+PORT = $(THIS)
+endif
+
+all: port
 
 # Note that port.lib is setup by the calling Makefile
 port: $(OBJ)

@@ -2,9 +2,9 @@
 #define _GB_H
 
 #include <types.h>
-#include <hardware.h>
-#include <sgb.h>
-#include <cgb.h>
+#include <gb/hardware.h>
+#include <gb/sgb.h>
+#include <gb/cgb.h>
 
 /* Joypad bits */
 

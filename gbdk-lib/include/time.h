@@ -7,7 +7,7 @@
 #include <types.h>
 
 /** For now... */
-#define CLOCKS_PER_SEC		100
+#define CLOCKS_PER_SEC		50
 
 /** The clock() function returns an approximation of processor time
     used by the program.  The value returned is the CPU time used so far

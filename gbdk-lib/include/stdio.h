@@ -1,6 +1,9 @@
 /** @file stdio.h
     Basic file/console input output functions.
  */
+#ifndef STDIO_INCLUDE
+#define STDIO_INCLUDE
+
 #include <types.h>
 
 #if STRICT_ANSI
@@ -26,3 +29,10 @@ void printf(const char *format, ...);
     @param format	The format string as per printf.
  */
 void sprintf(char *str, const char *format, ...);
+
+/** puts() writes the string s and a trailing newline to  std­
+    out.
+*/
+void puts(const char *s);
+
+#endif
