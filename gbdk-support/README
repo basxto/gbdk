@@ -81,13 +81,22 @@ GBSpec aka Pan doc
 
 Banked function support
 -----------------------
-2.95 and above supports banked functions.  If a function has the
-attribute 'banked' attached to it as in
+2.95 and above supports banked functions.  The rules are:
+* Any function with the attribute 'nonbanked' ie
 
-int move_cursor(int x, int y) banked;
+    int puts(const char *sz) nonbanked;
 
-then the function can be called transparently from any bank.  Some
-notes:
+  will be put into HOME.
+* Any static function will be treated as 'near' and not have the
+  overhead of a banked call.
+* All other functions are banked.  A banked call has four extra bytes
+  of stack overhead and adds 56 m-cycles to each call.  If anyone can
+  suggest a fater message, I'd love to hear it.
+* types.h defines BANKED and NONBANKED to an empty string and
+  'nonbanked' respectivly.  I recommend using these for future
+  compatibiliy and for portability.
+
+Some notes:
   * Currently only works with rgbds and isas.  asxxxx doesnt support
     resolving the bank of a function at link time
 
@@ -109,19 +118,40 @@ notes:
     and avoid it where possible by grouping dependent functions into
     one bank to make them 'near'
 
-  * Assembly functions and functions that dont take parameters (ie 
+  * Assembly functions and functions that dont take parameters (ie
     functions that dont care if a few extra bytes are added to their
     call stack) can be treated as both 'banked' and non-banked.  This
-    is due to how the return address of the calling function is mangled.
+    is due to how the return address of the calling function is
+    mangled.
+
+  * Only non-banked (this includes static) functions may be used as
+    parameters or have their address taken.  If you dont know what
+    this means then you should be OK :)
 
 I have made some of the library functions banked.  More will follow.
 Using the banked attribute under asxxxx will cause no harm, but you
 are limited to being in the first two banks (32k)
 
+There is currently no way to build a set of libs that are completly
+non-banked, for example for 32k images where speed is important.  This
+will be added.
+
 #pragma bank=[xx] has been extended.  Using [xx] = a number (1, 2..)
 is assembler independant.  The special banks HOME and BASE are also
 assembler independant.  Note that the last #pragma bank= will be the
 one that applies for the whole file.
+
+One more thing.  As banked and non-banked functions may be mixed the
+compiler commits any constant data at the end of each function.  One
+side affect is that code like this:
+
+const int array[] = { 1, 2, 3, 4 };
+
+void foo(void) nonbanked { ... };
+
+will associate array[] with foo() and as foo is in HOME so will be
+array.  This only occurs when a constant inialised array is declared
+immediatly before a nonbanked function.
 
 rgbds support
 -------------
@@ -141,6 +171,9 @@ currently:
   * I dont know why, but xlink seems to load all of the libraries
     instead of just the ones that are required, adding a significant
     overhead.  this is being investigated.
+
+Some of the examples dont yet work.  For now you need a make utility like
+GNU make (see below) to compile them.
 
 Differences between this and gbdk-2.1.5
 ---------------------------------------
@@ -183,6 +216,17 @@ Differences between this and gbdk-2.1.5
 * Constant global structs (ie tile data, sprites) SHOULD be declared
   as 'const'  If they are not declared const, not only do they get copied
   into ram at startup but they take up about 6x the rom space.
+
+References
+----------
+Jeff's gbdev page
+http://www.devrs.com/
+
+rgbds
+http://www.otakunozoku.com/
+
+GNU make
+ftp://agnes.dida.physik.uni-essen.de/home/janjaap/mingw32/newnew/
 
 -- Michael Hope
    <michaelh@earthling.net>

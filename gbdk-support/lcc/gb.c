@@ -43,7 +43,7 @@ static struct {
     { "comdefault",	"-m%port% --c1mode" },
     { "as",		"%bindir%as-%port%" },
     { "ld",		"%bindir%link-%port%" },
-    { "libdir",		"%prefix%lib/" },
+    { "libdir",		"%prefix%lib/asxxxx/" },
     { "bindir",		"%prefix%bin/" },
 };
 
