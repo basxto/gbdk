@@ -1,6 +1,8 @@
-gbdk3-2.95 - http://gbdk.sourceforge.net/
------------------------------------------
-This is a early-release beta.  Please report any bugs :)
+	       gbdk-2.95 - http://gbdk.sourceforge.net/
+	       ----------------------------------------
+	    (C) 2000 Michael Hope <michaelh@earthling.net>
+
+       This is a early-release beta.  Please report any bugs :)
 
 Special note:
 -------------
@@ -38,9 +40,9 @@ Reporting problems and feature requests
 3.  Read the latest copy of this README
     http://cvs.sourceforge.net/cgi-bin/cvsweb.cgi/~checkout~/gbdk-support/README?cvsroot=gbdk
 4.  Make sure you have the latest version
-    https://sourceforge.net/project/?group_id=1249
+    http://sourceforge.net/project/?group_id=1249
 5.  Check if anyone else has reported the problem
-    https://sourceforge.net/bugs/?group_id=1249
+    http://sourceforge.net/bugs/?group_id=1249
 6.  Submit a new bug using the link above.  It is _very_ helpful if you can 
     show how to reproduce the bug and/or give me the source to try and/or
     use the --dumpall (lcc -Wf--dumpall) option and send me all of the *.dump
@@ -59,6 +61,86 @@ eg.
    to autoexec.bat so that lcc can find everything.  Note the
 trailing slash.
 
+Documentation
+-------------
+Latest version of this README:
+    http://cvs.sourceforge.net/cgi-bin/cvsweb.cgi/~checkout~/gbdk-support/README?cvsroot=gbdk
+
+Library documentation:
+	http://gbdk.sourceforge.net/doc/html/index.html
+This was generated from include/*.h by doxygen
+
+General Gameboy information:
+	http://www.devrs.com/gb/
+
+GeeBee FAQ:
+	http://www.devrs.com/gb/files/faqs.html
+
+GBSpec aka Pan doc
+	http://www.devrs.com/gb/files/gbspec.txt
+
+Banked function support
+-----------------------
+2.95 and above supports banked functions.  If a function has the
+attribute 'banked' attached to it as in
+
+int move_cursor(int x, int y) banked;
+
+then the function can be called transparently from any bank.  Some
+notes:
+  * Currently only works with rgbds and isas.  asxxxx doesnt support
+    resolving the bank of a function at link time
+
+  * Pointers _will not_ pass correctly across banked functions.  For
+    speeds sake pointers are still 16 bit, so if you call a banked
+    function with a pointer that is in your bank, the pointer will
+    become invalid when your bank disappears.  Be warned.  Note that
+    calls within the same bank will still work.  Some ways of getting
+    around this problem are:
+
+      o Put heavily used functions or functions that take pointers
+	in HOME.  Then the pointer will remain valid.
+      o Calls within the same module (ie file) should be in the same
+	bank.  Id like to say will, which is true in asxxxx, but I
+	haven't confirmed it.
+
+  * A banked call adds an extra 4 bytes to the stack and quite a few
+    extra cycles to the call.  Dont use it for heavily used functions
+    and avoid it where possible by grouping dependent functions into
+    one bank to make them 'near'
+
+  * Assembly functions and functions that dont take parameters (ie 
+    functions that dont care if a few extra bytes are added to their
+    call stack) can be treated as both 'banked' and non-banked.  This
+    is due to how the return address of the calling function is mangled.
+
+I have made some of the library functions banked.  More will follow.
+Using the banked attribute under asxxxx will cause no harm, but you
+are limited to being in the first two banks (32k)
+
+#pragma bank=[xx] has been extended.  Using [xx] = a number (1, 2..)
+is assembler independant.  The special banks HOME and BASE are also
+assembler independant.  Note that the last #pragma bank= will be the
+one that applies for the whole file.
+
+rgbds support
+-------------
+2.95 added decent rgbds support.  Basically:
+  o Use "sdcc -mgbz80 --asm=rgbds file.c" for each file.c
+  o Use "sdcc -mgbz80 --asm=rgbds crt0.o gbz80.lib gb.lib file1.o file2.o..."
+crt0.o, gbz80.lib, and gb.lib are in lib/rgbds.  The missing parts are
+currently:
+  * lcc does not work with rgbds.  You have to call sdcc directly, setting
+    up the include path and making the libraries local as appropriate.
+  * sdcc does not support the concept of an output file name when
+    linking.  This means that your cart will be called 'a.gb', the
+    .sym file 'a.sym' etc.
+  * The libraries are generated directly from gbdk-lib by 
+    tools/astorgb.pl.  The converter may have bugs which passed on 
+    through to the libs.  Be cautious of any assembler library functions.
+  * I dont know why, but xlink seems to load all of the libraries
+    instead of just the ones that are required, adding a significant
+    overhead.  this is being investigated.
 
 Differences between this and gbdk-2.1.5
 ---------------------------------------
