@@ -83,6 +83,7 @@ gbdk3-2.94
   You can test sfr's by enabling USE_SFR_FOR_REG=1
 * Added remove_VBL etc funtions.
 * Documented the libs - see the gbdk-doc tarball distributed seperatly.
+* Two dimensional arrays seem to be broken.
 
 gbdk3-2.93
 * Added multi-bank support into the compiler
