@@ -37,6 +37,9 @@ Differences between this and gbdk-2.1.5
   a 'good thing' as normally the promotion is unwanted on an eight
   bit system, but in some places you may get the wrong result.  If
   so, try promoting the varible manually i.e. (int)foo*20;
+* If funny things happen when you access registers, try delcaring them
+  as volatile.  See <hardware.h> for an example.  sdcc normally caches
+  varibles for speed, but this causes trouble when accessing registers.
 * The basic types have changed.  The sizes are now:
 	char		8 bits
 	int		16 bits
