@@ -11,16 +11,16 @@ SDCCLIB = $(BUILD)
 CVSFLAGS = -z5
 CVS = cvs
 DIR = .
-VER = 2.95
+VER = 2.95-2
 # Used as a branch name.
-SHORTVER = 295
+SHORTVER = 295-2
 
 # Options:
 # linux-linux	 Building on Linux, targeting Linux
 # linux-ming32	 Building on Linux, targeting mingw32 based win32
 # cygwin-mingw32 Building via cygwin on win32, targeting mingw32
 
-COMPILE_MODE = linux-mingw32
+COMPILE_MODE = linux-linux
 SDCC_OR_GBDK = gbdk
 
 ROOT_GBDK = :pserver:anonymous@cvs.gbdk.sourceforge.net:/cvsroot/gbdk
@@ -54,12 +54,15 @@ SE = .exe
 SDCC_ROOT = /$(SDCC_OR_GBDK)
 endif
 
+MODELS = small medium
+
 ifeq ($(SDCC_OR_GBDK),gbdk)
 CONFIGURE_FLAGS = --disable-mcs51-port --disable-avr-port
 LIBS = gbdk-lib-gbz80 gbdk-lib-include gbdk-libc-copy
 MISC = gbdk-lib-examples
 DOC = gbdk-doc
-DOC_MISC = gbdk-support/README gbdk-support/ChangeLog build.mak
+DOC_MISC = gbdk-support/README gbdk-support/ChangeLog build.mak \
+	   gbdk-support/mega.mak
 else
 LIBS = gbdk-lib sdcc-lib
 MISC = sdcc-misc
@@ -144,20 +147,21 @@ gbdk-lib-doc:
 gbdk-lib-include:
 	(cd gbdk-lib; tar cf - include) | (cd $(BUILD); tar xf -)
 
-gbdk-lib-gbz80-rgbds:
-
 gbdk-lib-gbz80-asxxxx:
 	mkdir -p $(BUILD)/lib
-	make -C gbdk-lib/libc clean
-	make -C gbdk-lib/libc SDCCLIB=$(BUILD) PORTS=gbz80 PLATFORMS=gb ASM=asxxxx
-	(cd gbdk-lib/build; tar cf - asxxxx/gb asxxxx/gbz80) | (cd $(BUILD)/lib; tar xf -)
-
+	for i in $(MODELS); do \
+	make -C gbdk-lib/libc clean; \
+	make -C gbdk-lib/libc SDCCLIB=$(BUILD) PORTS=gbz80 PLATFORMS=gb ASM=asxxxx MODEL=$$i; \
+	(cd gbdk-lib/build; tar cf - $$i/asxxxx/gb $$i/asxxxx/gbz80) | (cd $(BUILD)/lib; tar xf -); \
+	done
 
 gbdk-lib-gbz80-rgbds:
 	mkdir -p $(BUILD)/lib
-	make -C gbdk-lib/libc clean
-	make -C gbdk-lib/libc SDCCLIB=$(BUILD) PORTS=gbz80 PLATFORMS=gb ASM=rgbds
-	(cd gbdk-lib/build; tar cf - rgbds/gb rgbds/gbz80) | (cd $(BUILD)/lib; tar xf -)
+	for i in $(MODELS); do \
+	make -C gbdk-lib/libc clean; \
+	make -C gbdk-lib/libc SDCCLIB=$(BUILD) PORTS=gbz80 PLATFORMS=gb ASM=rgbds MODEL=$$i; \
+	(cd gbdk-lib/build; tar cf - $$i/rgbds/gb $$i/rgbds/gbz80) | (cd $(BUILD)/lib; tar xf -); \
+	done
 
 sdcc-lib-gen:
 	make -C sdcc sdcc-device
