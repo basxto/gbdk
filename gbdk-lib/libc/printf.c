@@ -6,9 +6,7 @@
 #include <stdarg.h>
 #pragma bank=BASE
 
-typedef void EMIT(char c, void *pData) NONBANKED;
-
-static void _printn(unsigned u, unsigned base, char issigned, EMIT *emitter, void *pData)
+static void _printn(unsigned u, unsigned base, char issigned, void (*emitter)(char, void *), void *pData)
 {
     const char *_hex = "0123456789ABCDEF";
     if (issigned && ((int)u < 0)) {
@@ -20,7 +18,7 @@ static void _printn(unsigned u, unsigned base, char issigned, EMIT *emitter, voi
     (*emitter)(_hex[u%base], pData);
 }
 
-static void _printf(const char *format, EMIT *emitter, void *pData, va_list va)
+static void _printf(const char *format, void (*emitter)(char, void *), void *pData, va_list va)
 {
     while (*format) {
 	if (*format == '%') {

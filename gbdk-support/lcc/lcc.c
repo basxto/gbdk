@@ -686,8 +686,8 @@ static void opt(char *arg) {
 			    /* GBDK removed */
 				if (strcmp(basepath(cpp[0]), "gcc-cpp") == 0)
 					plist = append(arg, plist);
-#endif
 				clist = append(arg, clist);
+#endif
 				fprintf(stderr, "%s %s\n", progname, rcsid);
 			}
 			return;

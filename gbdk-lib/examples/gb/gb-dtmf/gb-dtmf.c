@@ -374,7 +374,7 @@ void clr_disp()
 /*
 	CAUTION: Don't display the NULL code
 */
-void disp(char str[MAX_DTMF])
+void disp(const char *str)
 {
 	UBYTE no, left_pos;
 	UBYTE i, start_ch, end_ch;

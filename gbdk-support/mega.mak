@@ -88,6 +88,6 @@ cross-fix:
 	for i in $(FIX_PAT); do \
 	for j in `find $(CROSS)/build/$(DIST) -type f -name "$$i"`; do \
 	echo $$j; unix2dos $$j; done; done
-	
+
 cross: cross-bin cross-mix cross-fix
 
