@@ -24,7 +24,7 @@
 			<font face="Arial,Helvetica" size="-3">Page version 10</font></p>
 		      <font face="Arial,Helvetica" size=-1>
 			<a href="#Highlights">Highlights</a> | 
-			<a href="http://earthling.net.nz/cgi-bin/gbdk">Bug tracking/FAQ</a> | 
+			<a href="https://sourceforge.net/bugs/?group_id=1249">Bug tracking/FAQ</a> | 
 			<a href="#Status">Status</a> | 
 		      <a href="changelog.html">Changes</a> | 
 		      <a href="install.html">Downloading
@@ -37,9 +37,9 @@
 		      <a href="#Links">Links</a> | 
 		      <a href="mailto:michaelh@earthling.net">Contact</a>
 		      <p>
-		      <b>Download (latest is 2.90)</b><br>
+		      <b>Download (latest is 2.91)</b><br>
 		      <a href="install.html">CVS</a> | 
-		      <a href="http://sourceforge.net/project/filelist.php?group_id=1249">Source / Linux / Win32</a> |
+		      <a href="http://sourceforge.net/project/filelist.php?group_id=1249">Source / Linux / win32</a> |
 		      <a href="doc/gbdk-doc.pdf">Documentation (PDF)</a>
 		    </font>
 		  </tr>
@@ -60,6 +60,18 @@
 		      <h2>
 			<font face="Arial,Helvetica" size=-1>News</font></h2>
 		      <font face="Arial,Helvetica" size=-1>
+<b>27th Feb gbdk3 2.91 released.</b>
+Better than 2.90 and includes Linux, win32 and a source tar ball.  Some notes:
+<ul>
+<li>Read the <a href="http://cvs.sourceforge.net/cgi-bin/cvsweb.cgi/~checkout~/gbdk-support/README?cvsroot=gbdk">README</a> <b>first</b></li>
+<li>Linux users need libgc-4 or above.  Debian users try <tt>apt-get install libgc5</tt>.</li>
+<li>All the types have changed.  Again, please read the README first.</li>
+<li>I prefer release early, release often.  The idea is to get the bugs out there so that they can be squashed quickly.</li>
+<li>I've split up the libs so that they can be used on other platforms and so that the libs
+can be updated without updating the compiler.  One side effect is that gb specific files
+have been shifted into their own directory i.e. <tt>gb.h</tt> is now <tt>gb/gb.h</tt>.</li>
+</ul>
+		      Many of the other pages on this site are now out of date.  And gbdk3 needs a logo...  I have seen trouble with the examples and no$gmb.<br>
 			<b>23rd Feb First release of gbdk/sdcc</b>.
 This is an early release - the only binary is for Linux and the source is only available through cvs.  If your interested in the source, have a look at
 the cvs repository <tt>gbdk-support</tt> first, which will download all the
@@ -90,12 +102,10 @@ will be looking for some way to do far calls.
 			Thanks to E. Allen Soard there is now a precompiled binary for <a href="http://www.linux.com/">Linux</a>
 			with libc5.
 		      <p>
-			GBDK is not currently (since May 1999) under active development due to other commitments<a href="#foot2">[2]</a>.  This may change...
-		      <p>
 			A <b>preliminary</b> version
 			    of the libraries documentation is available
 			    <a href="doc/html/book01.html">online</a>
-			    or in <a href="doc/gbdk-doc.pdf">PDF form</a>
+			    or in <a href="doc/gbdk-doc.pdf">PDF form</a>  It has not been updated to reflect gbdk3.
 		      <p>
 			For technical information on
 			the GameBoy hardware, see <a href="http://home.hiwaay.net/~jfrohwei/gameboy/home.html">here</a>.
@@ -103,14 +113,11 @@ will be looking for some way to do far calls.
 			    the <a href="http://www.tripmode.com/gbdev/">GBDoK</a> documentation
 			    page maintained by Jason.
 		      <p>GBDK 2.1.0 was Pascal's last
-			    personal release. These web pages are now maintained by Michael Hope. Thanks
-			    to David Pfeffer for the server space.
+			    personal release. These web pages are now maintained by Michael Hope.
 		      <p>So, whats the future of GBDK?
 			    You tell <a href="mailto:michaelh@earthling.net">me</a> :) Some ideas are
-			    <a href="http://hjem.get2net.dk/surfsmurf/">#1</a><a href="http://www.geocities.com/ResearchTriangle/Forum/1353/">#2</a><a href="http://www.pcisys.net/~cdoty/console/">#3</a>
-		      <p>This page will change eventually<a href="#foot1">[1]</a>.
 			    Style suggestions (<a href="http://lynx.browser.org/">Lynx</a> compatible)
-			    would be appreciated. Many links will be broken in this first version.
+			    would be appreciated.
 		      <p>I'm interested in any libraries
 			    that people may have written for GBDK - please contact me directly.&nbsp;
 		      <h2>
@@ -122,7 +129,7 @@ will be looking for some way to do far calls.
 			  a real GameBoy or with an emulator like <a href="http://www.komkon.org/fms/VGB/">VGB</a>
 			  or <a href="http://www.work.de/nocash/">no$gmb</a>.
 		      <p>GBDK is available for UNIX
-			    and DOS. The UNIX version of GBDK has been tested on Solaris 2.6 and Debian Linux 2.1. The Win32 version runs from inside a Win32 DOS box - note that it may be possible to recompile so that it will also work
+			    and DOS. The UNIX version of GBDK has been tested on Debian Linux 2.1. The Win32 version runs from inside a win32 DOS box - note that it may be possible to recompile so that it will also work
 			under DPMI.
 		      <p>GBDK features:
 		      <ul>
@@ -168,10 +175,10 @@ will be looking for some way to do far calls.
 		      of your work. If you really find it great, you can send me something typical
 		      from your country...
 		      <p>If GBDK is used for developing
-			    a commercial program, I ask you to mention that the program has been made
-			    using GBDK (in the credits), and to send me a copy of the finished product.
-			    If you feel generous, you can also send me a copy of any other products
-			    that your company has produced for the GameBoy...
+			a commercial program, I ask you to mention that the program has been made
+			using GBDK (in the credits), and to send me a copy of the finished product.
+			If you feel generous, you can also send me a copy of any other products
+			that your company has produced for the GameBoy...
 		      <h2>
 			<a NAME="Links"></a>Links</h2>
 
@@ -224,9 +231,9 @@ will be looking for some way to do far calls.
 		      <p align="right">
 			<a href="mailto:michaelh@earthling.net">Michael Hope</a>
 		      <!-- Created: Mon May 10 20:34:32 NZST 1999 --><!-- hhmts start -->
-Last modified: Wed Feb 23 21:31:36 PST 2000
+Last modified: Sun Feb 27 17:55:08 PST 2000
 <!-- hhmts end -->
-		      <A href="http://sourceforge.net">
+		      <A href="http://sourceforge.net/">
 			<IMG src="http://sourceforge.net/sflogo.php?group_id=1249&type=1" width="88" height="31" border="0"></A></p>
 		    </td>
 		  </tr>
