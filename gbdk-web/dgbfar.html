@@ -1,0 +1,482 @@
+<html>
+
+<head>
+
+<title>
+Dermot's Game Boy(TM) C 24-bit Far Memory Addressing Specification v1.0
+</title>
+
+</head>
+
+<body>
+
+<h1>Dermot's<br>Game Boy C<br>24-bit Far Memory Addressing<br>Specification</h1>
+<b>Author:</b> Dermot Mac Flannchaidh <i>(<a href="mailto:sproatne@utah-inter.net">sproatne@utah-inter.net</a>)</i><br>
+<b>Version:</b> 1.0<br>
+<b>Date:</b> 29 November 1999
+<p>
+
+<blockquote>
+<small>
+&copy; 1999 Dermot Mac Flannchaidh.  Game Boy is TM Nintendo Co., Ltd.  This document is not licensed or endorsed by Nintendo.  This document may be freely distributed as long as its text remain unchanged.  Conversion of this document to varying document formats (i.e. plain text, HTML, PDF, WordPerfect, WinHelp, etc.) is permissible as long as these rules are followed.  This document may not be sold, held for incentive, or otherwise solicited (with access restricted) in any way.  No authors or distributors of this document will be held liable for any possible negative effects from the information given by this document, including but not limited to paper cut.  All rights reserved.  If there are any errors or anything critical missing from this document, please email <a href="mailto:sproatne@utah-inter.net">Dermot</a> with the details.
+</small>
+</blockquote>
+<p>
+
+<hr>
+<p>
+
+<a name="1"></a>
+<h2>1. Table of Contents</h2>
+
+<ol>
+<li><a href="#1">Table of Contents</a>
+<li><a href="#2">Introduction</a>
+<li><a href="#3">Far Memory Map</a>
+<li><a href="#4">Current Bank Data</a>
+<li><a href="#5">Converting Between Conventional and Far</a>
+<li><a href="#6">Dereferencing Far Pointers</a>
+<li><a href="#7">Far Function Calling Conventions</a>
+<li><a href="#8">Maintenance Function Specifications</a>
+<li><a href="#9">Far Addressing Additions to Game Boy C</a>
+<li><a href="#10">Changes</a>
+<li><a href="#11">Thanks</a>
+</ol>
+<p>
+
+<hr>
+<p>
+
+<a name="2"></a>
+<h2>2. Introduction</h2>
+
+<blockquote>
+From this moment on, it is assumed that you understand the basic internal architecture of Game Boy, including machine instructions, memory management, bank switching, etc.  Those subjects would require another document to fully explain.  This document also recognizes Pascal Felber's <a href="http://www.gbdev.org/gbdk/">Game Boy Development Kit</a> as a de facto standard in Game Boy C development, because of its wide use.<p>
+Programming large programs for Game Boy is not easy or trivial.  Because of GBZ80's limited 16-bit memory addressing, Game Boy ROMs are split up into individual 16KByte banks, and it can prove frustrating, in either C or assembly, to manage all the required bank switches to keep a program executing and accessing memory smoothly.  This specification describes a way, when properly implemented into a C compiler for Game Boy, that all available Game Boy memory in every bank can be seamlessly accessed using 24-bit far pointers.  This system is not intuitive to Game Boy's internal architecture, so it must be managed on the software level using maintenance code all residing in ROM bank zero of each Game Boy program that uses it.  Various subroutines provide services for reading or storing memory in a far memory address, calling and returning from a far function, and the conversion of pointer variables between near and far types.  Using this mechanism, the amount of accessible memory in a Game Boy program expands from 64KBytes to 16MBytes, and virtually eliminates a programmer's needs to constantly handle bank switching manually.  This specification is not perfect because it will only support Game Boy ROMs up to 8MBytes in size (though this is plenty for the majority of Game Boy programs), and far memory maintenance functions add overhead to a programmer's routine.  However, it is the challenge of a good implementor to make them as small and fast as possible without sacrificing the benefits.<br>
+A future specification could specify a different mechanism for 32-bit far pointers, but the author of this document decided at the time that using yet an additional byte is overkill because its only benefit would be allowing the access of all available ROM data, while sacrificing more speed and memory performance (i.e. more overhead).
+</blockquote>
+<p>
+
+<a href="#1">Return to Table of Contents</a>
+<p>
+
+<hr>
+<p>
+
+<a name="3"></a>
+<h2>3. Far Memory Map</h2>
+
+<blockquote>
+While conventional memory addresses are two bytes (16 bits), far memory addresses are three bytes (24 bits).  That extra most significant byte is used to indicate where to access the data.  All implementations following this specification must use this.<p>
+<table border="1" cellpadding="4">
+<tr>
+	<th>Far Address</th>
+	<th>Service</th>
+	<th>Handling</th>
+</tr>
+<tr>
+	<td>$0xxxxx .. $7xxxxx</td>
+	<td>ROM Banks</td>
+	<td>When this address range is encountered, the data handled is located in the ROM bank whose number is equal to <code>(address &gt;&gt; 14)</code>.  The byte position in the bank handled is equal to <code>(address &amp; 0x3FFFU)</code>.  However, if the address range is between $000000 and $003FFF, ROM bank zero is handled, even though it is not a switchable bank.  This implementation assumes that there are 512 ROM banks available, though this may not always be true.</td>
+</tr>
+<tr>
+	<td>$8xxxxx .. $9xxxxx</td>
+	<td>SRAM Banks</td>
+	<td>When this address range is encountered, the data handled is located in the SRAM bank whose number is equal to <code>(address &gt;&gt; 13)</code>.  The byte position in the bank handled is equal to <code>(address &amp; 0x1FFFU)</code>.  This implementation assumes that there are 256 ROM banks available, though this may not always be true.</td>
+</tr>
+<tr>
+	<td>$Cxxxxx</td>
+	<td>GBC RAM Banks</td>
+	<td>When this address range is encountered, the data handled is located in the GBC internal RAM bank whose number is equal to <code>(address &gt;&gt; 12)</code>.  The byte position in the bank handled is equal to <code>(address & 0xFFFU)</code>.  However, if the address range is between $C00000 and $C00FFF, internal RAM bank zero is handled, even though it is not a switchable bank.  This implementation assumes that there are 256 ROM banks available, though as it is, Game Boy Color only has 8.  This region of far memory is only useful to Game Boy Color programs, since previous Game Boy models didn't have switchable internal RAM.</td>
+</tr>
+<tr>
+	<td>$FFxxxx</td>
+	<td>Conventional Memory</td>
+	<td>When this address range is encountered, the far address is truncated to a conventional address (discarding the top FFh byte), and conventional memory is handled.</td>
+</tr>
+<tr>
+	<td>
+		$Axxxxx .. $Bxxxxx<br>
+		$D0xxxx .. $FExxxx
+	</td>
+	<td>Reserved (Unused)</td>
+	<td>All write attempts should do nothing, and all read attempts should return FFh.</td>
+</tr>
+</table>
+</blockquote>
+
+<a href="#1">Return to Table of Contents</a>
+<p>
+
+<hr>
+<p>
+
+<a name="4"></a>
+<h2>4. Current Bank Data</h2>
+
+<blockquote>
+Do keep track of banks, especially when a far function calls another far function, both the stack and a few addresses in HIRAM are used to remember this information.  $FFFD and $FFFE are used to store the current ROM bank as a 16-bit unsigned integer, $FFFC is used to store the current SRAM bank as an 8-bit unsigned integer, and $FFFB is used to store the current internal RAM bank as an 8-bit unsigned integer.  But since Game Boy startup defines that the <code>SP</code> register begins at $FFFE, it must be moved at setup to a location where it can't corrupt this data.  The three global variables are made accessible to C program code through the following preprocessor definitions:<p>
+<pre>
+#define CURRENT_ROM_BANK  (*((UWORD*)0xFFFDU))
+#define CURRENT_SRAM_BANK (*((UBYTE*)0xFFFCU))
+#define CURRENT_IRAM_BANK (*((UBYTE*)0xFFFBU))
+</pre><p>
+In addition, the HIRAM addresses, $FFF7, $FFF8, $FFF9 and $FFFA are reserved for temporary data storage in maintenance functions.
+</blockquote>
+
+<a href="#1">Return to Table of Contents</a>
+<p>
+
+<hr>
+<p>
+
+<a name="5"></a>
+<h2>5. Converting Between Conventional and Far</h2>
+
+<blockquote>
+In a C program, when the program attempts to type-cast a conventional pointer to a far pointer, it goes through a process to ensure that it will always point to the correct memory or bank address from the moment of its conversion.  All implementations following this specification must use this.<p>
+<table border="1" cellpadding="4">
+<tr>
+	<th>Conventional Address</th>
+	<th>Conversion Algorithim</th>
+</tr>
+<tr>
+	<td>$4xxx .. $7xxx</td>
+	<td><code>((CURRENT_ROM_BANK &amp; 0x1FF) &lt;&lt; 14) | (address &amp; 0x3FFF)</code></td>
+</tr>
+<tr>
+	<td>$Axxx .. $Bxxx</td>
+	<td><code>0x800000 | (CURRENT_SRAM_BANK &lt;&lt; 13) | (address - &amp; 0x1FFF)</code></td>
+</tr>
+<tr>
+	<td>
+		$Dxxx<br>
+		$F0xx .. $FDxx
+	</td>
+	<td><code>0xC00000 | (CURRENT_IRAM_BANK &lt;&lt; 12) | (address &amp; 0xFFF)</code></td>
+</tr>
+<tr>
+	<td>
+		$0xxx .. $3xxx<br>
+		$8xxx .. $9xxx<br>
+		$Cxxx<br>
+		$Exxx<br>
+		$FExx .. $FFxx
+	</td>
+	<td><code>0xFF0000 | address</code></td>
+</tr>
+</table><p>
+Conversion from far address to conventional address is almost never accurate, but implementation must nonetheless exist.  All implementations following this specification must use this.<p>
+<table border="1" cellpadding="4">
+<tr>
+	<th>Far Address</th>
+	<th>Conversion Algorithim</th>
+</tr>
+<tr>
+	<td>$000xxx .. $003xxx</td>
+	<td><code>address</code></td>
+</tr>
+<tr>
+	<td>$004xxx .. $7xxxxx</td>
+	<td><code>0x4000 | (address & 0x3FFF)</code></td>
+</tr>
+<tr>
+	<td>$8xxxxx .. $9xxxxx</td>
+	<td><code>0xA000 | (address & 0x1FFF)</code></td>
+</tr>
+<tr>
+	<td>$C00xxx</td>
+	<td><code>0xC000 | (address & 0xFFF)</code></td>
+</tr>
+<tr>
+	<td>$C01xxx .. $CFFxxx</td>
+	<td><code>0xD000 | (address & 0xFFF)</code></td>
+</tr>
+<tr>
+	<td>
+		$Axxxxx .. $Bxxxxx<br>
+		$Dxxxxx .. $Fxxxxx
+	</td>
+	<td><code>address & 0xFFFF</code></td>
+</tr>
+</table>
+</blockquote>
+
+<a href="#1">Return to Table of Contents</a>
+<p>
+
+<hr>
+<p>
+
+<a name="6"></a>
+<h2>6. Dereferencing Far Pointers</h2>
+
+<blockquote>
+This is fairly straightforward, and applies for both reading and writing memory.  Whatever banks need to be switched are switched, and the memory is accessed.  The banks are then switched back to their previous states (using the data stored the appropriate <code>CURRENT_&lt;whatever&gt;_BANK</code>), and the operation is concluded.
+</blockquote>
+
+<a href="#1">Return to Table of Contents</a>
+<p>
+
+<hr>
+<p>
+
+<a name="7"></a>
+<h2>7. Far Function Calling Conventions</h2>
+
+<blockquote>
+This is much more complex than simple memory access, because under the hood, calling a far function actually calls a maintenance function, which manipulates the stack and banks, and calls the actual function.  When that function finally returns, the stack and banks are restored to their previous state, and the maintenance function returns.<p>
+First, it must be noted that the <code>BC</code> register should not be used through this procedure, to conform to GBDK function calling convention.  Also, the far address of the function being called is pushed invisibly in the compiled code, after any conventional arguments pushed onto the stack.  Anyway, to begin with, which of the banks being switched (if any) is determined, and a two-byte word is pushed onto the stack, encoded with the pre-switch value of which bank of which type is about to be switched.  That two-byte word follows this format:<p>
+<table border="1" cellpadding="4">
+<tr>
+	<th>Value</th>
+	<th>Condition</th>
+</tr>
+<tr>
+	<td>00xxh .. 01xxh</td>
+	<td>Indicates the appropriate ROM bank number.</td>
+</tr>
+<tr>
+	<td>10xxh</td>
+	<td>This value (truncated to one byte) indicates the appropriate SRAM bank number.</td>
+</tr>
+<tr>
+	<td>11xxh</td>
+	<td>This value (truncated to one byte) indicates the appropriate internal RAM bank number.</td>
+</tr>
+<tr>
+	<td>Misc.</td>
+	<td>No banks are being switched.</td>
+</tr>
+</table><p>
+It is recommended that this maintenance function use the value FFFFh if no banks are to be switched.  After that, any necessary banks are switched, and any necessary changes are made to the appropriate <code>CURRENT_&lt;whatever&gt;_BANK</code> variable.  When this procedure is prepared to call the actual function, it must ensure that the <code>SP</code> is aligned directly on top of that last two-byte word that was just pushed; this is to ensure that when the actual function executes, it can know exactly where to access the stacked argument variables, which start 9 bytes down the stack, rather than the 2 bytes down that conventional functions use in compilers like GBDK.  When the actual function finally returns, the values of registers <code>HL</code> and <code>DE</code> are saved in the reserved temporary data addresses <i>(see <a href="#4">4. Current Bank Data</a>)</i>, because they may contain function return values.  One two-byte word is then popped (that one with the switched bank information), the proper bank is switched back if necessary, and the proper <code>CURRENT_&lt;whatever&gt;_BANK</code> value is restored if necessary, and finally, the saved values for <code>HL</code> and <code>DE</code> are restored.  This maintenance function can now return.  *whew!* :)
+</blockquote>
+
+<a href="#1">Return to Table of Contents</a>
+<p>
+
+<hr>
+<p>
+
+<a name="8"></a>
+<h2>8. Maintenance Function Specifications</h2>
+
+<blockquote>
+Each far addressing maintenance function needs to conform to certain conventions, so that inline assembly programmers can access them from any compiler that implements this specification.<p>
+<table border="1" cellpadding="4">
+<tr>
+	<th>Function ID</th>
+	<th>Arguments</th>
+	<th>Return</th>
+	<th>Description</th>
+</tr>
+<tr>
+	<td><code>_far_read</code></td>
+	<td>
+		3 bytes - <i>far address</i>
+	</td>
+	<td>stored in <code>E</code></td>
+	<td>Reads a byte from far memory.</td>
+</tr>
+<tr>
+	<td><code>_far_write</code></td>
+	<td>
+		3 bytes - <i>far address</i><br>
+		1 byte - <i>byte value</i>
+	</td>
+	<td>void</td>
+	<td>Stores a byte to far memory.</td>
+</tr>
+<tr>
+	<td><code>_cast_near_far</code></td>
+	<td>
+		2 bytes - <i>conventional address</i>
+	</td>
+	<td>stored in <code>LDE</code></td>
+	<td>Converts a conventional address to a far address.</td>
+</tr>
+<tr>
+	<td><code>_cast_far_near</code></td>
+	<td>
+		3 bytes - <i>far address</i>
+	</td>
+	<td>stored in <code>DE</code></td>
+	<td>Converts a far address to a conventional address.</td>
+</tr>
+<tr>
+	<td><code>_far_call</code></td>
+	<td>
+		<i>first arguments vary</i><br>
+		3 bytes - <i>far function address</i>
+	</td>
+	<td>stored in <code>HLDE</code></td>
+	<td>Calls a far function, and returns its value.</td>
+</tr>
+</table>
+</blockquote>
+
+<a href="#1">Return to Table of Contents</a>
+<p>
+
+<hr>
+<p>
+
+<a name="9"></a>
+<h2>9. Far Addressing Additions to Game Boy C</h2>
+
+<blockquote>
+These additions aren't too complicated.<p>
+<ul>
+<li>For a pointer variable to be far, the keyword <code>far</code> must be placed between the variable type and the asterisk.  Therefore, as an example, <code>void*</code> changes to <code>void far*</code>.  This should look familiar to 16-bit DOS programmers and the like.<p>
+<li>When typecasting between conventional pointer types and far pointer types, a simple C typecast operator is used.<p>
+<li>Far functions can only properly be accessed or called as far addresses.  Therefore, the modifier <code>FARCALL</code> is placed with each far function, to indicate its status as a far function.  Example:
+<pre>
+void FARCALL MyFarFunction(MyArgumentType* whatever);
+/* Now that my function is a FARCALL, its benefits should be mostly seamless! */
+</pre><p>
+<li>Because far addressing opens a whole new realm of memory management, APIs should be provided for far memory and string management.  These must be implemented:<p>
+<table border="1" cellpadding="4">
+<tr>
+	<th>Prototype</th>
+	<th>Header</th>
+	<th>Description</th>
+</tr>
+<tr>
+	<td><code>BYTE FARCALL _fatoi(char far* fs);</code></td>
+	<td>gbfarlib.h</td>
+	<td>Parses a signed 8-bit integer from a far string.</td>
+</tr>
+<tr>
+	<td><code>WORD FARCALL _fatol(char far* fs);</code></td>
+	<td>gbfarlib.h</td>
+	<td>Parses a signed 16-bit integer from a far string.</td>
+</tr>
+<tr>
+	<td><code>char far* FARCALL _fitoa(BYTE i);</code></td>
+	<td>gbfarlib.h</td>
+	<td>Allocates a new far string based on the decimal value of the provided signed 8-bit integer.</td>
+</tr>
+<tr>
+	<td><code>char far* FARCALL _fltoa(WORD i);</code></td>
+	<td>gbfarlib.h</td>
+	<td>Allocates a new far string based on the decimal value of the provided signed 16-bit integer.</td>
+</tr>
+<tr>
+	<td><code>void far* FARCALL farmalloc(size_t s);</code></td>
+	<td>gbfarlib.h</td>
+	<td>Allocates a new far pointer with the specified size.  If not enough memory is available, this function returns NULL.  If Game Boy Color is detected, this function can take advantage of extended Game Boy Color internal RAM banks.</td>
+</tr>
+<tr>
+	<td><code>void far* FARCALL farsmalloc(size_t s);</code></td>
+	<td>gbfarlib.h</td>
+	<td>Allocates a new far pointer with the specified size, inside SRAM.  If there is not enough free SRAM, or SRAM is disabled, this function returns NULL.  Allocation inside SRAM begins at SRAM offset $100.</td>
+</tr>
+<tr>
+	<td><code>void far* FARCALL farrealloc(void far* fp, size_t s);</code></td>
+	<td>gbfarlib.h</td>
+	<td>Adjusts the size of a far pointer.  If there is not enough free memory in the same region to resize this pointer, a new far pointer in internal RAM is returned.  If there is not enough memory for even this, NULL is returned.  If Game Boy Color is detected, this function can take advantage of extended Game Boy Color internal RAM banks.</td>
+</tr>
+<tr>
+	<td><code>void far* FARCALL farsrealloc(void far* fp, size_t s);</code></td>
+	<td>gbfarlib.h</td>
+	<td>Adjusts the size of a far pointer.  If there is not enough free memory in the same region to resize this pointer, a new far pointer in SRAM is returned.  If there is not enough memory for even this, NULL is returned.  If SRAM is disabled, NULL is returned no matter what.</td>
+</tr>
+<tr>
+	<td><code>BYTE FARCALL farfree(void far* fp);</code></td>
+	<td>gbfarlib.h</td>
+	<td>Attempts to free an allocated pointer.  Returns 0 on success, -1 if already freed, and -2 if the region was never allocated.</td>
+</tr>
+<tr>
+	<td><code>void far* FARCALL _fmemset(void far* fp, UBYTE b, size_t n);</code></td>
+	<td>gbfarstr.h</td>
+	<td>Sets <code>n</code> number of consecutive far memory bytes, starting at <code>fp</code>, to the value of <code>b</code>.  Returns the same pointer passed to this function.  This function is not expected to be nearly as fast as <code>memset</code>.</td>
+</tr>
+<tr>
+	<td><code>void far* FARCALL _fmemcpy(void far* dest, void far* src, size_t n);</code></td>
+	<td>gbfarstr.h</td>
+	<td>Copies <code>n</code> number of consecutive far memory bytes, from their source positions starting at far pointer <code>src</code> to their destination positions starting at far pointer <code>dest</code>.  Returns the destination pointer passed to this function.  This function is not expected to bear nearly as fast as <code>memcpy</code>.</td>
+</tr>
+<tr>
+	<td><code>char far* FARCALL _fstrcat(char far* fs, char far* toAppend);</code></td>
+	<td>gbfarstr.h</td>
+	<td>Appends the string value of <code>toAppend</code> to the end of <code>fs</code>, returning <code>fs</code>.</td>
+</tr>
+<tr>
+	<td><code>BYTE FARCALL _fstrcmp(char far* fs1, char far* fs2);</code></td>
+	<td>gbfarstr.h</td>
+	<td>Compares two far strings, returning their lexicographical rank relative to each other.  Returns 0 if strings are equal.</td>
+</tr>
+<tr>
+	<td><code>char far* FARCALL _fstrcpy(char far* dest, char far* src);</code></td>
+	<td>gbfarstr.h</td>
+	<td>Copies the string value of <code>src</code> to <code>dest</code>, returning <code>dest</code>.</td>
+</tr>
+<tr>
+	<td><code>UBYTE FARCALL _fstrlen(char far* fs);</code></td>
+	<td>gbfarstr.h</td>
+	<td>Returns the string length of <code>fs</code>.  This function produces an inaccurate (overflowed) result if the string is longer than 255 characters.</td>
+</tr>
+<tr>
+	<td><code>char far* FARCALL _fstrncat(char far* fs, char far* toAppend, UBYTE n);</code></td>
+	<td>gbfarstr.h</td>
+	<td>Appends the string value of <code>toAppend</code> to the end of <code>fs</code> until either <code>toAppend</code> is finished or <code>n</code> chars are reached, returning <code>fs</code>.</td>
+</tr>
+<tr>
+	<td><code>BYTE FARCALL _fstrncmp(char far* fs1, char far* fs2, UBYTE n);</code></td>
+	<td>gbfarstr.h</td>
+	<td>Compares two far strings until either the end of the shorter string or <code>n</code> chars are reached, returning their lexicographical rank relative to each other.  Returns 0 if strings are equal under the provided circumstances.</td>
+</tr>
+<tr>
+	<td><code>UBYTE FARCALL _fstrncpy(char far* dest, char far* src, UBYTE n);</code></td>
+	<td>gbfarstr.h</td>
+	<td>Copies the string value of <code>src</code> to <code>dest</code> until either the length of the shorter string or <code>n</code> chars are reached, returning <code>dest</code>.</td>
+</tr>
+</table>
+</ul>
+</blockquote>
+
+<a href="#1">Return to Table of Contents</a>
+<p>
+
+<hr>
+<p>
+
+<a name="10"></a>
+<h2>10. Changes</h2>
+
+<blockquote>
+<dl>
+
+<dt><b>29 November 1999</b>
+<dd>Wrote version 1.0 of this document.
+
+</dl>
+</blockquote>
+
+<a href="#1">Return to Table of Contents</a>
+<p>
+
+<hr>
+<p>
+
+<a name="11"></a>
+<h2>11. Thanks</h2>
+
+<blockquote>
+I'd like to thank all these people for their assistance in my studies. :)<p>
+<ul>
+<li><b>Adam Rippon</b>, for always discussing Game Boy babble with me.
+<li><b>Stefan Knorr</b>, whose Graal ports to <a href="http://www.cyberjoueur.com/English/graal.html">Java</a>, <a href="http://www.graalonline.com/">Windows</a> and <a href="http://www.graalgb.8m.com/">Game Boy Color</a> really made me think and ask questions.
+<li><b>Pascal Felber</b>, for preparing the <a href="http://www.gbdev.org/gbdk/">Game Boy Development Kit</a> that most of us use!
+<li><b>Martin Korth</b>, for programming <a href="http://www.work.de/nocash/gmb.htm">NO$GMB</a> and its full debugging environment.
+<li><b>Game Boy Development Mailing List</b>, for the endless stream of information and insight. :)
+<li><b>You</b>, for taking the interest to read this document. :P
+</ul>
+</blockquote>
+
+<a href="#1">Return to Table of Contents</a>
+<p>
+
+</body>
+
+</html>
