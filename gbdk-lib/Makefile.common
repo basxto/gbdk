@@ -1,0 +1,11 @@
+# Common settings
+
+PORTS = gbz80 z80
+PLATFORMS = gb consolez80
+
+SCC = /home/michaelh/projects/sdcc/bin/sdcc
+
+AS_Z80 = as-z80
+AS_GBZ80 = as-gb
+
+CLEANSPEC = *.o *.asm *.cdb *.sym *.lst *~
