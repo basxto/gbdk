@@ -37,7 +37,7 @@
 		      <a href="#Links">Links</a> | 
 		      <a href="mailto:michaelh@earthling.net">Contact</a>
 		      <p>
-		      <b>Download (latest is 2.95)</b><br>
+		      <b>Download (latest is 2.95-3)</b><br>
 		      <a href="install.html">CVS</a> | 
 		      <a href="http://sourceforge.net/project/filelist.php?group_id=1249">Source / Linux / win32</a>
 			<p>
@@ -62,6 +62,39 @@
 		      <h2>
 			<font face="Arial,Helvetica" size=-1>News</font></h2>
 		      <font face="Arial,Helvetica" size=-1>
+<b>19th August - 2.95-3 Released.</b> This is an experimental release for
+those who feel keen.  The main change is a new lexer (the first part in
+the compilation process which recognises words and symbols like '!=' and
+'char' and turns them into a token number) which speeds up compilation of 
+large initalised arrays like tile data by a factor of three.  Please report
+any bugs that show up - this is a big change.
+<p>
+I have also included a 'minimal' release for win32 users which ommits
+the documentation, library sources, and examples.  If this is useful I
+will keep doing it.
+<p>
+<b>5th August - 2.95-2 Released.</b> Just a small update.  From the README:
+<ul>
+<li> Added model switching support
+<br>
+--model-medium uses near (16 bit) pointers for data, and
+banked calls for anything not declared as 'nonbanked'
+--model-small uses near (16 bit)
+pointers for data and
+calls.  Nothing uses banked calls.  'nonbanked' functions
+are still placed in HOME.  Libraries are under lib/medium
+and lib/small.
+</li>
+<li>
+Added the gbdk version to 'sdcc --version'
+</li><li>
+Changed the ways globals are exported, reducing the amount of extra junk 
+linked in.
+</li><li>
+Turned on the optimisations in flex.  Large constant arrays
+like tile data should compile a bit faster.
+</li></ul>
+<p>
 <b>22nd July - 2.95 Released.</b> This is a recomended upgrade.  Some of the big features are:
 <ul>
 <li>Decent rgbds support.  All the libraries and most of the examples can now compile with rgbds as the assembler.</li>
