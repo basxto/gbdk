@@ -47,13 +47,13 @@ _gbdk-lib: _sdcc build-lcc
 
 build-lcc:
 	make -C gbdk-support/lcc clean
-	make -C gbdk-support/lcc SDCCLIB=$(SDCCLIB)
+	make -C gbdk-support/lcc SDCCLIB=$(SDCCLIB)/
 	mkdir -p $(BUILD)/bin
 	cp gbdk-support/lcc/lcc $(BUILD)/bin
 
 _gbdk-support:
 	make -C gbdk-support/lcc clean
-	make -C gbdk-support/lcc SDCCLIB=$(GBDK_ROOT)
+	make -C gbdk-support/lcc SDCCLIB=$(GBDK_ROOT)/
 	mkdir -p $(BUILD)/bin
 	cp gbdk-support/lcc/lcc $(BUILD)/bin
 
