@@ -1,26 +1,27 @@
-gbdk3-2.92 - http://gbdk.sourceforge.net/
+gbdk3-2.92-2 - http://gbdk.sourceforge.net/
 -----------------------------------------
 This is a early-release beta.  Please report any bugs :)
+
+Special note:
+-------------
+I've reverted the WORD to 16 bit unsigned change that required
+-DGBDK_2_COMPAT=1.  You can use BYTE_IS_UNSIGNED if you, like me,
+really want WORD to be unsigned :)
 
 Short story:
 ------------
 win32:
-* The installer takes care of all of this, but it has a silly time
-  limit - turn your clock back to 1999 temporarialy.  You still need
-  c:\tmp
-* Otherwise you need cygwin1.dll and a GNU compatible make.  I will
-  provide a package of these with 2.93
 * Unzip using WinZip or similar (which youve probably already done :)
     e.g use WinZip to extract to d:\gbstuff\gbdk
-* Set GBDKDIR to where you installed _with a trailing backslash_
-    e.g edit autoexec.bat, set GBDKDIR=d:\gbstuff\gbdk\
-* Add the bin directory to your PATH
-    e.g edit autoexec.bat, add PATH=%GBDKDIR%bin (note no \)
-* Make the directory c:\tmp to appease cygwin
-    e.g mkdir c:\tmp
+* Add the 'bin' directory to your path if required.
+    e.g Add 'PATH=%PATH%;d:\gbstuff\gbdk\bin' to autoexec.bat
 * Restart if needed
-* GBDK is ready to go - there is no need to compile the libraries
-* You can compile the examples by running 'make' in examples\gb
+* GBDK is ready to go - there is no need to compile the libraries or
+  to set envoronment varibles.  You may want to remove the
+  GBDKDIR line from autoexec.bat that an older version of gbdk may
+  have put there.
+  See the ChangeLog for more information.
+* You can compile the examples by running 'make.bat' in examples\gb
     e.g d:, cd \gbstuff\gbdk\examples\gb, make
 
 Linux:
@@ -52,15 +53,13 @@ extract, and type:
 
 make -f update.mak update
 
-The Linux binary is normally installed in /usr/lib/gbdk, and
-the win32 binary in the root directory of the C drive.  If you
+The Linux binary is normally installed in /usr/lib/gbdk.  If you
 install somewhere else, set GBDKDIR to the appropriate path.
 
-eg.  A win32 user installs to f:\tools\gbstuff\gbdk.  Add the line
-	set GBDKDIR=f:\tools\gbstuff\gbdk\
-	set PATH=%PATH%;f:\tools\gbstuff\gbdk\bin
-     to autoexec.bat so that lcc can find everything.  Note the
-trailing backslash.
+eg.
+	export GBDKDIR=/usr/local/stuff/gbdk/
+   to autoexec.bat so that lcc can find everything.  Note the
+trailing slash.
 
 Linux users also need to install libgc4 or above (Debian users try
 'apt-get install libgc5').  The win32 version is compiled with cygwin
@@ -68,6 +67,19 @@ b20.
 
 Changelog
 ---------
+gbdk3-2.92-2:
+* win32 only.  Takes care of some of the install bugs, including:
+   - Now autodetects where it is installed.
+	This can be overridden using set GBDKDIR=...
+   - Problems with the installer (now uses WinZip)
+   - Problems with the temp directory
+	Now scans TMP, TEMP, TMPDIR and finally c:\tmp
+   - cygwin1.dll and 'make' are no longer required
+   	gbdk is now built using mingw32 which is win32 native
+	make.bat is automagically generated from the Makefile
+   - I've reverted to using WORD for signed 16 bit etc.
+	GBDK_2_COMPAT is no longer required.
+
 gbdk3-2.92:
 * All the examples now work (with a little bit of patching :)
 * Fixed problem with registers being cached instead of being marked
