@@ -198,7 +198,7 @@ const unsigned char selected_data[NB_DATA_TILES][0x10] =
   { 0xFE,0xFF,0xEE,0xEF,0xD6,0xD7,0xC6,0xC7,0xD6,0xD7,0xD6,0xD7,0xFE,0xFF,0x00,0xFF }
 };
 
-const cursor_info cursors[] =
+cursor_info cursors[] =
 {
   /* Arrow */
   { 0, 1, 1, 0, 0 },
@@ -260,22 +260,22 @@ UBYTE cursor_y;
 
 void set_cursor()
 {
-  UBYTE x, y, i;
+    UBYTE x, y, i;
 
-  i = 0;
-  for(x = 0; x < cursors[current_cursor].w; x++)
-    for(y = 0; y < cursors[current_cursor].h; y++) {
-      set_sprite_data(i,
-		      1,
-		      cursors_data[cursors[current_cursor].data_idx+i]);
-      set_sprite_tile(i, i);
-      set_sprite_prop(i, 0x10);
-      i++;
+    i = 0;
+    for(x = 0; x < cursors[current_cursor].w; x++)
+	for(y = 0; y < cursors[current_cursor].h; y++) {
+	    set_sprite_data(i,
+			    1,
+			    cursors_data[cursors[current_cursor].data_idx+i]);
+	    set_sprite_tile(i, i);
+	    set_sprite_prop(i, 0x10);
+	    i++;
+	}
+    /* Hide unused sprites */
+    for(; i < 4; i++) {
+	move_sprite(i, 0, 0);
     }
-  /* Hide unused sprites */
-  for(; i < 4; i++) {
-    move_sprite(i, 0, 0);
-  }
 }
 
 void move_cursor()

@@ -20,6 +20,8 @@ UBYTE accua[80];
 
 UWORD seed;
 
+volatile UBYTE div_reg;
+
 void main(void)
 {
   UBYTE r, s, t, u;
@@ -34,11 +36,11 @@ void main(void)
   puts("Push any key (1)");
   waitpad(0xFF);
   waitpadup();
-  seed = DIV_REG;
+  seed = div_reg;
   puts("Push any key (2)");
   waitpad(0xFF);
   waitpadup();
-  seed |= DIV_REG << 8;
+  seed |= (UWORD)div_reg << 8;
 
   /* initarand() calls initrand() */
   initarand(seed);

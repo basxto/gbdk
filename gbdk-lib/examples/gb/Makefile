@@ -1,4 +1,4 @@
-CC	= ../../bin/lcc -Wa-l -Wl-m -DGBDK_2_COMPAT=1
+CC	= ../../bin/lcc -Wa-l -Wl-m -DGBDK_2_COMPAT=1 -Wl-j -Wf--dumpall -v
 
 BINS	= galaxy.gb \
 	space.gb \
