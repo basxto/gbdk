@@ -11,7 +11,7 @@ SDCCLIB = $(BUILD)
 CVSFLAGS = -z5
 CVS = cvs
 DIR = .
-VER = 2.90
+VER = 2.92
 ROOT_GBDK = :pserver:anonymous@cvs.gbdk.sourceforge.net:/cvsroot/gbdk
 ROOT_SDCC = :pserver:anonymous@cvs.sdcc.sourceforge.net:/cvsroot/sdcc
 
@@ -71,6 +71,7 @@ dist: _sdcc _gbdk-lib _gbdk-support
 	cp -r gbdk-lib/libc $(BUILD)
 	cp -r sdcc/doc $(BUILD)
 	cp gbdk-support/README $(BUILD)
+	strip $(BUILD)/bin/*
 
 zdist: dist
 	tar czf gbdk-$(VER).tar.gz gbdk
