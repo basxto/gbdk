@@ -53,6 +53,8 @@ extern int getpid(void);
 extern char *cpp[], *include[], *com[], *as[],*ld[], inputs[], *suffixes[];
 extern int option(char *);
 
+void finalise(void);
+
 static int errcnt;		/* number of errors */
 static int Eflag;		/* -E specified */
 static int Sflag;		/* -S specified */
@@ -68,7 +70,7 @@ static char *outfile;		/* ld output file or -[cS] object file */
 static int ac;			/* argument count */
 static char **av;		/* argument vector */
 char *tempdir = TEMPDIR;	/* directory for temporary files */
-static char *progname;
+char *progname;
 static List lccinputs;		/* list of input directories */
 
 int main(int argc, char *argv[]) {
@@ -132,6 +134,7 @@ int main(int argc, char *argv[]) {
 		outfile = 0;
 	}
 	argv[j] = 0;
+	finalise();
 	for (i = 0; include[i]; i++)
 		plist = append(include[i], plist);
 	if (ilist) {
@@ -676,8 +679,11 @@ static void opt(char *arg) {
 			return;
 		case 'v':
 			if (verbose++ == 0) {
+#if 0
+			    /* GBDK removed */
 				if (strcmp(basepath(cpp[0]), "gcc-cpp") == 0)
 					plist = append(arg, plist);
+#endif
 				clist = append(arg, clist);
 				fprintf(stderr, "%s %s\n", progname, rcsid);
 			}
