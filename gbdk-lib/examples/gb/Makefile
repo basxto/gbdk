@@ -16,8 +16,6 @@ BINS	= galaxy.gb \
 # banks.gb: Doesnt support banks.
 OTHER = sound.gb \
 	banks.gb \
-#	samptest.gb \
-
 
 all:	$(BINS)
 

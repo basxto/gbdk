@@ -14,6 +14,7 @@ DIR = .
 VER = 2.90
 ROOT_GBDK = :pserver:anonymous@cvs.gbdk.sourceforge.net:/cvsroot/gbdk
 ROOT_SDCC = :pserver:anonymous@cvs.sdcc.sourceforge.net:/cvsroot/sdcc
+E = .exe
 
 GBDK_ROOT = /usr/lib/gbdk
 
@@ -35,7 +36,7 @@ _sdcc: sdcc/sdccconf.h
 	do make -C $$i; done
 	mkdir -p $(BUILD)/bin
 	for i in sdcc sdcpp link-gbz80 as-gbz80; \
-	do cp sdcc/bin/$$i $(BUILD)/bin; done
+	do cp sdcc/bin/$$i$(E) $(BUILD)/bin; done
 
 sdcc/sdccconf.h: sdcc/configure
 	cd sdcc; \
@@ -49,13 +50,13 @@ build-lcc:
 	make -C gbdk-support/lcc clean
 	make -C gbdk-support/lcc SDCCLIB=$(SDCCLIB)/
 	mkdir -p $(BUILD)/bin
-	cp gbdk-support/lcc/lcc $(BUILD)/bin
+	cp gbdk-support/lcc/lcc$(E) $(BUILD)/bin
 
 _gbdk-support:
 	make -C gbdk-support/lcc clean
 	make -C gbdk-support/lcc SDCCLIB=$(GBDK_ROOT)/
 	mkdir -p $(BUILD)/bin
-	cp gbdk-support/lcc/lcc $(BUILD)/bin
+	cp gbdk-support/lcc/lcc$(E) $(BUILD)/bin
 
 dist: _sdcc _gbdk-lib _gbdk-support
 	mkdir -p $(BUILD)/bin

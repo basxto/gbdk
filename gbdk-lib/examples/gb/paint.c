@@ -198,7 +198,7 @@ const unsigned char selected_data[NB_DATA_TILES][0x10] =
   { 0xFE,0xFF,0xEE,0xEF,0xD6,0xD7,0xC6,0xC7,0xD6,0xD7,0xD6,0xD7,0xFE,0xFF,0x00,0xFF }
 };
 
-cursor_info cursors[] =
+const cursor_info cursors[] =
 {
   /* Arrow */
   { 0, 1, 1, 0, 0 },
@@ -298,16 +298,16 @@ void move_menu_cursor()
 
 void set_icon(UBYTE icon, UBYTE selected)
 {
-  UBYTE x, y;
+    UBYTE x, y;
 
-  for(x = 0; x < icons[icon].w; x++)
-    for(y = 0; y < icons[icon].h; y++)
-      switch_data(icons[icon].x + x,
-		  icons[icon].y + y,
-		  (selected ?
-		   selected_data[icons[icon].data_idx+(x<<1)+y] :
-		   data[icons[icon].data_idx+(x<<1)+y]),
-		  data_buffer[icons[icon].data_idx+(x<<1)+y]);
+    for(x = 0; x < icons[icon].w; x++)
+	for(y = 0; y < icons[icon].h; y++) {
+	    UWORD index = icons[icon].data_idx+((UWORD)x<<1)+y;
+	    switch_data(icons[icon].x + x,
+			icons[icon].y + y,
+			selected ? selected_data[index] : data[index],
+			data_buffer[index]);
+	}
 }
 
 void change_icon(UBYTE icon, UBYTE selected)
@@ -319,8 +319,8 @@ void change_icon(UBYTE icon, UBYTE selected)
       switch_data(icons[icon].x + x,
 		  icons[icon].y + y,
 		  (selected ?
-		   selected_data[icons[icon].data_idx+(x<<1)+y] :
-		   data[icons[icon].data_idx+(x<<1)+y]),
+		   selected_data[icons[icon].data_idx+((UWORD)x<<1)+y] :
+		   data[icons[icon].data_idx+((UWORD)x<<1)+y]),
 		  NULL);
 }
 
