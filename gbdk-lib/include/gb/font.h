@@ -24,7 +24,7 @@ typedef UINT16 font_t;
 extern UINT8 font_spect[], font_italic[], font_ibm[], font_min[];
 
 /* Backwards compatible font */
-extern UINT8 fontibm_fixed[];
+extern UINT8 font_ibm_fixed[];
 
 /* Init the font system */
 void	font_init(void);
