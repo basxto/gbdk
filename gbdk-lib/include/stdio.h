@@ -35,4 +35,10 @@ void sprintf(char *str, const char *format, ...);
 */
 void puts(const char *s);
 
+/** gets() reads a line from stdin into the buffer pointed to by s until
+    either a terminating newline or EOF, which it replaces with '\0'.  No
+    check for buffer overrun is per­ formed.
+*/
+char *gets(char *s);
+
 #endif

@@ -10,30 +10,43 @@ BYTE gprintf(char *fmt, ...)
   for(; *fmt; fmt++)
     if(*fmt == '%') {
       switch(*++fmt) {
-      case 'c':
+      case 'c': {
 	/* char */
-	wrtchr(va_arg(ap, char));
-	break;
-      case 'd':
+	  char c = va_arg(ap, char);
+	  wrtchr(c);
+	  break;
+      }
+      case 'd': {
 	/* decimal int */
-	gprintn(va_arg(ap, BYTE), 10, SIGNED);
-	break;
-      case 'u':
-	/* unsigned int */
-	gprintn(va_arg(ap, BYTE), 10, UNSIGNED);
-	break;
-      case 'o':
-	/* octal int */
-	gprintn(va_arg(ap, BYTE), 8, UNSIGNED);
-	break;
-      case 'x':
-	/* hexadecimal int */
-	gprintn(va_arg(ap, BYTE), 16, UNSIGNED);
-	break;
-      case 's':
-	/* string */
-	gprint(va_arg(ap, char *));
-	break;
+	  BYTE b = va_arg(ap, BYTE);
+	  gprintn(b, 10, SIGNED);
+	  break;
+      }
+      case 'u': {
+	  /* unsigned int */
+	  BYTE b = va_arg(ap, BYTE);
+	  gprintn(b, 10, UNSIGNED);
+	  break;
+      }
+      case 'o': {
+	  /* octal int */
+	  BYTE b = va_arg(ap, BYTE);
+	  gprintn(b, 8, UNSIGNED);
+	  break;
+      }
+      case 'x': {
+	  /* hexadecimal int */
+	  BYTE b = va_arg(ap, BYTE);
+	  gprintn(b, 16, UNSIGNED);
+	  break;
+      }
+      case 's': {
+	  /* string */
+	  char *s = va_arg(ap, char *);
+	  gprint(s);
+	  break;
+      }
+#if 0
       case 'l':
 	/* long */
 	switch(*++fmt) {
@@ -55,6 +68,7 @@ BYTE gprintf(char *fmt, ...)
 	  break;
 	}
 	break;
+#endif
       case '%':
 	/* % */
 	wrtchr(*fmt);

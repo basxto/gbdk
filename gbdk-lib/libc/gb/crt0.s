@@ -231,10 +231,12 @@
 	LDH	(.SC),A		; Use external clock
 
 	XOR	A		; Erase the malloc list
-	LD	(_malloc_heap_start+0),A
-	LD	(_malloc_heap_start+1),A
-	LD	(.sys_time+0),A	; Zero the system clock
-	LD	(.sys_time+1),A	
+;	LD	(_malloc_heap_start+0),A
+;	LD	(_malloc_heap_start+1),A
+;	LD	(.sys_time+0),A	; Zero the system clock
+;	LD	(.sys_time+1),A	
+
+	call	gsinit
 
 	CALL	.init
 
@@ -242,7 +244,6 @@
 
 	;; Call the main function
 	CALL	_main
-
 99$:
 	JR	99$		; Wait forever
 
@@ -259,6 +260,7 @@
 	.area	_LIT
 	;; Constant data used to init _DATA
 	.area	_GSINIT
+	.area	_GSINITTAIL
 	;; Initialised in ram data
 	.area	_DATA
 	;; Uninitialised ram data
@@ -294,6 +296,11 @@ _sys_time::
 	.blkw	0x08
 
 	;; Runtime library
+	.area	_GSINIT
+gsinit::
+	.area	_GSINITTAIL
+	ret
+	
 	.area	_CODE
 
 	;; Call the initialization function for the mode specified in HL

@@ -11,6 +11,10 @@
 
 typedef char * va_list;
 #define va_start(list, last)	list = (char *)&last + sizeof(last)
-#define va_arg(list, type)	*(type *)list; list += sizeof(type);
+#ifdef STDIO_INCLUDE
+#define va_arg(list, type)	*(type *)list; list + sizeof(type)
+#else
+#define va_arg(list, type)	(list + sizeof(type), *(type *)(list - sizeof(type)))
+#endif
 
 #endif

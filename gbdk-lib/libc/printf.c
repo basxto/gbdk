@@ -2,8 +2,8 @@
     Again a stub - will use the std one later...
 */
 #include <gbdk-lib.h>
-#include <stdarg.h>
 #include <stdio.h>
+#include <stdarg.h>
 
 typedef void EMIT(char c, void *pData);
 
@@ -54,6 +54,7 @@ static void _printf(const char *format, EMIT *emitter, void *pData, va_list va)
 			(*emitter)(*s, pData);
 			s++;
 		    }
+		    break;
 		}
 	    }
 	}

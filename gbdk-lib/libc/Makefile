@@ -4,7 +4,9 @@ TOPDIR = ..
 
 include $(TOPDIR)/Makefile.common
 
-LIBC_OBJ = string.o printf.o puts.o
+LIBC_OBJ = string.o printf.o puts.o \
+	isalpha.o isdigit.o islower.o isspace.o isupper.o \
+	toupper.o tolower.o
 
 CFLAGS = -I$(TOPDIR)/include
 CFLAGS += -m$(PORT) -v
