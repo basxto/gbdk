@@ -23,10 +23,10 @@ struct list {		/* circular list nodes: */
 };
 
 static void *alloc(int);
-static List append(char *,List);
+List append(char *,List);
 extern char *basepath(char *);
 static int callsys(char *[]);
-extern char *concat(char *, char *);
+extern char *concat(const char *, const char *);
 static int compile(char *, char *);
 static void compose(char *[], List, List, List);
 static void error(char *, char *);
@@ -60,7 +60,7 @@ static int cflag;		/* -c specified */
 static int verbose;		/* incremented for each -v */
 static List llist[2];		/* loader files, flags */
 static List alist;		/* assembler flags */
-static List clist;		/* compiler flags */
+List clist;		/* compiler flags */
 static List plist;		/* preprocessor flags */
 static List ilist;		/* list of additional includes from LCCINPUTS */
 static List rmlist;		/* list of files to remove */
@@ -71,7 +71,7 @@ char *tempdir = TEMPDIR;	/* directory for temporary files */
 static char *progname;
 static List lccinputs;		/* list of input directories */
 
-main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
 	int i, j, nf;
 	
 	progname = argv[0];
@@ -101,8 +101,8 @@ main(int argc, char *argv[]) {
 	}
 	plist = append("-D__LCC__", 0);
 	initinputs();
-	if (getenv("LCCDIR"))
-		option(stringf("-lccdir=%s", getenv("LCCDIR")));
+	if (getenv("GBDKDIR"))
+		option(stringf("--gbdkdir=%s", getenv("GBDKDIR")));
 	for (nf = 0, i = j = 1; i < argc; i++) {
 		if (strcmp(argv[i], "-o") == 0) {
 			if (++i < argc) {
@@ -180,7 +180,7 @@ static void *alloc(int n) {
 }
 
 /* append - append a node with string str onto list, return new list */	
-static List append(char *str, List list) {
+List append(char *str, List list) {
 	List p = alloc(sizeof *p);
 
 	p->str = str;
@@ -290,7 +290,7 @@ static int callsys(char **av) {
 }
 
 /* concat - return concatenation of strings s1 and s2 */
-char *concat(char *s1, char *s2) {
+char *concat(const char *s1, const char *s2) {
 	int n = strlen(s1);
 	char *s = alloc(n + strlen(s2) + 1);
 
@@ -683,6 +683,8 @@ static void opt(char *arg) {
 			}
 			return;
 		}
+	if (option(arg))
+	    return;
 	if (cflag || Sflag || Eflag)
 		fprintf(stderr, "%s: %s ignored\n", progname, arg);
 	else
