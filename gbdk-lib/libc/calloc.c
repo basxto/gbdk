@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-void *calloc( UWORD nmem, UWORD size )
+void *calloc( int nmem, int size )
 {
 	void *malloced;
 

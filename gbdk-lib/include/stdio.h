@@ -41,6 +41,4 @@ void puts(const char *s);
 */
 char *gets(char *s);
 
-void puts(const char *s);
-
 #endif

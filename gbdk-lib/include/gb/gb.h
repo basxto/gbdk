@@ -135,8 +135,8 @@ extern UINT8 _io_out;
  */
 /* MBC5 */
 #define SWITCH_ROM_MBC5(b) \
-  *(unsigned char *)0x3000 = (b)>>8; \
-  *(unsigned char *)0x2000 = (b)&0xFF
+  *(unsigned char *)0x3000 = (UINT16)(b)>>8; \
+  *(unsigned char *)0x2000 = (UINT8)(b)
 
 #define SWITCH_RAM_MBC5(b) \
   *(unsigned char *)0x4000 = (b)

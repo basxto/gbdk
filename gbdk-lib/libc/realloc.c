@@ -3,16 +3,16 @@
 #include <types.h>
 #include <string.h>
 
-void *realloc( void *current, UWORD size )
+void *realloc( void *current, int size )
 {
 	/* First see if the following hunk is free */
-	UWORD nextSize;
+	UINT16 nextSize;
 	pmmalloc_hunk thisHunk, newHunk, ptr;
 	void *newRegion;
 
 	thisHunk = malloc_first;
 
-	ptr = (void *)((UWORD)current - sizeof(mmalloc_hunk));
+	ptr = (void *)((UINT16)current - sizeof(mmalloc_hunk));
 
 	if (size==0) {
 		free(current);
@@ -31,7 +31,7 @@ void *realloc( void *current, UWORD size )
 			if (thisHunk->size > size ) {
 				if (thisHunk->size > size + sizeof( mmalloc_hunk )) {
 					/* Shrink the hunk */
-					newHunk = (pmmalloc_hunk)(size + sizeof( mmalloc_hunk )+(UWORD)thisHunk);
+					newHunk = (pmmalloc_hunk)(size + sizeof( mmalloc_hunk )+(UINT16)thisHunk);
 					newHunk->status = MALLOC_FREE;
 					newHunk->size = thisHunk->size - size -sizeof( mmalloc_hunk );
 					newHunk->magic = MALLOC_MAGIC;
@@ -55,7 +55,7 @@ void *realloc( void *current, UWORD size )
 					if ((nextSize + thisHunk->size + sizeof( mmalloc_hunk )) >= size ) {
 						/* Next hunk + this is big enough to contain the new hunk */
 						
-						newHunk = (pmmalloc_hunk)(size + sizeof( mmalloc_hunk )+(UWORD)thisHunk);
+						newHunk = (pmmalloc_hunk)(size + sizeof( mmalloc_hunk )+(UINT16)thisHunk);
 						newHunk->next = thisHunk->next->next;
 						newHunk->status = MALLOC_FREE;
 						newHunk->size = thisHunk->size + nextSize - size -sizeof( mmalloc_hunk );

@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-WORD labs(WORD num)
+long labs(long num)
 {
   if(num < 0)
     return -num;

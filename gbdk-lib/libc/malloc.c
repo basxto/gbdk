@@ -11,10 +11,10 @@
   * Each hunk is preceeded by a header - header describes a singly linked list
   * If the header is corrupted, this system dies - but so does the program so youve got other problems
   * All allocations are on byte boundries
-  * See types.h for the definitions of UBYTE, BYTE...
-  * Theres a bug in GBDK 2.0b9 - cant handle pointer addition, requiring (UWORD) casting
+  * See types.h for the definitions of UINT8, INT8...
+  * Theres a bug in GBDK 2.0b9 - cant handle pointer addition, requiring (UINT16) casting
 */
-#include <sys/malloc.h>
+#include <gb/malloc.h>
 #include <types.h>
 #include <stdio.h>
 
@@ -37,9 +37,9 @@ void debug( char *fun, char *msg )
   Only initalises if the magic number on the first hunk is invalid.
   Note that this number is invalidated in crt0.s 
   
-  Returns: BYTE, -1 on failure, 0 on success
+  Returns: INT8, -1 on failure, 0 on success
 */
-BYTE malloc_init(void)
+INT8 malloc_init(void)
 {
 	if (malloc_first->magic!=MALLOC_MAGIC) {
 		/* Init by setting up the first hunk */
@@ -51,7 +51,7 @@ BYTE malloc_init(void)
 		/* Initalise the linked list */
 		malloc_first->next = NULL;
 		/* Set the size to all of free memory (mem ends at 0xE000), less 200h for the stack */
-		malloc_first->size = (UBYTE *)(0xDFFFU - 0x200) - sizeof(mmalloc_hunk) - (UBYTE *)&malloc_heap_start;
+		malloc_first->size = (UINT8 *)(0xDFFFU - 0x200) - sizeof(mmalloc_hunk) - (UINT8 *)&malloc_heap_start;
 		malloc_first->status = MALLOC_FREE;
 
 		malloc_first->magic = MALLOC_MAGIC;
@@ -80,7 +80,7 @@ void malloc_gc(void)
 
     /* changed is set if at least two hunks are joined */
     /* Note that logically all will be joined on the first pass, but you get that */
-    UBYTE changed;
+    UINT8 changed;
     
     debug("malloc_gc","Running");
 
@@ -117,14 +117,14 @@ void malloc_gc(void)
   Return:  pointer to the base of free memory on success, NULL if no memory
   was available
 */
-void *malloc( UWORD size )
+void *malloc( UINT16 size )
 {
     /* thisHunk: list walker
     */
     pmmalloc_hunk thisHunk, insertBefore;
     pmmalloc_hunk newHunk;
 
-    UBYTE firstTry;
+    UINT8 firstTry;
 
     /* Init the system if required */
     if (malloc_first->magic != MALLOC_MAGIC)
@@ -149,7 +149,7 @@ void *malloc( UWORD size )
 		    /* Yes, big enough */
 		    /* Create a new header at the end of this block */
 		    /* Note: the header can be of zero length - should add code to combine */
-		    newHunk = (pmmalloc_hunk)((UBYTE *)thisHunk + size + sizeof(mmalloc_hunk));
+		    newHunk = (pmmalloc_hunk)((UINT8 *)thisHunk + size + sizeof(mmalloc_hunk));
 		    newHunk->next = thisHunk->next;
 		    /* size is the free space, less that allocated, less the new header */
 		    newHunk->size = thisHunk->size - sizeof(mmalloc_hunk) - size;
@@ -163,7 +163,7 @@ void *malloc( UWORD size )
 		    thisHunk->next = newHunk;
 		    
 		    /* Return a pointer to the new region */
-		    return (void *)((UBYTE *)thisHunk + sizeof(mmalloc_hunk));
+		    return (void *)((UINT8 *)thisHunk + sizeof(mmalloc_hunk));
 		}
 	    }
 	    thisHunk = thisHunk->next;

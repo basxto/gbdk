@@ -2,12 +2,12 @@
 
 /* Return length of string */
 
-BYTE strlen(const char *s)
+int strlen(const char *s)
 {
-  UBYTE i;
+    int i;
 
-  i = 0;
-  while(*s++)
-    i++;
-  return i;
+    i = 0;
+    while(*s++)
+	i++;
+    return i;
 }

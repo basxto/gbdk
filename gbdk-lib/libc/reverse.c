@@ -1,8 +1,10 @@
 #include <stdlib.h>
+#include <string.h>
+#include <types.h>
 
 char *reverse(char *s)
 {
-  UBYTE i, j;
+  UINT8 i, j;
   char c;
 
   i = 0;

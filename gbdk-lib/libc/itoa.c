@@ -1,8 +1,9 @@
 #include <stdlib.h>
+#include <types.h>
 
-char *itoa(BYTE n, char *s)
+char *itoa(int n, char *s)
 {
-  UBYTE i, sign;
+  UINT8 i, sign;
 
   if(n < 0) {
     sign = 1;

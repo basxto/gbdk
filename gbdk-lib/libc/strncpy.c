@@ -5,9 +5,9 @@
  * Return s1.
  */
 
-char *strncpy(char *s1, const char *s2, UBYTE n)
+char *strncpy(char *s1, const char *s2, int n)
 {
-  UBYTE i;
+  int i;
   char *os1;
 
   os1 = s1;

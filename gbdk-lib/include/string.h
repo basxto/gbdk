@@ -42,7 +42,7 @@ int strlen(const char *s);
 
 char *strncat(char *s1, const char *s2, int n);
 
-INT8 strncmp(const char *s1, const char *s2, int n);
+int strncmp(const char *s1, const char *s2, int n);
 
 char *strncpy(char *s1, const char *s2, int n);
 

@@ -1,8 +1,9 @@
 #include <stdlib.h>
+#include <types.h>
 
-char *ltoa(WORD n, char *s)
+char *ltoa(long n, char *s)
 {
-  UBYTE i, sign;
+  UINT8 i, sign;
 
   if(n < 0) {
     sign = 1;

@@ -9,7 +9,7 @@
 
 time_t time(time_t *t)
 {
-    UWORD ret;
+    UINT16 ret;
 
     /* Should be relative to 0:00 1970 GMT but hey */
     ret = clock() / CLOCKS_PER_SEC;

@@ -7,7 +7,7 @@
  *  s1<s2: <0
  */
 
-BYTE strncmp(const char *s1, const char *s2, UBYTE n)
+int strncmp(const char *s1, const char *s2, int n)
 {
   while(n > 0 && *s1 == *s2++) {
     if(*s1++ == '\0')
