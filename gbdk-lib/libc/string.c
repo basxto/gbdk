@@ -43,3 +43,13 @@ int strcmp(const char *s1, const char *s2) NONBANKED
     return 0;
 }
 #endif
+
+void *memset(void *s, unsigned char c, size_t n)
+{
+  char *p = s;
+
+  while (n--)
+    *p++ = c;
+
+  return s;
+}

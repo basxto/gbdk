@@ -275,6 +275,9 @@ _exit::
 	.area	_GSINIT
 	.area	_GSINITTAIL
 	.area	_GSFINAL
+	;; Constant data area that can be used for post-gsinit setup.
+	.area	_CLINIT
+	.area	_CLFINAL
 	;; Initialised in ram data
 	.area	_DATA
 	;; Uninitialised ram data
@@ -316,7 +319,7 @@ _sys_time::
 gsinit::
 	.area	_GSINITTAIL
 	ret
-	
+
 	.area	_HOME
 	;; Call the initialization function for the mode specified in HL
 .set_mode::

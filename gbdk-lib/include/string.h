@@ -34,6 +34,11 @@ int strcmp(const char *s1, const char *s2) NONBANKED;
 */    
 void *memcpy(void *dest, const void *src, size_t len) NONBANKED;
 
+/** Fills the n bytes on and after s with the value c.
+    Uses unsigned char to match with sdcc.
+ */
+void *memset(void *s, unsigned char c, size_t n) NONBANKED;
+
 /** Reverses the characters in the string.  
     For example 'abcdefg' will become 'gfedcba'.  Banked as the string
     must be modifiable.

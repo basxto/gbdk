@@ -77,24 +77,19 @@ void printf(const char *format, ...) NONBANKED
     _printf(format, _char_emitter, NULL, va);
 }
 
-typedef struct {
-    char *at;
-} _SPRINTF_INFO;
-
 static void _sprintf_emitter(char c, void *pData)
 {
     /* This way to avoid bugs in sdcc */
-    *(((_SPRINTF_INFO *)pData)->at) = c;
-    ((_SPRINTF_INFO *)pData)->at++;
+  *(*((char **)pData))++ = c;
 }
 
 void sprintf(char *into, const char *format, ...) NONBANKED
 {
-    _SPRINTF_INFO si;
     va_list va;
+    volatile char *c = into;
 
-    si.at = into;
     va_start(va, format);
 
-    _printf(format, _sprintf_emitter, &si, va);
+    _printf(format, _sprintf_emitter, &c, va);
+    *c = '\0';
 }
