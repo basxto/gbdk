@@ -2,16 +2,47 @@ gbdk3-2.92 - http://gbdk.sourceforge.net/
 -----------------------------------------
 This is a early-release beta.  Please report any bugs :)
 
+Short story:
+------------
+win32:
+* The installer takes care of all of this, but it has a silly time
+  limit - turn your clock back to 1999 temporarialy.  You still need
+  c:\tmp
+* Otherwise you need cygwin1.dll and a GNU compatible make.  I will
+  provide a package of these with 2.93
+* Unzip using WinZip or similar (which youve probably already done :)
+    e.g use WinZip to extract to d:\gbstuff\gbdk
+* Set GBDKDIR to where you installed _with a trailing backslash_
+    e.g edit autoexec.bat, set GBDKDIR=d:\gbstuff\gbdk\
+* Add the bin directory to your PATH
+    e.g edit autoexec.bat, add PATH=%GBDKDIR%bin (note no \)
+* Make the directory c:\tmp to appease cygwin
+    e.g mkdir c:\tmp
+* Restart if needed
+* GBDK is ready to go - there is no need to compile the libraries
+* You can compile the examples by running 'make' in examples\gb
+    e.g d:, cd \gbstuff\gbdk\examples\gb, make
+
+Linux:
+* Very similar to win32
+* You need libgc5.  Most distributions contain a pre-packaged version -
+  read on for more.
+* Extract the archive somewhere (normally /usr/lib/gbdk)
+* Set GBDKDIR to where you installed with a trailing /
+* Try compiling the examples as above
+
 Reporting problems and feature requests
 ---------------------------------------
 1.  Make sure that you have read this README fully.
-2.  Read the latest copy of this README
+2.  Have a read of the gbdk homepage
+    http://gbdk.sourceforge.net/
+3.  Read the latest copy of this README
     http://cvs.sourceforge.net/cgi-bin/cvsweb.cgi/~checkout~/gbdk-support/README?cvsroot=gbdk
-3.  Make sure you have the latest version
+4.  Make sure you have the latest version
     https://sourceforge.net/project/?group_id=1249
-4.  Check if anyone else has reported the problem
+5.  Check if anyone else has reported the problem
     https://sourceforge.net/bugs/?group_id=1249
-5.  Submit a new bug using the link above.  It is _very_ helpful if you can 
+6.  Submit a new bug using the link above.  It is _very_ helpful if you can 
     show how to reproduce the bug and/or give me the source to try and/or
     use the --dumpall (lcc -Wf--dumpall) option and send me all of the *.dump
     files.  Use the email address below.
