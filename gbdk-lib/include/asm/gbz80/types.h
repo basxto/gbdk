@@ -8,6 +8,8 @@
 #error gbz80 only.
 #endif
 
+#define BANKED	banked
+
 /** Signed eight bit.
  */
 typedef char          	INT8;
