@@ -1,7 +1,6 @@
 <!doctype html public "-//w3c//dtd html 4.0 transitional//en">
 <html>
   <head>
-    <title>GBDK - home</title>
     <meta name="description" content="A C compiler, assembler, linker and set of libraries for the Nintendo Gameboy.">
     <meta name="keywords" content="nintendo gameboy development compiler C z80 free libraries assembler linker">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -39,8 +38,11 @@
 		      <p>
 		      <b>Download (latest is 2.1.5)</b><br>
 		      <a href="install.html">CVS</a> | 
-		      <a href="http://sourceforge.net/project/filelist.php?group_id=1249">Source / Linux / Win32</a> |
-		      <a href="doc/gbdk-doc.pdf">Documentation (PDF)</a>
+		      <a href="ftp://gbdk.sourceforge.net/pub/gbdk/sdk-2.1.5.tar.gz">Source</a> | 
+		      <a href="ftp://gbdk.sourceforge.net/pub/gbdk/sdk-gbz80-gb-2.1.5-linux_glibc.tar.gz">Linux-glibc2 binary</a> | 
+		      <a href="ftp://gbdk.sourceforge.net/pub/gbdk/sdk-gbz80-gb-libc5-2.1.0.tar.gz">Linux-libc5 (2.1.0) binary</a> | 
+		      <a href="ftp://gbdk.sourceforge.net/pub/gbdk/sdk-gbz80-gb-2.1.5.zip">DOS Win32 binary</a> | 
+		      <a href="doc/gbdk-doc.pdf.gz">Documentation (PDF)</a>
 		    </font>
 		  </tr>
 		</table>
@@ -60,15 +62,6 @@
 		      <h2>
 			<font face="Arial,Helvetica" size=-1>News</font></h2>
 		      <font face="Arial,Helvetica" size=-1>
-			<b>31st Jan Added Dermot's <a href="dgbfar.html">far pointer spec</a>.</b>
-It's mainly here for comment.  If <a href="http://sdcc.sourceforge.net/">sdcc</a> is ported to the Gameboy then I
-will be looking for some way to do far calls.
-<p>
-			<b>8th Jan Moved over to <a href="http://www.sourceforge.net">sourceforge.net</a></b>.  Thanks must go to David Pfeffer for gbdk's previous resting place, www.gbdev.org.  The transition is not complete, but cvs and web have been shifted.
-			Note that the cvs download instructions are stale - you should now look to cvs.gbdk.sourceforge.net.
-			<br>
-			I am currently working on porting sdcc over to the Z80.  David Nathan is looking at porting it to the GB.
-			<p>
 			<b>6th Jan</b> <a href="http://www.gbdev.org/news/">Icehawk</a> wrote <i>"I did write some rumble pack
 			  routines. Just make sure to remind people to add -Wl-yt0x1C or -Wl-yt0x1D
 			  or -Wl-yt0x1E depending on sram and battery usage. Find the routines on my
@@ -89,12 +82,12 @@ will be looking for some way to do far calls.
 			A <b>preliminary</b> version
 			    of the libraries documentation is available
 			    <a href="doc/html/book01.html">online</a>
-			    or in <a href="doc/gbdk-doc.pdf">PDF form</a>
+			    or in <a href="doc/gbdk-doc.pdf.gz">PDF form</a>
 		      <p>
 			For technical information on
 			the GameBoy hardware, see <a href="http://home.hiwaay.net/~jfrohwei/gameboy/home.html">here</a>.
 		      <p>Have a look at
-			    the <a href="http://www.tripmode.com/gbdev/">GBDoK</a> documentation
+			    the <a href="http://www.gbdev.org/news/GBDoK.txt">GBDoK</a> documentation
 			    page maintained by Jason.
 		      <p>GBDK 2.1.0 was Pascal's last
 			    personal release. These web pages are now maintained by Michael Hope. Thanks
@@ -116,8 +109,13 @@ will be looking for some way to do far calls.
 			  a real GameBoy or with an emulator like <a href="http://www.komkon.org/fms/VGB/">VGB</a>
 			  or <a href="http://www.work.de/nocash/">no$gmb</a>.
 		      <p>GBDK is available for UNIX
-			    and DOS. The UNIX version of GBDK has been tested on Solaris 2.6 and Debian Linux 2.1. The Win32 version runs from inside a Win32 DOS box - note that it may be possible to recompile so that it will also work
-			under DPMI.
+			    and DOS. The UNIX version of GBDK has been tested on Solaris 2.6. The DOS
+			    version requires a 386 DX processor (or higher), with a DOS Protected Mode
+			    Interface (DPMI).
+		      <p>GBDK is currently being used
+			    in several projects. The first commercial project that used GBDK is <a href="ProAR2.html">Pro
+			      Action Replay II</a>. GBDK also got used for a japanese RPG game (Monster
+			    Race from KOEI Co., Ltd.).
 		      <p>GBDK features:
 		      <ul>
 			<li>
@@ -158,9 +156,9 @@ will be looking for some way to do far calls.
 		      <h2>
 			<a NAME="Status"></a>Status</h2>
 		      GBDK is freeware for non-commercial
-		      developments. Most of the code is under the GPL.  The runtime libraries should be under the LGPL.  The non-commercial clause is from the C front end, lcc.  If you use it, just send me an e-mail to keep me informed
-		      of your work. If you really find it great, you can send me something typical
-		      from your country...
+			  developments. If you use it, just send me an e-mail to keep me informed
+			  of your work. If you really find it great, you can send me something typical
+			  from your country...
 		      <p>If GBDK is used for developing
 			    a commercial program, I ask you to mention that the program has been made
 			    using GBDK (in the credits), and to send me a copy of the finished product.
@@ -175,7 +173,7 @@ will be looking for some way to do far calls.
 
 		      <ul>
 			<li>
-			  <a href="http://earthling.net.nz/~michaelh/">Michael
+			  <a href="http://www.pcmedia.co.nz/~michaelh/">Michael
 				Hope's Web Page</a></li>
 
 			<li>
@@ -183,7 +181,7 @@ will be looking for some way to do far calls.
 				Development Site</a></li>
 
 			<li>
-			  <a href="http://www.tripmode.com/gbdev/">Icehawk's
+			  <a href="http://www.gbdev.org/news/">Icehawk's
 				news site</a></li>
 		      </ul>
 
@@ -214,15 +212,13 @@ will be looking for some way to do far calls.
 			  always jinxs a project :)
 		      <a NAME="foot2"></a>
 		      <br>[2] Life, a new country, getting Married...
-		      <br>
-		      <p align="right">
-			<a href="mailto:michaelh@earthling.net">Michael Hope</a>
-		      <!-- Created: Mon May 10 20:34:32 NZST 1999 --><!-- hhmts start -->
-Last modified: Mon Jan 31 18:02:06 PST 2000
-<!-- hhmts end -->
-		      <A href="http://sourceforge.net">
-			<IMG src="http://sourceforge.net/sflogo.php?group_id=1249&type=1" width="88" height="31" border="0"></A></p>
-		    </td>
+		      <br>&nbsp;
+		      <address>
+			<a href="mailto:michaelh@earthling.net">Michael
+			      Hope</a></address>
+
+		      <br><!-- Created: Mon May 10 20:34:32 NZST 1999 --><!-- hhmts start -->Last
+			  modified: Tuesday July 5 21:09:26 NZST 1999<!-- hhmts end --></td>
 		  </tr>
 		</table>
 	      </td>
