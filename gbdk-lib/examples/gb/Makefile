@@ -1,5 +1,4 @@
-CC	= /home/michaelh/projects/gbdk-support/lcc/lcc -Wa-l -Wl-m \
-	-DGBDK_2_COMPAT=1
+CC	= ../../bin/lcc -Wa-l -Wl-m -DGBDK_2_COMPAT=1
 
 BINS	= galaxy.gb \
 	space.gb \
