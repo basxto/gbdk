@@ -8,6 +8,6 @@
 #define FALSE		0
 #define TRUE		1
 
-typedef void *             POINTER;
-
+typedef void *       	POINTER;
+typedef INT8		BOOLEAN;
 #endif
