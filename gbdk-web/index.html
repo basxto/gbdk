@@ -21,7 +21,7 @@
 		    <td align="center">
 		      <p align="right">
 			<font face="Arial,Helvetica" size="+1"><b>GameBoy Developers Kit (GBDK)</b></font><br>
-			<font face="Arial,Helvetica" size="-3">Page version 11</font></p>
+			<p>
 		      <font face="Arial,Helvetica" size=-1>
 			<a href="#Highlights">Highlights</a> | 
 			<a href="https://sourceforge.net/bugs/?group_id=1249">Bug tracking/FAQ</a> | 
@@ -37,9 +37,9 @@
 		      <a href="#Links">Links</a> | 
 		      <a href="mailto:michaelh@earthling.net">Contact</a>
 		      <p>
-		      <b>Download (latest is 2.94)</b><br>
+		      <b>Download (latest is 2.95)</b><br>
 		      <a href="install.html">CVS</a> | 
-		      <a href="http://sourceforge.net/project/filelist.php?group_id=1249">Source / Linux / win32</a> <a href="http://earthling.net.nz/~michaelh/gbdk/mirror/">(mirror)</a>
+		      <a href="http://sourceforge.net/project/filelist.php?group_id=1249">Source / Linux / win32</a>
 			<p>
 			<b>Documentation</b><br>
 			<a href="doc/html/index.html">HTML</a> | <a href="http://sourceforge.net/project/filelist.php?group_id=1249">HTML tarball</a> | <a href="http://sourceforge.net/project/filelist.php?group_id=1249">PDF</a> | <a href="doc/gbdk-doc.pdf">Old docs</a>
@@ -62,7 +62,15 @@
 		      <h2>
 			<font face="Arial,Helvetica" size=-1>News</font></h2>
 		      <font face="Arial,Helvetica" size=-1>
-<b>7th July - Informatin on float and long suppot.</b> Someone asked about the state of
+<b>22nd July - 2.95 Released.</b> This is a recomended upgrade.  Some of the big features are:
+<ul>
+<li>Decent rgbds support.  All the libraries and most of the examples can now compile with rgbds as the assembler.</li>
+<li>Banked function support.  It is now easier to break the 32k barrier from within C.  Functions can live in and be called transparently from any bank.  Only works with rgbds</li>
+<li>Fixed some decent bugs with RSH, LSH, and a nasty bug with + and - for int's and pointers.</li>
+<li>Various optimisations in the code generator.</li>
+</ul>
+<p>
+<b>7th July - Information on float and long suppot.</b> Someone asked about the state of
 float/long support recently.  Heres my reply:
 <p><tt>
 long support is partly there, as is float support.  The
