@@ -15,12 +15,24 @@ VER = 2.92
 ROOT_GBDK = :pserver:anonymous@cvs.gbdk.sourceforge.net:/cvsroot/gbdk
 ROOT_SDCC = :pserver:anonymous@cvs.sdcc.sourceforge.net:/cvsroot/sdcc
 
-# For DOS
-#E = .exe
-#GBDK_ROOT = /gbdk
+# For mingw32 hosted on Linux
+# Source extension - what the gcc generated files have appended
+SE =
+# Dest extenstion - what extension we want them to have.
+E = .exe
+GBDK_ROOT = \\\\gbdk
+
+# For mingw32 on win32
+# Source extension - what the gcc generated files have appended
+SE = .exe
+# Dest extenstion - what extension we want them to have.
+E = .exe
+GBDK_ROOT = \\\\gbdk
+
 # For Linux
-E =
-GBDK_ROOT = /usr/lib/gbdk
+#SE = 
+#E =
+#GBDK_ROOT = /usr/lib/gbdk
 
 all: logged_in dist
 
@@ -40,7 +52,7 @@ _sdcc: sdcc/sdccconf.h
 	do make -C $$i; done
 	mkdir -p $(BUILD)/bin
 	for i in sdcc sdcpp link-gbz80 as-gbz80; \
-	do cp sdcc/bin/$$i$(E) $(BUILD)/bin; done
+	do cp sdcc/bin/$$i$(SE) $(BUILD)/bin/$$i$(E); done
 
 sdcc/sdccconf.h: sdcc/configure
 	cd sdcc; \
@@ -54,13 +66,13 @@ build-lcc:
 	make -C gbdk-support/lcc clean
 	make -C gbdk-support/lcc SDCCLIB=$(SDCCLIB)/
 	mkdir -p $(BUILD)/bin
-	cp gbdk-support/lcc/lcc$(E) $(BUILD)/bin
+	cp gbdk-support/lcc/lcc$(SE) $(BUILD)/bin/lcc$(E)
 
 _gbdk-support:
 	make -C gbdk-support/lcc clean
 	make -C gbdk-support/lcc SDCCLIB=$(GBDK_ROOT)/
 	mkdir -p $(BUILD)/bin
-	cp gbdk-support/lcc/lcc$(E) $(BUILD)/bin
+	cp gbdk-support/lcc/lcc$(SE) $(BUILD)/bin/lcc$(E)
 
 dist: _sdcc _gbdk-lib _gbdk-support
 	mkdir -p $(BUILD)/bin

@@ -5,6 +5,10 @@
 #include <assert.h>
 #include <ctype.h>
 
+#ifdef __WIN32__
+#include <windows.h>
+#endif
+
 #ifndef GBDKLIBDIR
 #define GBDKLIBDIR "/home/michaelh/projects/gbdk-lib/"
 #endif
@@ -253,4 +257,22 @@ void finalise(void)
     buildArgs(com, _class->com);
     buildArgs(as, _class->as);
     buildArgs(ld, _class->ld);
+}
+
+void set_gbdk_dir(void)
+{
+#ifdef __WIN32__
+  char buf[1024];
+  if (GetModuleFileName(NULL,buf, sizeof(buf)) != 0) {
+    /* Strip of the trailing bin/lcc.exe and use it as the prefix. */
+    char *p = strrchr(buf, '\\');
+    if (p) {
+      p = strrchr(p, '\\');
+      if (p) {
+	*++p = '\0';
+	setTokenVal("prefix", buf);
+      }
+    }
+  }
+#endif
 }
