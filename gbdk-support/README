@@ -1,4 +1,4 @@
-gbdk3-2.92-2 - http://gbdk.sourceforge.net/
+gbdk3-2.93 - http://gbdk.sourceforge.net/
 -----------------------------------------
 This is a early-release beta.  Please report any bugs :)
 
@@ -26,8 +26,6 @@ win32:
 
 Linux:
 * Very similar to win32
-* You need libgc5.  Most distributions contain a pre-packaged version -
-  read on for more.
 * Extract the archive somewhere (normally /usr/lib/gbdk)
 * Set GBDKDIR to where you installed with a trailing /
 * Try compiling the examples as above
@@ -61,12 +59,19 @@ eg.
    to autoexec.bat so that lcc can find everything.  Note the
 trailing slash.
 
-Linux users also need to install libgc4 or above (Debian users try
-'apt-get install libgc5').  The win32 version is compiled with cygwin
-b20.
-
 Changelog
 ---------
+gbdk3-2.93
+* Added multi-bank support into the compiler
+   - The old -Wf-boxx and -Wf-baxx options now work
+* Has preliminary support for generating rgbds and ISAS compatible
+  assembler.  Try -W--asm=rgbds or -W--asm=isas.  The ISAS code is
+  untested as I dont have access to the real assembler.
+* RSH is fixed
+* AND is fixed
+* The missing parts of 2.1.0's libs are there
+* The dscan demo now fully works (with a hack :)
+
 gbdk3-2.92-2:
 * win32 only.  Takes care of some of the install bugs, including:
    - Now autodetects where it is installed.
