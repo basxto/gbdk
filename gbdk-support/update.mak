@@ -14,8 +14,12 @@ DIR = .
 VER = 2.90
 ROOT_GBDK = :pserver:anonymous@cvs.gbdk.sourceforge.net:/cvsroot/gbdk
 ROOT_SDCC = :pserver:anonymous@cvs.sdcc.sourceforge.net:/cvsroot/sdcc
-E = .exe
 
+# For DOS
+#E = .exe
+#GBDK_ROOT = /gbdk
+# For Linux
+E =
 GBDK_ROOT = /usr/lib/gbdk
 
 all: logged_in dist
