@@ -31,7 +31,7 @@ CLEANSPEC = *.o *.cdb *.sym *.lst *~ *.asm
 	maccer -o $@ $<
 
 CFLAGS = -I$(TOPDIR)/include
-CFLAGS += -m$(PORT) -v
+CFLAGS += -m$(PORT)
 CC = 	$(SCC)
 BUILD = $(TOPDIR)/build/$(ASM)/$(THIS)
 LIB = 	$(BUILD)/$(THIS).lib

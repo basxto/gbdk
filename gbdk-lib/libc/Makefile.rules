@@ -20,16 +20,16 @@ endif
 pre:
 	-astorgb.pl global.s > global.asm
 
-%.o: %.c
+$(OBJDIR)/%.o: %.c
 	$(CC) $(CFLAGS) -c $<
 
 %.asm: %.s
 	astorgb.pl $< > $@
 
-%.o: %.rasm
+$(OBJDIR)/%.o: %.rasm
 	rgbasm -o$@ $<
 
-%.o: %.asm
+$(OBJDIR)/%.o: %.asm
 	rgbasm -o$@ $<
 
 else
