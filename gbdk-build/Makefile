@@ -1,5 +1,6 @@
 TOPDIR = $(shell pwd)
 
+PKG = gbdk
 VER = 2.96
 
 TOOLSPREFIX =
@@ -55,7 +56,7 @@ cross-linux-mingw32-build:
 		MSDOSLINEENDS=1 \
 		TARGETDIR=/sdcc \
 		ARCHIVETYPE=zip \
-		cross-build binary
+		cross-build gbdk-lib-examples-makefile binary
 
 # Base rules
 gbdk-build: sdcc-build gbdk-support-build gbdk-lib-build 
@@ -68,6 +69,13 @@ build-bin-dir:
 
 build-dir-clean:
 	rm -r $(BUILDDIR)
+
+# Setup rules
+setup-from-local:
+	rm -rf sdcc gbdk-lib gbdk-support
+	ln -s ../sdcc
+	ln -s ../gbdk-lib
+	ln -s ../gbdk-support
 
 # Rules for sdcc
 SDCCCONFIGUREFLAGS = \
@@ -86,7 +94,7 @@ SDCCCONFIGUREFLAGS += \
 		--program-suffix=$(EXEEXTENSION)
 
 sdcc-build: $(SDCCDIR)/sdccconf.h
-	$(MAKE) -C $(SDCCDIR)
+	$(MAKE) -C $(SDCCDIR) SDCC_SUB_VERSION=$(PKG)-$(VER)
 
 $(SDCCDIR)/sdccconf.h:
 	cd $(SDCCDIR); CC=$(TARGETCC) CXX=$(TARGETCXX) STRIP=$(TARGETSTRIP) RANLIB=$(TARGETRANLIB) CXXFLAGS=$(TARGETCXXFLAGS) ./configure $(SDCCCONFIGUREFLAGS) --host=$(HOSTOS)
@@ -94,7 +102,6 @@ $(SDCCDIR)/sdccconf.h:
 # > $(NOISELOG)
 
 sdcc-install: sdcc-build build-bin-dir
-	rm -rf tmp
 	$(MAKE) -C $(SDCCDIR) install prefix=$(TOPDIR)/tmp
 	cp tmp/bin/sdcc* tmp/bin/sdcpp* tmp/bin/link-* tmp/bin/as-* $(BUILDDIR)/bin
 
@@ -129,11 +136,17 @@ gbdk-lib-install: gbdk-lib-build
 gbdk-lib-clean:
 	$(MAKE) -C $(GBDKLIBDIR) clean
 
+gbdk-lib-examples-makefile:
+	$(MAKE) -C $(BUILDDIR)/examples/gb make.bat
+	unix2dos $(BUILDDIR)/examples/gb/make.bat
+
 # Final binary
 binary: binary-tidyup
 ifeq ($(ARCHIVETYPE),zip)
+	rm -f $(TOPDIR)/gbdk-$(VER)-$(TARGETOS).zip
 	cd $(BUILDDIR)/..; zip -9Xrq $(TOPDIR)/gbdk-$(VER)-$(TARGETOS).zip gbdk
 else
+	rm -f $(TOPDIR)/gbdk-$(VER)-$(TARGETOS).tar.gz
 	cd $(BUILDDIR)/..; tar czf $(TOPDIR)/gbdk-$(VER)-$(TARGETOS).tar.gz gbdk
 endif
 
