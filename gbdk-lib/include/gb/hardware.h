@@ -1,3 +1,7 @@
+/** @file gb/hardware.h
+    Defines that let the GB's hardware registers be accessed
+    from C.  See the Pan doc for what to set them to.
+*/
 #ifndef _HARDWARE_H
 #define _HARDWARE_H
 
