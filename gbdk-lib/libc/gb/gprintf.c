@@ -1,10 +1,7 @@
 #include <stdarg.h>
 #include <gb/drawing.h>
 
-/* Can have a string pointer as an arg */
-#pragma bank=BASE
-
-INT8 gprintf(char *fmt, ...)
+INT8 gprintf(char *fmt, ...) NONBANKED
 {
   va_list ap;
   INT8 nb = 0;

@@ -6,7 +6,7 @@ char buffer[32];
 
 void main()
 {
-  UBYTE i, j, n = 0;
+  UBYTE i, n = 0;
   char *s;
 
   puts("Byte");

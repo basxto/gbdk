@@ -541,7 +541,7 @@ _gets::				; Banked
 	CALL	.tmode_inout
 	POP	BC
 1$:
-	LDA	HL,2(SP)	; Skip return address
+	LDA	HL,.BANKOV(SP)	; Skip return address
 	LD	A,(HL+)
 	LD	H,(HL)		; HL = s
 	LD	L,A
@@ -574,10 +574,14 @@ _gets::				; Banked
 	.byte	0x1E,0x0E,0x0E,0x0E,0x0E,0x0E,0x0E,0x0E,0x0E,0x0E,0x0E,0x0E,0x0E,0x0E,0x0E,0x0E,0x0E,0x0E,0x0E,0x1F
 
 .kbdtable:
-;	.ascii	" !\"#$%&'()*+,-./"
-;	.ascii	"0123456789:"
+	;; This is unfortunate.  astorgb and rgbasm cant interpert:
+	;;	.ascii	" !\"#$%&'()*+,-./"
+	;; so we have to use the hex form here.
+	.db	0x20,0x21,0x22,0x23,0x24,0x25,0x26,0x27
+	.db	0x28,0x29,0x2A,0x2B,0x2C,0x2D,0x2E,0x2F
+	.ascii	"0123456789:"
 	;; astorgb recognises the embedded ; as a comment :)
-;	.db	$3B		
+	.db	0x3B		
 	.ascii	"<=>?"
 	.ascii	"@ABCDEFGHIJKLMNO"
 	.ascii	"PQRSTUVWXYZ[\\]^_"

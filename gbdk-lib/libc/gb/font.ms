@@ -409,22 +409,24 @@ set_char_no_encoding:
 	POP     BC
 	RET
 
-_putchar::
+	.area	_CODE
+_putchar::			; Banked
 	PUSH	BC
-	LDA     HL,4(SP)        ; Skip return address
+	LDA     HL,.BANKOV+2(SP); Skip return address
 	LD      A,(HL)          ; A = c
 	CALL    .put_char
 	POP	BC
 	RET
 
-_setchar::
-	push	bc
-	LDA     HL,4(SP)        ; Skip return address
+_setchar::			; Banked
+	PUSH	BC
+	LDA     HL,.BANKOV+2(SP); Skip return address
 	LD      A,(HL)          ; A = c
 	CALL    .set_char
-	pop	bc
+	POP	BC
 	RET
 
+	.area	_BASE
 _font_load::
 	push	bc
 	LDA     HL,4(SP)        ; Skip return address and bc
@@ -497,11 +499,10 @@ _cls::
 	POP	DE
 	RET
 
-	; PENDING: could be CODE
-	.area	_BASE
+	.area	_CODE
 	; Support routines
-_gotoxy::
-	lda	hl,2(sp)
+_gotoxy::			; Banked
+	lda	hl,.BANKOV(sp)
 	ld	a,(hl+)
 	ld	(.curx),a
 	ld	a,(hl)
@@ -509,7 +510,7 @@ _gotoxy::
 	ret
 
 _posx::
-	LD	A,(.mode)
+	LD	A,(.mode)	; Banked
 	AND	#.T_MODE
 	JR	NZ,1$
 	PUSH	BC
@@ -520,7 +521,7 @@ _posx::
 	LD	E,A
 	RET
 
-_posy::
+_posy::				; Banked
 	LD	A,(.mode)
 	AND	#.T_MODE
 	JR	NZ,1$
@@ -532,6 +533,7 @@ _posy::
 	LD	E,A
 	RET
 
+	.area	_BASE
 	;; Rewind the cursor
 .rew_curs:
 	PUSH	HL

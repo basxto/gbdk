@@ -14,7 +14,11 @@ OBJ =	cgb.o cpy_data.o drawing.o f_ibm_sh.o \
 	set_data.o set_prop.o set_spr.o set_wi_t.o set_xy_t.o \
 	sgb.o font.o delay.o \
 	gprint.o gprintf.o gprintn.o gprintln.o digits.o \
-	rand.o arand.o #sfr.o
+	rand.o arand.o 
+ifeq ($(ASM),asxxxx)
+OBJ +=	sfr.o
+endif
+
 CRT0 =	crt0.o
 
 AS = $(AS_GBZ80)

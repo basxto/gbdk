@@ -26,7 +26,6 @@
 	.MASK_EN	= 0x17
 	.OBJ_TRN	= 0x18
 
-	;; BANKED:	checked
 	.area   _CODE
 
 	;; Check if running on SGB

@@ -1,8 +1,6 @@
 #include <gb/drawing.h>
 
-#pragma bank=BASE
-
-void gprint(char *str)
+void gprint(char *str) NONBANKED
 {
     while(*str)
 	wrtchr(*str++);

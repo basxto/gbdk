@@ -674,36 +674,32 @@ __printTStates::
 	;;   .dw low
 	;;   .dw bank
 	;;   remainder of the code
+	;; Total m-cycles:
+	;;	3+4+4 + 2+2+2+2+2+2 + 4+4+ 3+4+1+1+1
+	;;      = 41 for the call
+	;;	3+3+4+4+1
+	;;	= 15 for the ret
 banked_call::
 	pop	hl		; Get the return address
-	ld	a,(__current_bank) 
+	ld	a,(__current_bank)
 	push	af		; Push the current bank onto the stack
+	ld	e,(hl)		; Fetch the call address
 	inc	hl
-	inc	hl		; Push something close to the return
-	push	hl		; address
-	ld	a,(hl-)		; Fetch the new page
-	push	af
-	ld	a,(hl-)
-	ld	l,(hl)
-	ld	h,a		; Fetch the function address
-	pop	af
+	ld	d,(hl)
+	inc	hl
+	ld	a,(hl+)		; ...and page
+	inc	hl		; Yes this should be here
+	push	hl		; Push the real return address
 	ld	(__current_bank),a
 	ld	(.MBC1_ROM_PAGE),a	; Perform the switch
-	; We trade speed for memory here
-	; Pushing the return address lets RET be
-	; used instead of jp banked_ret
-	ld	a,#<banked_ret
-	push	af
-	inc	sp
-	ld	a,#>banked_ret
-	push	af
-	inc	sp
+	ld	hl,#banked_ret	; Push the fake return address
+	push	hl
+	ld	l,e
+	ld	h,d
 	jp	(hl)
 
 banked_ret::
 	pop	hl		; Get the return address
-	inc	hl
-	inc	hl		; Skip the bank info
 	pop	af		; Pop the old bank
 	ld	(.MBC1_ROM_PAGE),a
 	ld	(__current_bank),a

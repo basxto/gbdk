@@ -40,28 +40,28 @@
 void
 set_bkg_palette(UINT8 first_palette,
                 UINT8 nb_palettes,
-                UINT16 *rgb_data);
+                UINT16 *rgb_data) NONBANKED;
 
 /** Set sprite palette(s).
  */
 void
 set_sprite_palette(UINT8 first_palette,
                    UINT8 nb_palettes,
-                   UINT16 *rgb_data);
+                   UINT16 *rgb_data) NONBANKED;
 
 /** Set a bkg palette entry.
  */
 void
 set_bkg_palette_entry(UINT8 palette,
                       UINT8 entry,
-                      UINT16 rgb_data);
+                      UINT16 rgb_data) BANKED;
 
 /** Set a sprite palette entry.
  */
 void
 set_sprite_palette_entry(UINT8 palette,
                          UINT8 entry,
-                         UINT16 rgb_data);
+                         UINT16 rgb_data) BANKED;
 
 /** Set CPU speed to slow operation.
     Make sure interrupts are disabled before call.
@@ -76,7 +76,6 @@ void cpu_slow(void) BANKED;
     @see cpu_slow
 */
 void cpu_fast(void) BANKED;
-
 
 /** Set defaults compatible with normal GameBoy.
  */
