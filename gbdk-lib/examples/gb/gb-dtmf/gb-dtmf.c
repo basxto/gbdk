@@ -542,6 +542,9 @@ void main()
 	char str[MAX_DTMF];
 	char str_ms[10];
 
+        /* PENDING: sdcc is broken and needs this to be initalised. */
+	key2 = 1;
+
 	/* default dialling time setting */
 	on_time = DTMF_ON;
 	off_time = DTMF_OFF;
@@ -569,7 +572,7 @@ void main()
 	i = j = 0;
 
 	ch_pos = 0;
-	
+
 	while(1) {
 		wait_vbl_done();
 		key1 = joypad();
@@ -696,7 +699,6 @@ void main()
 				}
 			}
 		}
-
 		if(!(key1 & J_A)){
 			if((key1 & J_UP) && !(key2 & J_UP) && j > 0)
 				j--;

@@ -244,6 +244,7 @@
 
 	;; Call the main function
 	CALL	_main
+_exit::	
 99$:
 	HALT
 	JR	99$		; Wait forever

@@ -4,6 +4,9 @@ BINS	= gb-dtmf.gb
 
 all:	$(BINS)
 
+%.s:	%.c
+	$(CC) -S -o $@ $<
+	
 %.o:	%.c
 	$(CC) -c -o $@ $<
 
