@@ -254,8 +254,8 @@
 
 	;; Ordering of segments for the linker
 	.area	_CODE
-	.area	_DATA
 	.area	_LIT
+	.area	_DATA
 	.area	_BSS
 	.area	_HEAP		; HEAP is for malloc
 
@@ -557,6 +557,13 @@ _add_JOY::
 	CALL	.add_JOY
 	POP	BC
 	RET
+
+__clock::
+	ld	de,#0
+	ret
+
+__printTStates::
+	ret
 
 	.area	_HEAP
 _malloc_heap_start::
