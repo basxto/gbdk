@@ -61,6 +61,29 @@ trailing slash.
 
 Changelog
 ---------
+gbdk3-2.95
+* Fixed 'a >> c' for c = [9..15]
+* Fixed 'a << c' for c = [9..15]
+* no$gmb doesnt support labels of > 32 chars.  The linker now
+  trims all labels to 31 chars long.
+* Fixed wait_vbl for the case where you miss a vbl
+* Fixed the missing */ in gb.h
+* Added basic far function support.  Currently only works for isas
+  and rgbasm.  See examples/gb/far/*
+* bc is now only pushed if the function uses it.  i.e. something like
+    int silly(int i) 
+    {
+	return i;
+    }
+  will not have the push bc; pop bc around it.
+* Better rgbasm support.  Basically:
+    o Use "sdcc -mgbz80 --asm=rgbds file.c" for each file.c
+    o Use "sdcc -mgbz80 --asm=rgbds crt0.o gbz80.lib gb.lib file1.o file2.o..."
+      to link everything together.  The .lib files are generated using
+      astorgb.pl and sdcc to turn the gbdk libraries into something rgbds
+      compatible.
+  The libraries are _not_ fully tested.  Trust nothing.  But give it a go :)
+
 gbdk3-2.94
 * Fixed 
 	#define BLAH  7  // Unterminated ' error

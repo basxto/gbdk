@@ -1,6 +1,9 @@
 #include <stdarg.h>
 #include <gb/drawing.h>
 
+/* Can have a string pointer as an arg */
+#pragma bank=BASE
+
 INT8 gprintf(char *fmt, ...)
 {
   va_list ap;

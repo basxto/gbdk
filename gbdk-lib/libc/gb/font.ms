@@ -54,8 +54,7 @@ font_first_free_tile::
 font_table::
 	.ds	sfont_handle_sizeof*.MAX_FONTS
 	
-	.area   _CODE
-
+	.area   _BASE
 	; Copy uncompressed 16 byte tiles from (BC) to (HL), length = DE*2
 	; Note: HL must be aligned on a UWORD boundry
 font_copy_uncompressed::
@@ -354,9 +353,14 @@ font_set::
 	xor	a
 	ld	(font_first_free_tile),a
 
-	.globl	_font_ibm_fixed
-	ld	hl,#_font_ibm_fixed
-	call	font_load
+	.globl	_font_load_ibm_fixed
+	call	banked_call
+	.dw	_font_load_ibm_fixed
+	.if __RGBDS__
+	.dw	BANK(_font_load_ibm_fixed);
+	.else
+	.dw	0
+	.endif
 3$:
 	pop	af
 	push	bc
@@ -406,9 +410,11 @@ set_char_no_encoding:
 	RET
 
 _putchar::
-	LDA     HL,2(SP)        ; Skip return address
+	PUSH	BC
+	LDA     HL,4(SP)        ; Skip return address
 	LD      A,(HL)          ; A = c
 	CALL    .put_char
+	POP	BC
 	RET
 
 _setchar::
@@ -470,35 +476,6 @@ _font_init::
 	pop	bc
 	ret
 	
-_print_repeat::
-	push	bc
-	lda	hl,4(sp)
-	ld	e,(hl)
-	inc	hl
-	ld	d,(hl)
-	xor	a
-	cp	d
-	jr	nz,_print_repeat_go
-	pop	bc
-	ret
-_print_repeat_go:
-	ld	a,e
-	push	de
-	call	.put_char
-	pop	de
-	dec	d
-	jr	nz,_print_repeat_go
-	pop	bc
-	ret
-
-_gotoxy::
-	lda	hl,2(sp)
-	ld	a,(hl+)
-	ld	(.curx),a
-	ld	a,(hl)
-	ld	(.cury),a
-	ret
-
 _cls::
 .cls::	
 	PUSH	DE
@@ -520,7 +497,17 @@ _cls::
 	POP	DE
 	RET
 
+	; PENDING: could be CODE
+	.area	_BASE
 	; Support routines
+_gotoxy::
+	lda	hl,2(sp)
+	ld	a,(hl+)
+	ld	(.curx),a
+	ld	a,(hl)
+	ld	(.cury),a
+	ret
+
 _posx::
 	LD	A,(.mode)
 	AND	#.T_MODE
@@ -656,7 +643,8 @@ _posy::
 	.ds	0x01
 .cury::
 	.ds	0x01
-	.area	_CODE
+
+	.area	_BASE
 
 	.globl	.vbl
 	.globl	.lcd

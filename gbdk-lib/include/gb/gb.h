@@ -161,6 +161,7 @@ add_TIM(int_handler h);
     completed on the game link port.
     
     @see send_byte, receive_byte, add_VBL
+*/
 void
 add_SIO(int_handler h);
 
@@ -175,6 +176,7 @@ add_SIO(int_handler h);
     times for every button release.
 
     @see joypad
+*/
 void
 add_JOY(int_handler h);
 
@@ -205,11 +207,11 @@ extern UINT16 sys_time;
 
 /** Send byte in _io_out to the serial port */
 void
-send_byte(void);
+send_byte(void) BANKED;
 
 /** Receive byte from the serial port in _io_in */
 void
-receive_byte(void);
+receive_byte(void) BANKED;
 
 /** An OR of IO_* */
 extern UINT8 _io_status;

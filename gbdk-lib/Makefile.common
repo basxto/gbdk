@@ -1,4 +1,6 @@
 # Common settings
+#ASM = rgbds
+ASM = asxxxx
 
 ifndef PORTS
 PORTS = gbz80 z80
@@ -15,10 +17,20 @@ SCC = $(SDCCLIB)/bin/sdcc
 GBCC = $(SDCCLIB)/bin/lcc
 
 AS_Z80 = $(SDCCLIB)/bin/as-z80
+ifeq ($(RGBDS),1)
+AS_GBZ80 = rgbasm
+else
 AS_GBZ80 = $(SDCCLIB)/bin/as-gbz80
+endif
 
 CLEANSPEC = *.o *.asm *.cdb *.sym *.lst *~
 
 # Maccer rule
 %.s: %.ms
 	maccer -o $@ $<
+
+CFLAGS = -I$(TOPDIR)/include
+CFLAGS += -m$(PORT) -v
+CC = $(SCC)
+BUILD = $(TOPDIR)/build/$(THIS)
+LIB = $(BUILD)/$(THIS).lib
