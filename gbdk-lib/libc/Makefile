@@ -7,11 +7,11 @@ TOPDIR = ..
 include $(TOPDIR)/Makefile.common
 
 OBJ =	abs.o atoi.o atol.o isalpha.o isdigit.o \
-	islower.o isspace.o isupper.o itoa.o labs.o ltoa.o \
+	islower.o isspace.o isupper.o itoa.o labs.o \
 	printf.o puts.o reverse.o scanf.o strcat.o string.o \
 	strlen.o strncat.o strncmp.o strncpy.o time.o \
 	tolower.o toupper.o
-#	free.o malloc.o realloc.o calloc.o
+#	free.o malloc.o realloc.o calloc.o ltoa.o
 
 all: ports platforms
 
