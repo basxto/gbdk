@@ -4,12 +4,6 @@
 
        This is a early-release beta.  Please report any bugs :)
 
-Special note:
--------------
-I've reverted the WORD to 16 bit unsigned change that required
--DGBDK_2_COMPAT=1.  You can use BYTE_IS_UNSIGNED if you, like me,
-really want WORD to be unsigned :)
-
 Short story:
 ------------
 win32:
@@ -31,6 +25,17 @@ Linux:
 * Extract the archive somewhere (normally /usr/lib/gbdk)
 * Set GBDKDIR to where you installed with a trailing /
 * Try compiling the examples as above
+
+Special note:
+-------------
+I've reverted the WORD to 16 bit unsigned change that required
+-DGBDK_2_COMPAT=1.  You can use BYTE_IS_UNSIGNED if you, like me,
+really want WORD to be unsigned :)
+
+Another note:
+-------------
+The gb-dtmf is currently (2.95) broken.  It's something to do with
+an uninitalised varible...
 
 Reporting problems and feature requests
 ---------------------------------------
