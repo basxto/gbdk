@@ -1,7 +1,7 @@
 # Common settings
 
 PORTS = gbz80 z80
-PLATFORMS = gb consolez80
+PLATFORMS = gb consolez80 rrgb
 
 SCC = /home/michaelh/projects/sdcc/bin/sdcc
 
