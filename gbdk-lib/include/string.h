@@ -1,6 +1,9 @@
 /** @file string.h
     Generic string functions.
  */
+#ifndef STRING_INCLUDE
+#define STRING_INCLUDE
+
 #include <types.h>
 
 /** Copies the string pointed to be src (including the terminating
@@ -31,3 +34,4 @@ int strcmp(const char *s1, const char *s2);
 */    
 void *memcpy(void *dest, const void *src, size_t len);
 
+#endif
