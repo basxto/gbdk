@@ -1,4 +1,4 @@
-	.NEAR_CALLS = 0
+	.NEAR_CALLS = 1
 	;; Changed by astorgb.pl to 1
 	__RGBDS__	= 0
 
