@@ -61,6 +61,21 @@ trailing slash.
 
 Changelog
 ---------
+gbdk3-2.94
+* Fixed 
+	#define BLAH  7  // Unterminated ' error
+  in sdcpp
+* Fixed
+	SCY_REG += 2, SCY_REG -= 5
+  (add and subtract in indirect space) as they were both quite broken.
+* externs and static's now work as expected.
+* You can now specify which bank code should be put into using a
+  #pragma e.g:
+	#pragma bank=HOME
+  Under rgbds and asxxxx putting code in the HOME bank will force
+  the code into bank 0 - useful for library functions.  The most recent
+  #pragma bank= will be the one used for the whole file.
+
 gbdk3-2.93
 * Added multi-bank support into the compiler
    - The old -Wf-boxx and -Wf-baxx options now work
