@@ -41,7 +41,7 @@ static struct {
     { "includedir", 	"%prefix%include" },
     { "prefix",		GBDKLIBDIR },
     { "com",		"%bindir%sdcc" },
-    { "comdefault",	"-m%port% --model-%commodel% --c1mode" },
+    { "comdefault",	"-m%port% --nodebug --model-%commodel% --c1mode" },
     { "commodel", 	"small" },
     { "as",		"%bindir%as-%port%" },
     { "ld",		"%bindir%link-%port%" },
