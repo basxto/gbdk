@@ -10,7 +10,7 @@
 #endif
 
 #ifndef GBDKLIBDIR
-#define GBDKLIBDIR "\\gbdk"
+#define GBDKLIBDIR "\\gbdk\\"
 #endif
 
 extern char *progname;
