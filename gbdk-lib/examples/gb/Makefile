@@ -20,7 +20,7 @@ OTHER = sound.gb \
 all:	$(BINS)
 
 make.bat: Makefile
-	make -sn | sed y/\\//\\\\/ > make.bat
+	make -sn | sed y/\\//\\\\/ | grep -v make > make.bat
 
 %.o:	%.c
 	$(CC) -c -o $@ $<
