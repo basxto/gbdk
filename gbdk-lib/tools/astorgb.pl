@@ -116,10 +116,10 @@ sub convert {
   my($ret, $t);
   if ($op =~ /^\#(\S+)/) {
     $t = $1;
-    if ($t =~ /^\<(\S+)/) {
+    if ($t =~ /^\>(\S+)/) {
       $ret = "(" . labelconv($1) . ">>8)";
     }
-    elsif ($t =~ /^\>(\S+)/) {
+    elsif ($t =~ /^\<(\S+)/) {
       $ret = "(" . labelconv($1) . "&\$FF)";
     }
     # PC relative
