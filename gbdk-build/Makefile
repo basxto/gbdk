@@ -9,9 +9,9 @@ TOPDIR = $(shell pwd)
 # Package name, used for tarballs and cvs
 PKG = gbdk
 # Version, used for tarballs
-VER = 2.96a
+VER = 2.97a
 # Short version, used for cvs tags
-SHORTVER = 296
+SHORTVER = 297
 
 # Prefix to add to the standard tools.  Usefull for a standard gcc
 # cross-compile.
@@ -56,6 +56,9 @@ distclean: clean build-dir-clean
 
 # Build rule for michaelh's machine to spin a release
 sapphire-full-build: native-build binary cross-clean cross-linux-mingw32-build
+
+# Build rule for michaelh's newer machine to spin a release
+vroom-full-build: native-build binary
 
 # Cross-compilation targets
 FIXUPMASKS = *.c *.h .bat *.s ChangeLog README
@@ -123,14 +126,14 @@ SDCCCONFIGUREFLAGS = \
 		--disable-avr-port \
 		--disable-ds390-port \
 		--disable-pic-port \
-		--disable-i186-port \
-		--disable-tlcs900h-port \
+		--disable-xa51-port \
 		--disable-ucsim \
 		--disable-device-lib-build \
-		--disable-packihx
+		--disable-packihx \
 
 SDCCCONFIGUREFLAGS += \
 		--prefix=$(TARGETDIR) \
+		--includedir=$(TARGETDIR)/include \
 		--program-suffix=$(EXEEXTENSION)
 
 sdcc-build: $(SDCCDIR)/sdccconf.h
