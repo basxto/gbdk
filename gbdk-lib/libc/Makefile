@@ -38,4 +38,3 @@ ports-clean:
 
 platform-clean:
 	for i in $(PLATFORMS); do make -C $$i clean PLAT=$$i; done
-

@@ -9,5 +9,5 @@
 #define TRUE		1
 
 typedef void *       	POINTER;
-typedef INT8		BOOLEAN;
+
 #endif
