@@ -1,4 +1,4 @@
-CC	= ../../bin/lcc -Wa-l -Wl-m -Wl-j -v
+CC	= ../../bin/lcc -Wa-l -Wl-m -Wl-j --asm=rgbds
 
 BINS	= galaxy.gb \
 	space.gb \
@@ -10,12 +10,11 @@ BINS	= galaxy.gb \
 	filltest.gb \
 	ram_fn.gb \
 	fonts.gb \
-	samptest.gb 
-
+	samptest.gb \
+	banks.gb
+	
 # sound.gb: Cant do bitfields
-# banks.gb: Doesnt support banks.
 OTHER = sound.gb \
-	banks.gb \
 
 all:	$(BINS)
 
