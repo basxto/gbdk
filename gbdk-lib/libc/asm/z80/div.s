@@ -196,7 +196,7 @@ __moduint::
 	LD	(.squot),A	; Save sign of quotient
 	;; Take absolute value of divisor
 	BIT	7,D
-	JR	Z,.chkde	; Jump if divisor is positive
+	jp	Z,.chkde	; Jump if divisor is positive
 	SUB	A		; Substract divisor from 0
 	SUB	E
 	LD	E,A
@@ -206,7 +206,7 @@ __moduint::
 	;; Take absolute value of dividend
 .chkde:
 	BIT	7,B
-	JR	Z,.dodiv	; Jump if dividend is positive
+	jp	Z,.dodiv	; Jump if dividend is positive
 	SUB	A		; Substract dividend from 0
 	SUB	C
 	LD	C,A
@@ -220,7 +220,7 @@ __moduint::
 	;; Negate quotient if it is negative
 	LD	A,(.squot)
 	AND	#0x80
-	JR	Z,.dorem	; Jump if quotient is positive
+	jp	Z,.dorem	; Jump if quotient is positive
 	SUB	A		; Substract quotient from 0
 	SUB	C
 	LD	C,A
@@ -251,7 +251,7 @@ __moduint::
 	;; Check for division by zero
 	LD	A,E
 	OR	D
-	JR	NZ,.divide	; Branch if divisor is non-zero
+	jp	NZ,.divide	; Branch if divisor is non-zero
 	LD	BC,#0x00	; Divide by zero error
 	LD	D,B
 	LD	E,C
@@ -288,16 +288,16 @@ __moduint::
 	CCF			; Complement borrow so 1 indicates a
 				;  successful substraction (this is the
 				;  next bit of quotient)
-	JR	C,.drop		; Jump if remainder is >= dividend
+	jp	C,.drop		; Jump if remainder is >= dividend
 	POP	BC		; Otherwise, restore remainder
-	JR	.nodrop
+	jp	.nodrop
 .drop:
 	INC	SP
 	INC	SP
 .nodrop:
 	LD	A,(.dcnt)
 	DEC	A		; DEC does not affect carry flag
-	JR	NZ,.dvloop
+	jp	NZ,.dvloop
 	;; Shift last carry bit into quotient
 	LD	D,B		; DE = remainder
 	LD	E,C

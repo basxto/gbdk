@@ -63,12 +63,12 @@ __muluint::
 .mlp:
 	SLA	E		; Shift multiplier left 1 bit
 	RL	D
-	JR	NC,.mlp1	; Jump if MSB of multiplier = 0
+	jp	NC,.mlp1	; Jump if MSB of multiplier = 0
 	ADD	HL,BC		; Add multiplicand to partial product
 .mlp1:
 	ADD	HL,HL		; Shift partial product left
 	DEC	A
-	JR	NZ,.mlp		; Continue until count = 0
+	jp	NZ,.mlp		; Continue until count = 0
 	;; Add multiplicand one last time if MSB of multiplier is 1
 	BIT	7,D		; Get MSB of multiplier
 	JR	Z,.mend		; Exit if MSB of multiplier is 0

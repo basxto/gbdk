@@ -13,5 +13,6 @@ typedef long          	INT32;
 typedef unsigned long 	UINT32;
 
 typedef int	      	size_t;
+typedef UINT16		clock_t;
 
 #endif

@@ -35,28 +35,16 @@ _memcpy::
 	push	ix
 	ld	ix,#0
 	add	ix,sp
-	ld	l,8(ix)
-	ld	h,9(ix)
-	ld	e,10(ix)
-	ld	d,11(ix)
+	ld	e,8(ix)
+	ld	d,9(ix)
+	ld	l,10(ix)
+	ld	h,11(ix)
 	ld	c,12(ix)
 	ld	b,13(ix)
 
-	inc	b
-	inc	c
-	push	hl
-
-	jr	2$
-1$:
-	ld	a,(de)
-	ld	(hl),a
-	inc	de
-	inc	hl
-2$:
-	dec	c
-	jr	nz,1$
-	dec	b
-	jr	nz,1$	
+	push	de
+	jp	0x0
+	ldir
 
 	pop	hl
 	pop	ix

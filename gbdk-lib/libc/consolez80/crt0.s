@@ -1,5 +1,5 @@
 	;; Generic crt0.s for a Z80
-	.globl	__main
+	.globl	_main
 
 	.area _HEADER (ABS)
 	;; Reset vector
@@ -28,15 +28,16 @@ init:
 
 	;; Use _main instead of main to bypass sdcc's intelligence
 	ei
-	call	__main
+	call	_main
 	jp	_exit
 
 	;; Ordering of segments for the linker.
 	.area	_CODE
 	.area	_DATA
 
-__clock::
-	ld	a,#2
+	.area	_CODE
+_clock::
+	ld	a,#2	
 	out	(0xff),a
 	ret
 	

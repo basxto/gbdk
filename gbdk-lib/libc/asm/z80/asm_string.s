@@ -5,27 +5,31 @@
 
 ; char *strcpy(char *dest, const char *source)
 _strcpy::
+	push	bc
 	push	de
 	push	ix
 	ld	ix,#0
 	add	ix,sp
-	ld	l,6(ix)
-	ld	h,7(ix)
 	ld	e,8(ix)
 	ld	d,9(ix)
-
-	push	hl
-1$:	
-	ld	a,(de)
-	ld	(hl),a
-	inc	hl
-	inc	de
-	or	a,a
-	jr	nz,1$
+	ld	l,10(ix)
+	ld	h,11(ix)
+	xor	a,a
+	push	de
+1$:
+	cp	(hl)
+;	ld	a,(hl)
+	ldi
+;	ld	(hl),a
+;	inc	hl
+;	inc	de
+;	or	a,a
+	jp	nz,1$
 
 	pop	hl
 	pop	ix
 	pop	de
+	pop	bc
 	ret
 
 ; void *memcpy(void *dest, const void *source, int count)
@@ -35,28 +39,16 @@ _memcpy::
 	push	ix
 	ld	ix,#0
 	add	ix,sp
-	ld	l,8(ix)
-	ld	h,9(ix)
-	ld	e,10(ix)
-	ld	d,11(ix)
+	ld	e,8(ix)
+	ld	d,9(ix)
+	ld	l,10(ix)
+	ld	h,11(ix)
 	ld	c,12(ix)
 	ld	b,13(ix)
 
-	inc	b
-	inc	c
-	push	hl
+	push	de
 
-	jr	2$
-1$:
-	ld	a,(de)
-	ld	(hl),a
-	inc	de
-	inc	hl
-2$:
-	dec	c
-	jr	nz,1$
-	dec	b
-	jr	nz,1$	
+	ldir
 
 	pop	hl
 	pop	ix
@@ -75,7 +67,7 @@ _strcmp::
 	ld	l,8(ix)
 	ld	h,9(ix)
 
-	jr	1$
+	jp	1$
 2$:	
 	ld	a,(de)
 	sub	(hl)
@@ -86,14 +78,14 @@ _strcmp::
 1$:	
 	inc	de
 	inc	hl
-	jr	2$
+	jp	2$
 
 3$:
 	ld	hl,#0
-	jr	5$
+	jp	5$
 4$:
 	ld	hl,#1
-	jr	nc,5$
+	jp	nc,5$
 	ld	hl,#-1
 5$:
 	pop	ix
