@@ -11,7 +11,10 @@ SDCCLIB = $(BUILD)
 CVSFLAGS = -z5
 CVS = cvs
 DIR = .
-VER = 2.92
+VER = 2.93
+# Used as a branch name.  Will be fixed for 2.94
+SHORTVER = 293
+
 ROOT_GBDK = :pserver:anonymous@cvs.gbdk.sourceforge.net:/cvsroot/gbdk
 ROOT_SDCC = :pserver:anonymous@cvs.sdcc.sourceforge.net:/cvsroot/sdcc
 
@@ -42,9 +45,9 @@ clean:
 	rm -rf $(BUILD) gbdk-lib gbdk-support sdcc logged_in
 
 update: logged_in
-	cd $(DIR); cvs $(CVSFLAGS) -d$(ROOT_SDCC) co sdcc
-	cd $(DIR); cvs $(CVSFLAGS) -d$(ROOT_GBDK) co gbdk-lib
-	cd $(DIR); cvs $(CVSFLAGS) -d$(ROOT_GBDK) co gbdk-support
+	cd $(DIR); cvs $(CVSFLAGS) -d$(ROOT_SDCC) co -r gbdk-$(SHORTVER) sdcc
+	cd $(DIR); cvs $(CVSFLAGS) -d$(ROOT_GBDK) co -r gbdk-$(SHORTVER) gbdk-lib
+	cd $(DIR); cvs $(CVSFLAGS) -d$(ROOT_GBDK) co -r gbdk-$(SHORTVER) gbdk-support
 
 _sdcc: sdcc/sdccconf.h
 	cd sdcc; \
@@ -56,7 +59,10 @@ _sdcc: sdcc/sdccconf.h
 
 sdcc/sdccconf.h: sdcc/configure
 	cd sdcc; \
-	./configure --datadir=$(GBDK_ROOT);
+	./configure --datadir=$(GBDK_ROOT) \
+	--disable-mcs51-port \
+	--disable-avr-port \
+	;
 
 _gbdk-lib: _sdcc _gbdk-support
 	cp -r gbdk-lib/include $(BUILD)

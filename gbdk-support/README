@@ -69,9 +69,14 @@ gbdk3-2.93
   untested as I dont have access to the real assembler.
 * RSH is fixed
 * AND is fixed
-* The missing parts of 2.1.0's libs are there
+* The missing parts of 2.1.0's libs are there.  Note: They are untested.
 * The dscan demo now fully works (with a hack :)
-
+* There is a bug with cached computed values which are later used as pointers.
+  When the value is first used as a BYTE arg, then later as a pointer
+  the pointer fails as the high byte was never computed and is now missing.
+  A temporary fix is to declare something appropriate as 'volatile' to
+  stop the value being cached.  See dscan.c/bombs() for an example.
+  
 gbdk3-2.92-2:
 * win32 only.  Takes care of some of the install bugs, including:
    - Now autodetects where it is installed.
@@ -115,10 +120,10 @@ Differences between this and gbdk-2.1.5
 	long		32 bits
 	long long	Doesnt exist
 * Float support is there but unconnected.
-* gbdk changes the basic typedefs to make it more normal.  You can
-  define GBDK_2_COMPAT=1 (lcc -DGBDK_2_COMPAT=1 ...) to use the old
+* gbdk has an alternitave set of typedefs for those who like me like
+  their WORDs to be unsigned.  Define BYTE_IS_UNSIGNED=1 to use the new
   typedefs.
-	Before		Now		Or		Size
+	Before		With		Or		Size
 	BYTE		INT8				8 signed
 	UBYTE		BYTE		UINT8		8 unsigned
 	WORD		INT16				16 signed
