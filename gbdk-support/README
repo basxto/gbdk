@@ -120,10 +120,10 @@ Differences between this and gbdk-2.1.5
 	long		32 bits
 	long long	Doesnt exist
 * Float support is there but unconnected.
-* gbdk changes the basic typedefs to make it more normal.  You can
-  define GBDK_2_COMPAT=1 (lcc -DGBDK_2_COMPAT=1 ...) to use the old
+* gbdk has an alternitave set of typedefs for those who like me like
+  their WORDs to be unsigned.  Define BYTE_IS_UNSIGNED=1 to use the new
   typedefs.
-	Before		Now		Or		Size
+	Before		With		Or		Size
 	BYTE		INT8				8 signed
 	UBYTE		BYTE		UINT8		8 unsigned
 	WORD		INT16				16 signed
