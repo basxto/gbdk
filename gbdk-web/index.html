@@ -62,6 +62,20 @@
 		      <h2>
 			<font face="Arial,Helvetica" size=-1>News</font></h2>
 		      <font face="Arial,Helvetica" size=-1>
+<b>7th July - Informatin on float and long suppot.</b> Someone asked about the state of
+float/long support recently.  Heres my reply:
+<p><tt>
+long support is partly there, as is float support.  The
+compiler will correctly recognise the long and float keywords, and will
+generate the code for most basic ops (+, -, &, | etc) for longs correctly
+and will generate the function calls for floats and hard long operations
+(*, /, %) correctly.  However it wont generate float constants in the
+correct format, nor will it 'return' a long or float - gbdk doesnt yet
+support returning types of 4 bytes.  Unfortunatly its not going to make it
+into 2.95 as theres too much else to do, but I should be able to complete
+long support for 2.96
+</tt>
+<p>
 <b>7th May - 2.94 released.</b>  Many fixes - see the README for more.
 <p>
 <b>7th May - Library documentation up.</b>  A good size part of the libraries that go with gbdk have been documented - follow the HTML link above to have a look.  Thanks
@@ -296,7 +310,7 @@ will be looking for some way to do far calls.
 		      <p align="right">
 			<a href="mailto:michaelh@earthling.net">Michael Hope</a>
 		      <!-- Created: Mon May 10 20:34:32 NZST 1999 -->
-		       / $Id$ / 
+		       / $Id$
 		      <A href="http://sourceforge.net/">
 			<IMG src="http://sourceforge.net/sflogo.php?group_id=1249&type=1" width="88" height="31" border="0"></A></p>
 		    </td>
