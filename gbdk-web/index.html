@@ -37,7 +37,7 @@
 		      <a href="#Links">Links</a> | 
 		      <a href="mailto:michaelh@earthling.net">Contact</a>
 		      <p>
-		      <b>Download (latest is 2.92-2)</b><br>
+		      <b>Download (latest is 2.93)</b><br>
 		      <a href="install.html">CVS</a> | 
 		      <a href="http://sourceforge.net/project/filelist.php?group_id=1249">Source / Linux / win32</a> <a href="http://earthling.net.nz/~michaelh/gbdk/mirror/">(mirror)</a> |
 		      <a href="doc/gbdk-doc.pdf">Documentation (PDF)</a>
@@ -60,6 +60,31 @@
 		      <h2>
 			<font face="Arial,Helvetica" size=-1>News</font></h2>
 		      <font face="Arial,Helvetica" size=-1>
+<b>6th April - 2.93 released.</b>
+From the README
+<ul>
+<li>Added multi-bank support into the compiler
+   - The old -Wf-boxx and -Wf-baxx options now work
+</li>
+<li>Has preliminary support for generating rgbds and ISAS compatible
+  assembler.  Try -W--asm=rgbds or -W--asm=isas.  The ISAS code is
+  untested as I dont have access to the real assembler.
+</li>
+<li>RSH is fixed
+</li>
+<li>AND is fixed
+</li>
+<li>The missing parts of 2.1.0's libs are there.  Note: They are untested.
+</li>
+<li>The dscan demo now fully works (with a hack :)
+</li>
+<li>There is a bug with cached computed values which are later used as pointers.
+  When the value is first used as a BYTE arg, then later as a pointer
+  the pointer fails as the high byte was never computed and is now missing.
+  A temporary fix is to declare something appropriate as 'volatile' to
+  stop the value being cached.  See dscan.c/bombs() for an example.
+</li>
+</ul>
 <b>26th March - 2.92-2 for win32 available</b>.
 This is a maintenance release for win32 which fixes some of the niggly
 install problems, especially:
@@ -128,7 +153,9 @@ will be looking for some way to do far calls.
 			    The most common question I get asked is along the lines of 'I tried to compile <i>xxxx</i> but I get an error saying 'crt0.o' not found.  crt0.o is the compiled form of crt0.s in the <tt>lib</tt> directory - <tt>cd</tt> to <tt>lib</tt> and type <tt>'make'</tt> to compile it and the rest of the library files,
 		      <p>
 			The source to a 
-			<a href="ftp://gbdk.sourceforge.net/pub/gbdk/remocon19990627.zip">universial remote control for the CGB</a> from Mr.K.I. and Mr.N.U of TeamKNOx is now available.  I have a link for them here somewhere...
+			<a href="ftp://gbdk.sourceforge.net/pub/gbdk/remocon19990627.zip">universial remote control for the CGB</a> from Mr.K.I. and Mr.N.U of TeamKNOx is now available.
+			<p>
+			TeamKNOX can be found <a href="http://members.tripod.com/~TeamKNOX">here.</a>  They have an impressive PDA written partly in GBDK.
 		      <p>
 			Thanks to E. Allen Soard there is now a precompiled binary for <a href="http://www.linux.com/">Linux</a>
 			with libc5.
@@ -202,7 +229,7 @@ will be looking for some way to do far calls.
 		      <h2>
 			<a NAME="Status"></a>Status</h2>
 		      GBDK is freeware for non-commercial
-		      developments. Most of the code is under the GPL.  The runtime libraries should be under the LGPL.  The non-commercial clause is from the C front end, lcc.  If you use it, just send me an e-mail to keep me informed
+		      developments. Most of the code is under the GPL.  The runtime libraries should be under the LGPL.  The non-commercial clause is from the C front end, lcc.  If you use it, please send me an e-mail to keep me informed
 		      of your work. If you really find it great, you can send me something typical
 		      from your country...
 		      <p>If GBDK is used for developing
@@ -262,7 +289,7 @@ will be looking for some way to do far calls.
 		      <p align="right">
 			<a href="mailto:michaelh@earthling.net">Michael Hope</a>
 		      <!-- Created: Mon May 10 20:34:32 NZST 1999 --><!-- hhmts start -->
-Last modified: Tue Mar 28 15:05:28 PST 2000
+Last modified: Tue Apr  4 20:49:54 PDT 2000
 <!-- hhmts end -->
 		      <A href="http://sourceforge.net/">
 			<IMG src="http://sourceforge.net/sflogo.php?group_id=1249&type=1" width="88" height="31" border="0"></A></p>
