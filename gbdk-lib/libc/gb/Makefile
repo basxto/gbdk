@@ -18,6 +18,9 @@ OBJ =	cgb.o cpy_data.o drawing.o f_ibm_sh.o \
 ifeq ($(ASM),asxxxx)
 OBJ +=	sfr.o
 endif
+ifeq ($(ASM),rgbds)
+OBJ +=	stubs.o
+endif
 
 CRT0 =	crt0.o
 

@@ -20,11 +20,14 @@ endif
 pre:
 	-astorgb.pl global.s > global.asm
 
-%.o: %.c dummy
+%.o: %.c
 	$(CC) $(CFLAGS) -c $<
 
-%.asm: %.s dummy
+%.asm: %.s
 	astorgb.pl $< > $@
+
+%.o: %.rasm
+	rgbasm -o$@ $<
 
 %.o: %.asm
 	rgbasm -o$@ $<

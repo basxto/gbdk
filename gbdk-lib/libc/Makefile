@@ -1,5 +1,7 @@
 # Makefile for libc
 
+.EXPORT_ALL_VARIABLES:
+
 TOPDIR = ..
 
 include $(TOPDIR)/Makefile.common

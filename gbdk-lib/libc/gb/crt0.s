@@ -244,7 +244,13 @@
 	EI			; Enable interrupts
 
 	;; Call the main function
-	CALL	_main
+	CALL	banked_call
+	.dw	_main
+	.if __RGBDS__
+	.dw	BANK(_main)
+	.else
+	.dw	1
+	.endif
 _exit::	
 99$:
 	HALT

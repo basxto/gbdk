@@ -1,9 +1,10 @@
-CC	= ../../bin/sdcc -mgbz80 --asm=rgbds -I../../include -v
-GBLIB = /home/michaelh/projects/gbdk-lib/build/rgbds
-LIB = $(GBLIB)/gbz80/gbz80.lib $(GBLIB)/gb/gb.lib
-CRT0 = $(GBLIB)/gb/crt0.o stubs.o
+TOPDIR=	../..
+CC= 	$(TOPDIR)/bin/sdcc -mgbz80 --asm=rgbds -I$(TOPDIR)/include -v
+GBLIB = $(TOPDIR)/lib/rgbds
+LIB = 	$(GBLIB)/gbz80/gbz80.lib $(GBLIB)/gb/gb.lib
+CRT0 = 	$(GBLIB)/gb/crt0.o
 
-BINS	= stubs.o \
+BINS	= \
 	galaxy.gb \
 	paint.gb \
 	rpn.gb \
@@ -11,18 +12,23 @@ BINS	= stubs.o \
 	comm.gb \
 	irq.gb \
 	filltest.gb \
-	ram_fn.gb \
 	fonts.gb \
 	samptest.gb
-#	banks.gb
 
 # sound.gb: Cant do bitfields
 OTHER = sound.gb \
+	banks.gb \
+	ram_fn.gb
 
 all:	$(BINS)
 
 make.bat: Makefile
 	make -sn | sed y/\\//\\\\/ | grep -v make > make.bat
+
+%.o:	%.s
+
+%.asm:	%.s
+	astorgb.pl $< > $@
 
 %.o:	%.c
 	$(CC) -c $<
@@ -30,7 +36,7 @@ make.bat: Makefile
 %.s:	%.c
 	$(CC) -S $<
 
-%.o:	%.s
+%.o:	%.asm
 	rgbasm -o$@ $<
 
 %.gb:	%.o
