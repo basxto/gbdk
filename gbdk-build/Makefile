@@ -2,14 +2,14 @@
 # gbdk-lib, and gbdk-support
 #
 # 2001  Michael Hope <michaelh@juju.net.nz>
+# $Id$
 #
-
 TOPDIR = $(shell pwd)
 
 # Package name, used for tarballs and cvs
 PKG = gbdk
 # Version, used for tarballs
-VER = 2.96
+VER = 2.96a
 # Short version, used for cvs tags
 SHORTVER = 296
 
@@ -54,6 +54,9 @@ clean: sdcc-clean gbdk-support-clean gbdk-lib-clean
 
 distclean: clean build-dir-clean
 
+# Build rule for michaelh's machine to spin a release
+sapphire-full-build: native-build binary cross-clean cross-linux-mingw32-build
+
 # Cross-compilation targets
 FIXUPMASKS = *.c *.h .bat *.s ChangeLog README
 
@@ -80,6 +83,14 @@ cross-linux-mingw32-build:
 		ARCHIVETYPE=zip \
 		cross-build gbdk-lib-examples-makefile binary
 
+# Source code drop
+src: clean
+	rm -rf gbdk
+	mkdir -p gbdk
+	cp -r Makefile sdcc gbdk-lib gbdk-support gbdk
+	rm -rf `find gbdk -name CVS`
+	tar czf gbdk-$(VER).tar.gz gbdk
+
 # Base rules
 gbdk-build: sdcc-build gbdk-support-build gbdk-lib-build 
 
@@ -103,8 +114,8 @@ setup-from-local:
 
 setup-from-cvs:
 	cvs -d :pserver:anonymous@cvs.sdcc.sourceforge.net:/cvsroot/sdcc -q co $(CVSFLAGS) sdcc
-	cvs -d :pserver:anonymous@cvs.gbdk.sourceforge.net:/cvsroot/sdcc -q co $(CVSFLAGS) gbdk-lib
-	cvs -d :pserver:anonymous@cvs.gbdk.sourceforge.net:/cvsroot/sdcc -q co $(CVSFLAGS) gbdk-support
+	cvs -d :pserver:anonymous@cvs.gbdk.sourceforge.net:/cvsroot/gbdk -q co $(CVSFLAGS) gbdk-lib
+	cvs -d :pserver:anonymous@cvs.gbdk.sourceforge.net:/cvsroot/gbdk -q co $(CVSFLAGS) gbdk-support
 
 # Rules for sdcc
 SDCCCONFIGUREFLAGS = \
@@ -129,12 +140,13 @@ $(SDCCDIR)/sdccconf.h:
 	cd $(SDCCDIR); CC=$(TARGETCC) CXX=$(TARGETCXX) STRIP=$(TARGETSTRIP) RANLIB=$(TARGETRANLIB) CXXFLAGS=$(TARGETCXXFLAGS) ./configure $(SDCCCONFIGUREFLAGS) --host=$(HOSTOS)
 
 sdcc-install: sdcc-build build-bin-dir
+	rm -fr tmp
 	$(MAKE) -C $(SDCCDIR) install prefix=$(TOPDIR)/tmp
 	cp tmp/bin/sdcc* tmp/bin/sdcpp* tmp/bin/link-* tmp/bin/as-* $(BUILDDIR)/bin
 
 # PENDING: Hack below
 sdcc-clean:
-	$(MAKE) -C $(SDCCDIR) distclean
+	-$(MAKE) -C $(SDCCDIR) distclean
 	touch $(SDCCDIR)/doc/holder.pdf
 
 # Rules for gbdk-support
@@ -179,3 +191,8 @@ endif
 
 binary-tidyup:
 	rm -rf `find $(BUILDDIR) -name CVS`
+
+# Install
+install: native-build
+	mkdir -p $(TARGETDIR)
+	cp -r $(BUILDDIR)/* $(TARGETDIR)
