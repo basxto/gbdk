@@ -17,7 +17,9 @@ OBJ =	cgb.o cpy_data.o crt0.o drawing.o f_ibm_sh.o \
 	rand.o arand.o sfr.o
 
 AS = $(AS_GBZ80)
-CFLAGS += -DGBDK_2_COMPAT
+ifdef SDCCLIB
+CFLAGS += --prefix=$(SDCCLIB)/
+endif
 CC = $(GBCC) -Wa-l
 
 include ../Makefile.platform
