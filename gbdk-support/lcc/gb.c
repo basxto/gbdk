@@ -23,9 +23,9 @@ char *as[] = { GBDKLIBDIR "bin/as-gbz80", "-pog", "$1", "$3", "$2", 0 };
 char *ld[] = { GBDKLIBDIR "bin/link-gbz80", "-n", "--",
 	       "-z",
 	       "$1", 
-	       "-k" GBDKLIBDIR "build/gbz80", "-lgbz80.lib",
-	       "-k" GBDKLIBDIR "build/gb", "-lgb.lib",
-	       "$3", GBDKLIBDIR "build/gb/crt0.o", "$2", 0 };
+	       "-k" GBDKLIBDIR "lib/gbz80", "-lgbz80.lib",
+	       "-k" GBDKLIBDIR "lib/gb", "-lgb.lib",
+	       "$3", GBDKLIBDIR "lib/gb/crt0.o", "$2", 0 };
 
 extern char *concat(char *, char *);
 
