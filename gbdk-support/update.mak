@@ -29,7 +29,7 @@ clean:
 	rm -f *~
 	rm -rf $(BUILD) gbdk-lib gbdk-support sdcc logged_in
 
-update:
+update: logged_in
 	cd $(DIR); cvs $(CVSFLAGS) -d$(ROOT_SDCC) co sdcc
 	cd $(DIR); cvs $(CVSFLAGS) -d$(ROOT_GBDK) co gbdk-lib
 	cd $(DIR); cvs $(CVSFLAGS) -d$(ROOT_GBDK) co gbdk-support
