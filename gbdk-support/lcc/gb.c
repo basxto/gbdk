@@ -65,6 +65,7 @@ static void setTokenVal(const char *key, const char *val)
     int i;
     for (i=0; i<NUM_TOKENS; i++) {
 	if (!strcmp(_tokens[i].name, key)) {
+	    printf("Setting token \"%s\" to \"%s\"\n", key, val);
 	    _tokens[i].val = strdup(val);
 	    return;
 	}
@@ -262,17 +263,18 @@ void finalise(void)
 void set_gbdk_dir(void)
 {
 #ifdef __WIN32__
-  char buf[1024];
-  if (GetModuleFileName(NULL,buf, sizeof(buf)) != 0) {
-    /* Strip of the trailing bin/lcc.exe and use it as the prefix. */
-    char *p = strrchr(buf, '\\');
-    if (p) {
-      p = strrchr(p, '\\');
-      if (p) {
-	*++p = '\0';
-	setTokenVal("prefix", buf);
-      }
+    char buf[1024];
+    if (GetModuleFileName(NULL,buf, sizeof(buf)) != 0) {
+	/* Strip of the trailing bin/lcc.exe and use it as the prefix. */
+	char *p = strrchr(buf, '\\');
+	if (p) {
+	    *p = '\0';
+	    p = strrchr(p, '\\');
+	    if (p) {
+		*++p = '\0';
+		setTokenVal("prefix", buf);
+	    }
+	}
     }
-  }
 #endif
 }
