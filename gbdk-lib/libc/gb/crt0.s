@@ -2,7 +2,8 @@
 
 	;; ****************************************
 	;; Beginning of module
-	.title	"GB Runtime"
+	;; BANKED: checked
+	.title	"Runtime"
 	.module	Runtime
 	.area	_HEADER (ABS)
 
@@ -238,7 +239,7 @@
 
 	call	gsinit
 
-	CALL	.init
+;	CALL	.init		
 
 	EI			; Enable interrupts
 
@@ -258,6 +259,8 @@ _exit::
 	;; Ordering of segments for the linker
 	;; Code that really needs to be in bank 0
 	.area	_HOME
+	;; Similar to _HOME
+	.area	_BASE
 	;; Code
 	.area	_CODE
 	;; Constant data
@@ -286,6 +289,8 @@ __io_status::
 	.ds	0x01		; Status of serial IO
 .vbl_done::
 	.ds	0x01		; Is VBL interrupt finished?
+__current_bank::
+	.ds	0x01		; Current MBC1 style bank.
 .sys_time::
 _sys_time::
 	.ds	0x02		; System time in VBL units
@@ -306,8 +311,7 @@ gsinit::
 	.area	_GSINITTAIL
 	ret
 	
-	.area	_CODE
-
+	.area	_HOME
 	;; Call the initialization function for the mode specified in HL
 .set_mode::
 	LD	A,L
@@ -420,17 +424,6 @@ gsinit::
 2$:	
 	CALL	.refresh_OAM
 
-	.if	0
-	;; Verify that only one VBlank interrupt occured
-	LD	A,(.vbl_done)
-	OR	A
-	JR	Z,1$
-	LDH	A,(.BGP)
-	CPL
-	LDH	(.BGP),A
-1$:
-	.endif
-
 	LD	A,#0x01
 	LD	(.vbl_done),A
 	RET
@@ -442,6 +435,10 @@ _wait_vbl_done::
 	LDH	A,(.LCDC)
 	ADD	A
 	RET	NC		; Return if screen is off
+	XOR	A
+	DI
+	LD	(.vbl_done),A	; Clear any previous sets of vbl_done
+	EI
 1$:
 	HALT			; Wait for any interrupt
 	NOP			; HALT sometimes skips the next instruction
@@ -671,5 +668,46 @@ _clock::
 __printTStates::
 	ret
 
+	;; Performs a long call.
+	;; Basically:
+	;;   call banked_call
+	;;   .dw low
+	;;   .dw bank
+	;;   remainder of the code
+banked_call::
+	pop	hl		; Get the return address
+	ld	a,(__current_bank) 
+	push	af		; Push the current bank onto the stack
+	inc	hl
+	inc	hl		; Push something close to the return
+	push	hl		; address
+	ld	a,(hl-)		; Fetch the new page
+	push	af
+	ld	a,(hl-)
+	ld	l,(hl)
+	ld	h,a		; Fetch the function address
+	pop	af
+	ld	(__current_bank),a
+	ld	(.MBC1_ROM_PAGE),a	; Perform the switch
+	; We trade speed for memory here
+	; Pushing the return address lets RET be
+	; used instead of jp banked_ret
+	ld	a,#<banked_ret
+	push	af
+	inc	sp
+	ld	a,#>banked_ret
+	push	af
+	inc	sp
+	jp	(hl)
+
+banked_ret::
+	pop	hl		; Get the return address
+	inc	hl
+	inc	hl		; Skip the bank info
+	pop	af		; Pop the old bank
+	ld	(.MBC1_ROM_PAGE),a
+	ld	(__current_bank),a
+	jp	(hl)
+		
 	.area	_HEAP
 _malloc_heap_start::
