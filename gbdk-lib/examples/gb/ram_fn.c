@@ -4,19 +4,19 @@
 
 UWORD counter;
 
-void inc()
+void inc(void)
 {
   counter++;
 }
 
-void print_counter()
+void print_counter(void)
 {
     printf(" Counter is %u\n", counter);
 }
 
 typedef void (*FUNPTR)(void);
 
-void main()
+void main(void)
 {
   extern UBYTE __inc_end, __inc_start;
   /* Declare extern functions */
