@@ -65,6 +65,7 @@ dist: _sdcc _gbdk-lib _gbdk-support
 	cp -r gbdk-lib/examples $(BUILD)/examples
 	cp -r gbdk-lib/libc $(BUILD)/libc
 	cp -r sdcc/doc $(BUILD)/doc
+	cp gbdk-support/README $(BUILD)
 
 zdist: dist
 	tar czf gbdk-$(VER).tar.gz gbdk
