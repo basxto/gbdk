@@ -39,10 +39,10 @@
 		      <p>
 		      <b>Download (latest is 2.95-3)</b><br>
 		      <a href="install.html">CVS</a> | 
-		      <a href="http://sourceforge.net/project/filelist.php?group_id=1249">Source / Linux / win32</a>
+		      <a href="http://sourceforge.net/project/showfiles.php?group_id=1249">Source / Linux / win32</a>
 			<p>
 			<b>Documentation</b><br>
-			<a href="doc/html/index.html">HTML</a> | <a href="http://sourceforge.net/project/filelist.php?group_id=1249">HTML tarball</a> | <a href="http://sourceforge.net/project/filelist.php?group_id=1249">PDF</a> | <a href="doc/gbdk-doc.pdf">Old docs</a>
+			<a href="doc/html/index.html">HTML</a> | <a href="http://sourceforge.net/project/showfiles.php?group_id=1249">HTML tarball</a> | <a href="http://sourceforge.net/project/showfiles.php?group_id=1249">PDF</a> | <a href="doc/gbdk-doc.pdf">Old docs</a>
 		    </font>
 		  </tr>
 		</table>
@@ -62,14 +62,24 @@
 		      <h2>
 			<font face="Arial,Helvetica" size=-1>News</font></h2>
 		      <font face="Arial,Helvetica" size=-1>
+<b>28th Feburary, 2001 - Current status.</b> There has been little
+development on GBDK recently due to life getting in the way.  I am
+currently working on porting sdcc to the Intel i186, and will
+hopefully be able to use basically the same code base to target the
+z80, gbz80, and Toshiba TLCS-900H.  This should make the compiler in
+GBDK easier to maintain, but is still some time off.
+<p>
+If anyone wants to take up the maintenance or the lead of GBDK,
+contact me and I can give you access to CVS.
+<p>
 <b>19th August - 2.95-3 Released.</b> This is an experimental release for
 those who feel keen.  The main change is a new lexer (the first part in
 the compilation process which recognises words and symbols like '!=' and
 'char' and turns them into a token number) which speeds up compilation of 
-large initalised arrays like tile data by a factor of three.  Please report
+large initialised arrays like tile data by a factor of three.  Please report
 any bugs that show up - this is a big change.
 <p>
-I have also included a 'minimal' release for win32 users which ommits
+I have also included a 'minimal' release for win32 users which omits
 the documentation, library sources, and examples.  If this is useful I
 will keep doing it.
 <p>
@@ -95,7 +105,7 @@ Turned on the optimisations in flex.  Large constant arrays
 like tile data should compile a bit faster.
 </li></ul>
 <p>
-<b>22nd July - 2.95 Released.</b> This is a recomended upgrade.  Some of the big features are:
+<b>22nd July - 2.95 Released.</b> This is a recommended upgrade.  Some of the big features are:
 <ul>
 <li>Decent rgbds support.  All the libraries and most of the examples can now compile with rgbds as the assembler.</li>
 <li>Banked function support.  It is now easier to break the 32k barrier from within C.  Functions can live in and be called transparently from any bank.  Only works with rgbds</li>
@@ -103,7 +113,7 @@ like tile data should compile a bit faster.
 <li>Various optimisations in the code generator.</li>
 </ul>
 <p>
-<b>7th July - Information on float and long suppot.</b> Someone asked about the state of
+<b>7th July - Information on float and long support.</b> Someone asked about the state of
 float/long support recently.  Heres my reply:
 <p><tt>
 long support is partly there, as is float support.  The
@@ -111,9 +121,9 @@ compiler will correctly recognise the long and float keywords, and will
 generate the code for most basic ops (+, -, &, | etc) for longs correctly
 and will generate the function calls for floats and hard long operations
 (*, /, %) correctly.  However it wont generate float constants in the
-correct format, nor will it 'return' a long or float - gbdk doesnt yet
-support returning types of 4 bytes.  Unfortunatly its not going to make it
-into 2.95 as theres too much else to do, but I should be able to complete
+correct format, nor will it 'return' a long or float - gbdk doesn't yet
+support returning types of 4 bytes.  Unfortunately its not going to make it
+into 2.95 as there's too much else to do, but I should be able to complete
 long support for 2.96
 </tt>
 <p>
@@ -155,17 +165,17 @@ install problems, especially:
 <li>Temporary files are created in TMP, TEMP, or TMPDIR instead of c:\tmp</li>
 <li>The installer is no more as it's not needed.  There is a WinZip
 wrapped version for those with the extra bandwidth :).</li>
-<li>gbdk autodetects where it is installed - no more environment varibles.</li>
+<li>gbdk autodetects where it is installed - no more environment variables.</li>
 <li>cygwin1.dll and make are no longer required - gbdk is now compiled with mingw32.</li>
 </ul>
 See the ChangeLog section in the <a href="http://cvs.sourceforge.net/cgi-bin/cvsweb.cgi/~checkout~/gbdk-support/README?cvsroot=gbdk">README</a> for more information.
 <p>
 <b>21st March - Problems with the installer</b>.  It seems that the demo of
 InstallVISE has an unreasonably short time limit.  I
-had planed to use the demo until the license key came through, but theres
+had planed to use the demo until the license key came through, but there's
 no sign of the key yet and the 3 day evaluation is up.  If anyone
 knows of a free Windows installer with the ability to modify environment
-varibles, please <a href="mailto:michaelh@juju.net.nz">contact me</a>.
+variables, please <a href="mailto:michaelh@juju.net.nz">contact me</a>.
 I hear that temporarily setting you clock back to the 15th works...
 <p>
 <b>18th March - libc5 version available / "Error creating temp file"</b>
@@ -193,7 +203,7 @@ have been shifted into their own directory i.e. <tt>gb.h</tt> is now <tt>gb/gb.h
 			<b>23rd Feb First release of gbdk/sdcc</b>.
 This is an early release - the only binary is for Linux and the source is only available through cvs.  If your interested in the source, have a look at
 the cvs repository <tt>gbdk-support</tt> first, which will download all the
-rest of the code.  Alternativly, look at <tt>gbdk-support</tt> and <tt>gbdk-lib</tt> at <tt>cvs.gbdk.sourceforge.net</tt> and <tt>sdcc</tt> at
+rest of the code.  Alternatively, look at <tt>gbdk-support</tt> and <tt>gbdk-lib</tt> at <tt>cvs.gbdk.sourceforge.net</tt> and <tt>sdcc</tt> at
 <tt>cvs.sdcc.sourceforge.net</tt>.  I will be working on binaries for Win32 and a source tar ball soon.  Please report any bugs through the <tt>bugs</tt> link above.
 <p>
 			<b>31st Jan Added Dermot's <a href="dgbfar.html">far pointer spec</a>.</b>
@@ -215,7 +225,7 @@ will be looking for some way to do far calls.
 			    The most common question I get asked is along the lines of 'I tried to compile <i>xxxx</i> but I get an error saying 'crt0.o' not found.  crt0.o is the compiled form of crt0.s in the <tt>lib</tt> directory - <tt>cd</tt> to <tt>lib</tt> and type <tt>'make'</tt> to compile it and the rest of the library files,
 		      <p>
 			The source to a 
-			<a href="ftp://gbdk.sourceforge.net/pub/gbdk/remocon19990627.zip">universial remote control for the CGB</a> from Mr.K.I. and Mr.N.U of TeamKNOx is now available.
+			<a href="ftp://gbdk.sourceforge.net/pub/gbdk/remocon19990627.zip">universal remote control for the CGB</a> from Mr.K.I. and Mr.N.U of TeamKNOx is now available.
 			<p>
 			TeamKNOX can be found <a href="http://members.tripod.com/~TeamKNOX">here.</a>  They have an impressive PDA written partly in GBDK.
 		      <p>
@@ -228,13 +238,13 @@ will be looking for some way to do far calls.
 			    or in <a href="doc/gbdk-doc.pdf">PDF form</a>  It has not been updated to reflect gbdk3.
 		      <p>
 			For technical information on
-			the GameBoy hardware, see <a href="http://home.hiwaay.net/~jfrohwei/gameboy/home.html">here</a>.
+			the GameBoy hardware, see <a href="http://www.devrs.com/gb/">here</a>.
 		      <p>Have a look at
 			    the <a href="http://www.tripmode.com/gbdev/">GBDoK</a> documentation
 			    page maintained by Jason.
 		      <p>GBDK 2.1.0 was Pascal's last
 			    personal release. These web pages are now maintained by Michael Hope.
-		      <p>So, whats the future of GBDK?
+		      <p>So, what's the future of GBDK?
 			    You tell <a href="mailto:michaelh@juju.net.nz">me</a> :) Some ideas are
 			    Style suggestions (<a href="http://lynx.browser.org/">Lynx</a> compatible)
 			    would be appreciated.
@@ -261,7 +271,7 @@ will be looking for some way to do far calls.
 			      relocatable code.</li>
 
 			<li>
-			  A peephole optimizer.</li>
+			  A peephole optimiser.</li>
 
 			<li>
 			  A linker that produces GameBoy
@@ -308,8 +318,7 @@ will be looking for some way to do far calls.
 
 		      <ul>
 			<li>
-			  <a href="http://earthling.net.nz/~michaelh/">Michael
-				Hope's Web Page</a></li>
+			  <a href="http://juju.net.nz/michaelh/">Michael Hope's Web Page</a></li>
 
 			<li>
 			  <a href="http://freespace.virgin.net/stephen.blanksby/">Grooves
@@ -339,8 +348,7 @@ will be looking for some way to do far calls.
 				GameBoy Homepage</a></li>
 
 			<li>
-			  <a href="http://home.hiwaay.net/~jfrohwei/gameboy/home.html">Jeff
-				Frohwein's Technical Information Page</a></li>
+			  <a href="http://www.devrs.com/gb/">Jeff Frohwein's Technical Information Page</a></li>
 		      </ul>
 		      <a NAME="foot1"></a>
 		      <br>[1] Saying 'real soon now'
@@ -351,7 +359,8 @@ will be looking for some way to do far calls.
 		      <p align="right">
 			<a href="mailto:michaelh@juju.net.nz">Michael Hope</a>
 		      <!-- Created: Mon May 10 20:34:32 NZST 1999 -->
-		       / $Id$
+		       / $Id$ /
+               <a href="http://cvs.sourceforge.net/cgi-bin/cvsweb.cgi/gbdk-web/index.html?cvsroot=gbdk">History
 		      <A href="http://sourceforge.net/">
 			<IMG src="http://sourceforge.net/sflogo.php?group_id=1249&type=1" width="88" height="31" border="0"></A></p>
 		    </td>
