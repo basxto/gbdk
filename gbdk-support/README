@@ -1,0 +1,13 @@
+gbdk-2.90 - http://gbdk.sourceforge.net/
+----------------------------------------
+This is a early-release beta.  Please report any bugs via:
+
+http://earthling.net.nz/cgi-bin/gbdk
+
+To download the source, use cvs to get gbdk-support.
+The Linux binary needs to be installed in /usr/lib/gbdk
+
+More to come...
+
+-- Michael Hope
+   <michaelh@earthling.net>

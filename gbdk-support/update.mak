@@ -6,11 +6,12 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 
 TOPDIR	:= $(shell if [ "$$PWD" != "" ]; then echo $$PWD; else pwd; fi)
 
-BUILD = $(TOPDIR)/gbdk-2.90
+BUILD = $(TOPDIR)/gbdk
 SDCCLIB = $(BUILD)
 CVSFLAGS = -z5
 CVS = cvs
 DIR = .
+VER = 2.90
 ROOT_GBDK = :pserver:anonymous@cvs.gbdk.sourceforge.net:/cvsroot/gbdk
 ROOT_SDCC = :pserver:anonymous@cvs.sdcc.sourceforge.net:/cvsroot/sdcc
 
@@ -20,10 +21,10 @@ all: logged_in dist
 
 clean:
 	for i in sdcc gbdk-lib gbdk-support/lcc; do make -C $$i clean; done
-	rm *~
-	rm -rf $(BUILD) gbdk-lib/build
+	rm -f *~
+	rm -rf $(BUILD) gbdk-lib gbdk-support sdcc logged_in
 
-update: logged_in
+update:
 	cd $(DIR); cvs $(CVSFLAGS) -d$(ROOT_SDCC) co sdcc
 	cd $(DIR); cvs $(CVSFLAGS) -d$(ROOT_GBDK) co gbdk-lib
 	cd $(DIR); cvs $(CVSFLAGS) -d$(ROOT_GBDK) co gbdk-support
@@ -41,10 +42,11 @@ sdcc/sdccconf.h: sdcc/configure
 	./configure --datadir=$(GBDK_ROOT);
 
 _gbdk-lib: _sdcc build-lcc
-	cp -r gbdk-lib/include build
-	make -C gbdk-lib SDCCLIB=$(SDCCLIB)
+	cp -r gbdk-lib/include $(BUILD)
+	make -C gbdk-lib SDCCLIB=$(SDCCLIB) PORTS=gbz80 PLATFORMS=gb
 
 build-lcc:
+	make -C gbdk-support/lcc clean
 	make -C gbdk-support/lcc SDCCLIB=$(SDCCLIB)
 	mkdir -p $(BUILD)/bin
 	cp gbdk-support/lcc/lcc $(BUILD)/bin
@@ -55,14 +57,20 @@ _gbdk-support:
 	mkdir -p $(BUILD)/bin
 	cp gbdk-support/lcc/lcc $(BUILD)/bin
 
-dist: _sdcc _gbdk-support _gbdk-lib
-	mkdir -p build/bin
-	mkdir -p build/lib
-	cp -r gbdk-lib/build/gbz80 build/lib
-	cp -r gbdk-lib/build/gb build/lib
-	cp -r gbdk-lib/examples build/examples
-	cp -r gbdk-lib/libc build/libc
+dist: _sdcc _gbdk-lib _gbdk-support
+	mkdir -p $(BUILD)/bin
+	mkdir -p $(BUILD)/lib
+	cp -r gbdk-lib/build/gbz80 $(BUILD)/lib
+	cp -r gbdk-lib/build/gb $(BUILD)/lib
+	cp -r gbdk-lib/examples $(BUILD)/examples
+	cp -r gbdk-lib/libc $(BUILD)/libc
+	cp -r sdcc/doc $(BUILD)/doc
+
+zdist: dist
+	tar czf gbdk-$(VER).tar.gz gbdk
 
 logged_in:
 	cvs -d$(ROOT_GBDK) login
 	cvs -d$(ROOT_SDCC) login
+	touch logged_in
+	make -f update.mak update

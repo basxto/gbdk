@@ -1,7 +1,7 @@
 # Simple Makefile for the lcc frontend.
 
 CC = gcc
-CFLAGS = -O -Wall -DGBDKLIBDIR=\"$(SDCCLIB)/\"
+CFLAGS = -O -Wall -DGBDKLIBDIR=\"$(SDCCLIB)\"
 OBJ = lcc.o gb.o
 BIN = lcc
 
