@@ -1,0 +1,231 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+  <head>
+    <meta name="description" content="A C compiler, assembler, linker and set of libraries for the Nintendo Gameboy.">
+    <meta name="keywords" content="nintendo gameboy development compiler C z80 free libraries assembler linker">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta name="GENERATOR" content="xemacs (Yeah, baby!)">
+  </head>
+  <body>
+    <!-- Background yellow table -->
+    <table BORDER=0 COLS=2 ROWS=1 CELLSPACING=0 CELLPADDING=5 WIDTH="100%" BGCOLOR="#FFCC00" >
+      <!-- Main row -->
+      <tr>
+	<td>
+	  <table BORDER=0 COLS=1 WIDTH="100%" BGCOLOR="#000000">
+	    <tr VALIGN=TOP>
+	      <td>
+		<table BORDER=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#FFFFFF" >
+		  <tr>
+		    <td align="center">
+		      <p align="right">
+			<font face="Arial,Helvetica" size="+1"><b>GameBoy Developers Kit (GBDK)</b></font><br>
+			<font face="Arial,Helvetica" size="-3">Page version 9</font></p>
+		      <font face="Arial,Helvetica" size=-1>
+			<a href="#Highlights">Highlights</a> | 
+			<a href="http://earthling.net.nz/cgi-bin/gbdk">Bug tracking/FAQ</a> | 
+			<a href="#Status">Status</a> | 
+		      <a href="changelog.html">Changes</a> | 
+		      <a href="install.html">Downloading
+			    and Installing</a> | 
+		      <a href="tools.html">Tools</a> | 
+		      <a href="examples.html">The
+			    Example Programs</a> | 
+		      <a href="guidelines.html">Guidelines</a> | 
+		      <a href="problems.html">Troubleshooting</a> | 
+		      <a href="#Links">Links</a> | 
+		      <a href="mailto:michaelh@earthling.net">Contact</a>
+		      <p>
+		      <b>Download (latest is 2.1.5)</b><br>
+		      <a href="install.html">CVS</a> | 
+		      <a href="ftp://gbdk.sourceforge.net/pub/gbdk/sdk-2.1.5.tar.gz">Source</a> | 
+		      <a href="ftp://gbdk.sourceforge.net/pub/gbdk/sdk-gbz80-gb-2.1.5-linux_glibc.tar.gz">Linux-glibc2 binary</a> | 
+		      <a href="ftp://gbdk.sourceforge.net/pub/gbdk/sdk-gbz80-gb-libc5-2.1.0.tar.gz">Linux-libc5 (2.1.0) binary</a> | 
+		      <a href="ftp://gbdk.sourceforge.net/pub/gbdk/sdk-gbz80-gb-2.1.5.zip">DOS Win32 binary</a> | 
+		      <a href="doc/gbdk-doc.pdf.gz">Documentation (PDF)</a>
+		    </font>
+		  </tr>
+		</table>
+	      </td>
+	    </tr>
+	  </table>
+	</td>
+      </tr>
+      <tr>
+	<td>
+	  <table BORDER=0 COLS=1 WIDTH="100%" BGCOLOR="#000000">
+	    <tr VALIGN=TOP>
+	      <td>
+		<table BORDER=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#FFFFFF" >
+		  <tr>
+		    <td>
+		      <h2>
+			<font face="Arial,Helvetica" size=-1>News</font></h2>
+		      <font face="Arial,Helvetica" size=-1>
+			<b>6th Jan</b> <a href="http://www.gbdev.org/news/">Icehawk</a> wrote <i>"I did write some rumble pack
+			  routines. Just make sure to remind people to add -Wl-yt0x1C or -Wl-yt0x1D
+			  or -Wl-yt0x1E depending on sram and battery usage. Find the routines on my
+			  site (as usual). =)"</i>
+		      <p>
+			<B>18th Oct - Bug tracking / FAQ up</b>.  Try the link on the left to report any bugs with GBDK.  It's also the first place to look if your having problems.<p>
+			<B>17th Oct - GBDK 2.1.5 is available</b>.  The compiler is the same, but some of the libraries have been improved.  memset() and memcpy() are much faster, malloc() is fixed, and a high speed fixed block alternative malloc() was added.<p>
+			    The most common question I get asked is along the lines of 'I tried to compile <i>xxxx</i> but I get an error saying 'crt0.o' not found.  crt0.o is the compiled form of crt0.s in the <tt>lib</tt> directory - <tt>cd</tt> to <tt>lib</tt> and type <tt>'make'</tt> to compile it and the rest of the library files,
+		      <p>
+			The source to a 
+			<a href="ftp://gbdk.sourceforge.net/pub/gbdk/remocon19990627.zip">universial remote control for the CGB</a> from Mr.K.I. and Mr.N.U of TeamKNOx is now available.  I have a link for them here somewhere...
+		      <p>
+			Thanks to E. Allen Soard there is now a precompiled binary for <a href="http://www.linux.com/">Linux</a>
+			with libc5.
+		      <p>
+			GBDK is not currently (since May 1999) under active development due to other commitments<a href="#foot2">[2]</a>.  This may change...
+		      <p>
+			A <b>preliminary</b> version
+			    of the libraries documentation is available
+			    <a href="doc/html/book01.html">online</a>
+			    or in <a href="doc/gbdk-doc.pdf.gz">PDF form</a>
+		      <p>
+			For technical information on
+			the GameBoy hardware, see <a href="http://home.hiwaay.net/~jfrohwei/gameboy/home.html">here</a>.
+		      <p>Have a look at
+			    the <a href="http://www.gbdev.org/news/GBDoK.txt">GBDoK</a> documentation
+			    page maintained by Jason.
+		      <p>GBDK 2.1.0 was Pascal's last
+			    personal release. These web pages are now maintained by Michael Hope. Thanks
+			    to David Pfeffer for the server space.
+		      <p>So, whats the future of GBDK?
+			    You tell <a href="mailto:michaelh@earthling.net">me</a> :) Some ideas are
+			    <a href="http://hjem.get2net.dk/surfsmurf/">#1</a><a href="http://www.geocities.com/ResearchTriangle/Forum/1353/">#2</a><a href="http://www.pcisys.net/~cdoty/console/">#3</a>
+		      <p>This page will change eventually<a href="#foot1">[1]</a>.
+			    Style suggestions (<a href="http://lynx.browser.org/">Lynx</a> compatible)
+			    would be appreciated. Many links will be broken in this first version.
+		      <p>I'm interested in any libraries
+			    that people may have written for GBDK - please contact me directly.&nbsp;
+		      <h2>
+			<a NAME="Highlights"></a>Highlights</h2>
+		      The GameBoy Developer's Kit
+			  (GBDK), is a set of tools that enable to develop programs for the Nintendo
+			  GameBoy system, either in C or in assembly. GBDK includes a set of libraries
+			  for the most common requirements and generates image files for use with
+			  a real GameBoy or with an emulator like <a href="http://www.komkon.org/fms/VGB/">VGB</a>
+			  or <a href="http://www.work.de/nocash/">no$gmb</a>.
+		      <p>GBDK is available for UNIX
+			    and DOS. The UNIX version of GBDK has been tested on Solaris 2.6. The DOS
+			    version requires a 386 DX processor (or higher), with a DOS Protected Mode
+			    Interface (DPMI).
+		      <p>GBDK is currently being used
+			    in several projects. The first commercial project that used GBDK is <a href="ProAR2.html">Pro
+			      Action Replay II</a>. GBDK also got used for a japanese RPG game (Monster
+			    Race from KOEI Co., Ltd.).
+		      <p>GBDK features:
+		      <ul>
+			<li>
+			  An ANSI C compiler.</li>
+
+			<li>
+			  An assembler that generates
+			      relocatable code.</li>
+
+			<li>
+			  A peephole optimizer.</li>
+
+			<li>
+			  A linker that produces GameBoy
+			      image files.</li>
+
+			<li>
+			  Support for multiple-bank images.</li>
+
+			<li>
+			  Smart linking.</li>
+
+			<li>
+			  A set of libraries, with source
+			      code.</li>
+
+			<li>
+			  Example programs in assembly
+			      and in C.</li>
+		      </ul>
+		      <a href="http://www.aracnet.com/~pfelber/GBsed/">GBsed</a>,
+			  a companion sprite editor written in Java, enables to create images and
+			  sprites to be included in GameBoy programs. Alternatively, you can use
+			  the Win 95/NT BMP2GB program by <a href="mailto:Ian@resourcekt.co.uk">Ian
+			    James</a> that convert BMP files to C code, or the Win 95/NT <a href="http://www.casema.net/~hpmulder/">GameBoy
+			    Tile Designer and Map Builder</a> programs that lets you create images
+			  and maps for GBDK.
+		      <h2>
+			<a NAME="Status"></a>Status</h2>
+		      GBDK is freeware for non-commercial
+			  developments. If you use it, just send me an e-mail to keep me informed
+			  of your work. If you really find it great, you can send me something typical
+			  from your country...
+		      <p>If GBDK is used for developing
+			    a commercial program, I ask you to mention that the program has been made
+			    using GBDK (in the credits), and to send me a copy of the finished product.
+			    If you feel generous, you can also send me a copy of any other products
+			    that your company has produced for the GameBoy...
+		      <h2>
+			<a NAME="Links"></a>Links</h2>
+
+		      <h3>
+			GBDK Documentation and Support
+			    Files</h3>
+
+		      <ul>
+			<li>
+			  <a href="http://www.pcmedia.co.nz/~michaelh/">Michael
+				Hope's Web Page</a></li>
+
+			<li>
+			  <a href="http://freespace.virgin.net/stephen.blanksby/">Grooves
+				Development Site</a></li>
+
+			<li>
+			  <a href="http://www.gbdev.org/news/">Icehawk's
+				news site</a></li>
+		      </ul>
+
+		      <h3>
+			GBDK Ports</h3>
+
+		      <ul>
+			<li>
+			  <a href="http://www.df.lth.se/~glue/AmigaProjects.html">GBDK
+				for Amiga</a></li>
+		      </ul>
+
+		      <h3>
+			Technical informations on the
+			    GameBoy</h3>
+
+		      <ul>
+			<li>
+			  <a href="http://www.komkon.org/fms/GameBoy/">Nintendo
+				GameBoy Homepage</a></li>
+
+			<li>
+			  <a href="http://home.hiwaay.net/~jfrohwei/gameboy/home.html">Jeff
+				Frohwein's Technical Information Page</a></li>
+		      </ul>
+		      <a NAME="foot1"></a>
+		      <br>[1] Saying 'real soon now'
+			  always jinxs a project :)
+		      <a NAME="foot2"></a>
+		      <br>[2] Life, a new country, getting Married...
+		      <br>&nbsp;
+		      <address>
+			<a href="mailto:michaelh@earthling.net">Michael
+			      Hope</a></address>
+
+		      <br><!-- Created: Mon May 10 20:34:32 NZST 1999 --><!-- hhmts start -->Last
+			  modified: Tuesday July 5 21:09:26 NZST 1999<!-- hhmts end --></td>
+		  </tr>
+		</table>
+	      </td>
+	    </tr>
+	  </table>
+	</td>
+      </tr>
+    </table>
+  </body>
+</html>

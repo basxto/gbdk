@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Examples: GBDK</title>
+  </head>
+
+  <body BGCOLOR="#C0C0FF" LINK="#CC0000" VLINK="#333333" ALINK="#333333" TEXT="#330000">
+    <FONT FACE="Arial,Helvetica" SIZE="-1">
+    <h1>Examples: GBDK</h1>
+<!-- ############################################################ -->
+<HR>
+
+<H2><A NAME="Examples"></A>The Example Programs</H2>
+
+<P>
+GBDK includes several example programs both in C and in assembly. They are located in the <CODE>examples</CODE> directory, and in its subdirectories. They can be build by typing <CODE>make</CODE> in the correnponding directory.
+</P>
+
+<h2><CODE>space.s</CODE></h2>
+
+<CENTER>
+<P>
+<IMG ALT="[galaxy/space]" SRC="galaxy.gif" WIDTH="172" HEIGHT="180" BORDER="1">
+</P>
+</CENTER>
+
+<P>
+The <CODE>space.s</CODE> example is an assembly program that demonstrates the use of sprites, window, background, fixed-point values and more. The following keys are used:
+</P>
+<PRE>
+    Arrow keys     : Change the speed (and direction) of the sprite
+    Arrow keys + A : Change the speed (and direction) of the window
+    Arrow keys + B : Change the speed (and direction) of the background
+    START          : Open/close the door
+    SELECT         : Basic fading effect
+</PRE>
+
+<h2><CODE>galaxy.c</CODE></h2>
+
+<P>
+The <CODE>galaxy.c</CODE> example is a C translation of the <CODE>space.s</CODE> assembly program.
+</P>
+
+<h2><CODE>paint.c</CODE></h2>
+
+<CENTER>
+<P>
+<IMG ALT="[paint]" SRC="paint.gif" WIDTH="172" HEIGHT="180" BORDER="1">
+</P>
+</CENTER>
+
+<P>
+The <CODE>paint.c</CODE> example is a painting program. It supports different painting tools, drawing modes, and colors. At the moment, it only paints individual pixels. This program illustrates the use of the full-screen drawing library. It also illustrates the use of generic structures and big sprites. It is definitely worth having a look at its source. The following keys are used:
+</P>
+
+<PRE>
+    Arrow keys : Move the cursor
+    SELECT     : Display/hide the tools palette
+    A          : Select tool
+</PRE>
+
+<h2><CODE>sound.c</CODE></h2>
+
+<CENTER>
+<P>
+<IMG ALT="[sound]" SRC="sound.gif" WIDTH="172" HEIGHT="180" BORDER="1">
+</P>
+</CENTER>
+
+<P>
+The <CODE>sound.c</CODE> example is meant for experimenting with the soung generator of the GameBoy (to use on a real GameBoy). The four different sound modes of the GameBoy are available. It also demonstrates the use of bit fields in C (it's a quick hack, so don't expect too much from the code). The following keys are used:
+</P>
+
+<PRE>
+    UP/DOWN      : Move the cursor
+    RIGHT/LEFT   : Increment/decrement the value
+    RIGHT/LEFT+A : Increment/decrement the value by 10
+    RIGHT/LEFT+B : Set the value to maximum/minimum
+    START        : Play the current mode's sound (or all modes if in control screen)
+    START+A      : Play a little music with the current mode's sound
+    SELECT       : Change the sound mode (1, 2, 3, 4 and control)
+    SELECT+A     : Dump the sound registers to the screen
+</PRE>
+
+<h2><CODE>rpn.c</CODE></h2>
+
+<CENTER>
+<P>
+<IMG ALT="[rpn]" SRC="rpn.gif" WIDTH="172" HEIGHT="180" BORDER="1">
+</P>
+</CENTER>
+
+<P>
+The <CODE>rpn.c</CODE> example is a basic RPN calculator. Try entering expressions like <CODE>12 134*</CODE> and then <CODE>1789+</CODE>.
+</P>
+
+<h2><CODE>banks.c</CODE></h2>
+
+<CENTER>
+<P>
+<IMG ALT="[banks]" SRC="banks.gif" WIDTH="172" HEIGHT="180" BORDER="1">
+</P>
+</CENTER>
+
+<P>
+The <CODE>banks.c</CODE> example illustrates how to make multiple-banks programs.
+</P>
+
+<h2><CODE>ram_fn.c</CODE></h2>
+
+<CENTER>
+<P>
+<IMG ALT="[ram_fn]" SRC="ram_fn.gif" WIDTH="172" HEIGHT="180" BORDER="1">
+</P>
+</CENTER>
+
+<P>
+The <CODE>ram_fn.c</CODE> example illustrates how to copy functions to RAM or HIRAM, and how to call them from C.
+</P>
+
+<h2><CODE>irq.c</CODE></h2>
+
+<CENTER>
+<P>
+<IMG ALT="[irq]" SRC="irq.gif" WIDTH="172" HEIGHT="180" BORDER="1">
+</P>
+</CENTER>
+
+<P>
+The <CODE>irq.c</CODE> example illustrates how to install interrupt handlers.
+</P>
+
+<h2><CODE>comm.c</CODE></h2>
+
+<CENTER>
+<P>
+<IMG ALT="[comm]" SRC="comm.gif" WIDTH="172" HEIGHT="180" BORDER="1">
+</P>
+</CENTER>
+
+<P>
+The <CODE>comm.c</CODE> example illustrates how to use communication routines.
+</P>
+
+<h2><CODE>gb-dtmf/gb-dtmf.c</CODE></h2>
+
+<CENTER>
+<P>
+<IMG ALT="[gb-dtmf]" SRC="gb-dtmf.gif" WIDTH="172" HEIGHT="180" BORDER="1">
+</P>
+</CENTER>
+
+<P>
+The <CODE>gb-dtmf/gb-dtmf.c</CODE> program, written by <A HREF="mailto:ooo@tky0.attnet.or.jp">Osamu Ohashi</A>, is a Dual Tone Multi-Frequency (DTMF) generator.
+</P>
+
+<h2><CODE>colorbar/colorbar.c</CODE></h2>
+
+<CENTER>
+<P>
+<IMG ALT="[colorbar]" SRC="colorbar.gif" WIDTH="172" HEIGHT="180" BORDER="1">
+</P>
+</CENTER>
+
+<P>
+The <CODE>colorbar/colorbar.c</CODE> program, written by Mr. N.U. of TeamKNOx, illustrates the use of colors on a Color GameBoy.
+</P>
+
+<h2><CODE>dscan/dscan.c</CODE></h2>
+
+<CENTER>
+<P>
+<IMG ALT="[dscan]" SRC="dscan.gif" WIDTH="172" HEIGHT="180" BORDER="1">
+</P>
+</CENTER>
+
+<P>
+Deep Scan (<CODE>dscan/dscan.c</CODE>) is a game written by Mr. N.U. of TeamKNOx that supports the Color GameBoy. Your aim is to destroy the submarines from your boat, and to avoid the projectiles that they send to you. The game should be self-explanatory. The following keys are used:
+</P>
+<PRE>
+    RIGHT/LEFT   : Move your boat
+    A/B          : Send a bomb from one side of your boat
+    START        : Start game or pause game
+
+    When game is paused:
+
+    SELECT       : Invert A and B buttons
+    RIGHT/LEFT   : Change speed
+    UP/DOWN      : Change level
+</PRE>
+
+<h2><CODE>rand.c</CODE></h2>
+
+<CENTER>
+<P>
+<IMG ALT="[rand]" SRC="rand.gif" WIDTH="172" HEIGHT="180" BORDER="1">
+</P>
+</CENTER>
+
+<P>
+The <CODE>rand.c</CODE> program, written by <A HREF="mailto:lucv@criterion.canon.co.uk">Luc Van den Borre</A>, illustrates the use of the GBDK random generator.
+</P>
+
+<!-- begin footer -->
+    <hr>
+    <a href="default.htm">Back</a>
+    <address><a href="mailto:michaelh@earthling.net">Michael Hope</a></address>
+<!-- end footer -->
+<!-- Created: Mon May 10 20:14:39 NZST 1999 -->
+<!-- hhmts start -->
+Last modified: Mon May 10 21:43:13 NZST 1999
+<!-- hhmts end -->
+      </FONT>
+  </body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Compiler, assembler, linker and libs: GBDK</title>
+  </head>
+
+  <body BGCOLOR="#C0C0FF" LINK="#CC0000" VLINK="#333333" ALINK="#333333" TEXT="#330000">
+    <FONT FACE="Arial,Helvetica" SIZE="-1">
+    <h1>Compiler, assembler, linker and libs: GBDK</h1>
+<!-- ############################################################ -->
+<HR>
+
+<H2><A NAME="Compiler"></A>The Compiler</H2>
+
+<P>
+The compiler is based on <A HREF="http://www.cs.princeton.edu/software/lcc/">lcc</A>, a free of charge retargetable compiler for ANSI/ISO C. GBDK includes a code generator for lcc that generates code for the GameBoy custom Z80. For an ehaustive description, read the <A HREF="http://www.cs.princeton.edu/software/lcc/cgi-bin/man2html.cgi?lcc+1">man page</A> included with the lcc distribution.
+</P>
+
+<P>
+The compiler defines the following sizes for basic types:
+</P>
+
+<TABLE BORDER="1">
+<TR><TD><B>type</B></TD>
+<TD><B>size</B></TD>
+<TD><B>min</B></TD>
+<TD><B>max</B></TD></TR>
+
+<TR><TD>char</TD>
+<TD>1 byte</TD>
+<TD>-128</TD>
+<TD>127</TD></TR>
+
+<TR><TD>unsigned char</TD>
+<TD>1 byte</TD>
+<TD>0</TD>
+<TD>255</TD></TR>
+
+<TR><TD>int</TD>
+<TD>1 byte</TD>
+<TD>-128</TD>
+<TD>127</TD></TR>
+
+<TR><TD>unsigned int</TD>
+<TD>1 byte</TD>
+<TD>0</TD>
+<TD>255</TD></TR>
+
+<TR><TD>long</TD>
+<TD>2 byte</TD>
+<TD>-32768</TD>
+<TD>32767</TD></TR>
+
+<TR><TD>unsigned long</TD>
+<TD>2 byte</TD>
+<TD>0</TD>
+<TD>65535</TD></TR>
+
+<TR><TD>long long</TD>
+<TD>4 byte</TD>
+<TD>-2147483648</TD>
+<TD>2147483647</TD></TR>
+
+<TR><TD>unsigned long long</TD>
+<TD>4 byte</TD>
+<TD>0</TD>
+<TD>4294967296</TD></TR>
+
+<TR><TD>float</TD>
+<TD>4 byte</TD>
+<TD>n/a</TD>
+<TD>n/a</TD></TR>
+
+<TR><TD>double</TD>
+<TD>4 byte</TD>
+<TD>n/a</TD>
+<TD>n/a</TD></TR>
+
+<TR><TD>pointer</TD>
+<TD>2 byte</TD>
+<TD>n/a</TD>
+<TD>n/a</TD></TR>
+</TABLE>
+
+<P>
+Since the CPU is an 8-bit processor, working with <CODE>int</CODE> values is much more efficient than working with <CODE>long</CODE> values. But you have to be careful with overflows.
+</P>
+
+<P>
+When generating a GameBoy image, the linker will look for undefined symbols in each of the object files listed in the <CODE>lib/gb.lib</CODE> text file. If one of these object files contains the symbol, it will be linked with the main program. If none of these object files contain the symbol, the linker will generate an error. Therefore, there is no need to explicitely link the main program with the standard libraries.
+</P>
+
+<P>
+Here are some examples of lcc usage:
+</P>
+
+<UL>
+	<LI>Compile a C source file (<CODE>source.c</CODE>) and generate a GameBoy image (<CODE>image.gb</CODE>):
+</UL>
+<PRE>
+    lcc -o image.gb source.c
+</PRE>
+
+<UL>
+	<LI>Assemble an assembly source file (<CODE>source.s</CODE>) and generate a GameBoy image (<CODE>image.gb</CODE>):
+</UL>
+<PRE>
+    lcc -o image.gb source.s
+</PRE>
+
+<UL>
+	<LI>Compile a C source file (<CODE>source.c</CODE>) and generate an object file (<CODE>object.o</CODE>):
+</UL>
+<PRE>
+    lcc -c -o object.o source.c
+</PRE>
+
+<UL>
+	<LI>Assemble an assembly source file (<CODE>source.s</CODE>) and generate an object file (<CODE>object.o</CODE>):
+</UL>
+<PRE>
+    lcc -c -o object.o source.s
+</PRE>
+
+<UL>
+	<LI>Link two object files (<CODE>object1.o</CODE> and <CODE>object2.o</CODE>) and generate a GameBoy image (<CODE>image.gb</CODE>):
+</UL>
+<PRE>
+    lcc -o image.gb object1.o object2.o
+</PRE>
+
+<UL>
+	<LI>Generate a GameBoy image (<CODE>image.gb</CODE>) from an assembly source file (<CODE>source.s</CODE>), a C source file (<CODE>source.c</CODE>), and an object file (<CODE>object.o</CODE>):
+</UL>
+<PRE>
+    lcc -o image.gb source.s source.c object.o
+</PRE>
+
+<P>
+The following flags allow to pass options to the preprocessor, the compiler, the assembler, and the linker:
+</P>
+<PRE>
+    -Wp
+    -Wf
+    -Wa
+    -Wl
+</PRE>
+
+<P>
+A typical useage of these flags is for generating listing and map files:
+</P>
+
+<UL>
+	<LI>A listing file is produced by the assembler if you use the <CODE>-Wa-l</CODE> flag. The name of this file is the same as the object file, with the <CODE>.lst</CODE> extension. It contains the assembly code and source. If the assembler generates error messages, listing files are necessary for locating these errors.
+	<LI>A map file is produced by the linker if you use the <CODE>-Wl-m</CODE> flag. The name of this file is the same as the image file, with the <CODE>.map</CODE> extension. It contains informations about where functions and variables are located in ROM. If the linker generates error messages, map files are useful for locating these errors.
+	<LI>A symbol file for the no$gmb emulator is produced by the linker if you use the <CODE>-Wl-j</CODE> flag. The name of this file is the same as the image file, with the <CODE>.sym</CODE> extension. It contains informations that can be used by the no$gmb built-in debugger.
+</UL>
+
+<P>
+It is generally a good habit to generate listing and map files.
+</P>
+
+<!-- ############################################################ -->
+<HR>
+
+<H2><A NAME="Assembler"></A>The Assembler</H2>
+
+<P>
+The assembler is based on <A HREF="http://shop-pdp.kent.edu/ashtml/asxxxx.htm">ASxxxx Cross Assemblers</A>.
+</P>
+
+<P>
+The GameBoy processor is very similar to the Z80, although some of the instructions are missing and some ther have been added. Also, she second set of registers (BC', DE', HL', AF') and the index registers (IX, IY) are missing and, consequently, there are no DD and FD opcode tables. Finally, I/O ports are gone and so are all IN/OUT opcodes. For a descriptions of the changed instructions, read the <A HREF="http://www.komkon.org/fms/GameBoy/">GameBoy FAQ</A>.
+</P>
+
+<P>
+I have modified the name of some of the GB-specific opcodes:
+</P>
+<PRE>
+    LD (HLI),A      -&gt; LD (HL+),A
+    LD (HLD),A      -&gt; LD (HL-),A
+    LD A,(HLI)      -&gt; LD A,(HL+)
+    LD A,(HLD)      -&gt; LD A,(HL-)
+    ADD SP,offset   -&gt; LDA SP,offset(SP)
+    LDHL SP,offset  -&gt; LDA HL,offset(SP)
+</PRE>
+
+<P>
+The <CODE>LDA</CODE> opcode means &quot;load address&quot;, like in 68x00 assembly. I've called these instructions like this because both are orthogonal (they do the same thing on two different registers).
+</P>
+
+<P>
+The assembler accepts the following flags:
+</P>
+<PRE>
+ASxxxx Assembler V01.75  (GameBoy Z80-like CPU)
+ 
+Usage: [-dqxgalopsf] outfile file1 [file2 file3 ...]
+  d    decimal listing
+  q    octal   listing
+  x    hex     listing (default)
+  g    undefined symbols made global
+  a    all user symbols made global
+  l    create list   output outfile[LST]
+  o    create object output outfile[o]
+  s    create symbol output outfile[SYM]
+  p    disable listing pagination
+  f    flag relocatable references by  `   in listing file
+ ff    flag relocatable references by mode in listing file
+</PRE>
+
+<P>
+For an ehaustive description, read the <CODE>asmlnk.doc</CODE> file in the <CODE>doc</CODE>
+directory, or <A HREF="http://shop-pdp.kent.edu/ashtml/asxdoc.htm">this html-ized document</A>.
+</P>
+
+<!-- ############################################################ -->
+<HR>
+
+<H2><A NAME="Linker"></A>The Linker</H2>
+
+<P>
+The linker is based on <A HREF="http://shop-pdp.kent.edu/ashtml/asxxxx.htm">ASxxxx Cross Assemblers</A>. It has been extended in particular to support generation of GameBoy images.
+</P>
+
+<P>
+The linker accepts the following flags:
+</P>
+<PRE>
+ASxxxx Linker V01.75
+ 
+Startup:
+  --   [Commands]              Non-interactive command line input
+  -c                           Command line input
+  -f   file[LNK]               File input
+  -p   Prompt and echo of file[LNK] to stdout (default)
+  -n   No echo of file[LNK] to stdout
+Usage: [-Options] outfile file [file ...]
+Libraries:
+  -k    Library path specification, one per -k
+  -l    Library file specification, one per -l
+Relocation:
+  -b   area base address = expression
+  -g   global symbol = expression
+  -yo  Number of rom banks (default: 2)
+  -ya  Number of ram banks (default: 0)
+  -yt  MBC type (default: no MBC)
+  -yn  Name of program (default: name of output file)
+  -yp# Patch one byte in the output GB file (# is: addr=byte)
+Map format:
+  -m   Map output generated as file[MAP]
+  -j   no$gmb symbol file generated as file[SYM]
+  -x   Hexidecimal (default)
+  -d   Decimal
+  -q   Octal
+Output:
+  -i   Intel Hex as file[IHX]
+  -s   Motorola S19 as file[S19]
+  -z   Gameboy image as file[GB]
+List:
+  -u    Update listing file(s) with link data as file(s)[.RST]
+End:
+  -e   or null line terminates input
+</PRE>
+
+<P>
+For an ehaustive description, read the <CODE>asmlnk.doc</CODE> file in the <CODE>doc</CODE>
+directory, or <A HREF="http://shop-pdp.kent.edu/ashtml/asxdoc.htm">this html-ized document</A>.
+</P>
+
+<!-- ############################################################ -->
+<HR>
+
+<H2><A NAME="Libraries"></A>The Include Files and Libraries</H2>
+
+<P>
+Several include files are part of GBDK. Some of them only define useful macros (with no code associated), while others define functions implemented in separate object modules. The libraries are split in several small object files in order to reduce the size of the final image file (only the required modules are linked with the main program). The include files and libraries are divided in the following groups:
+</P>
+
+<h2>Runtime support</h2>
+
+<P>
+The <CODE>crt0.o</CODE> object module contains the basic C runtime library, with GameBoy initialization routines, C support and other essential things. This library is required and automatically linked with every program.
+</P>
+
+<P>
+The <CODE>gb.h</CODE> include file defines basic GameBoy-related macros and functions. It also includes the <CODE>hardware.h</CODE> file that defines GameBoy hardware registers.
+</P>
+
+<h2>Standard C libraries</h2>
+
+<P>
+The <CODE>ctype.h</CODE>, <CODE>stdarg.h</CODE>, <CODE>stdlib.h</CODE>, <CODE>string.h</CODE>, and <CODE>types.h</CODE> include files define some functions found in the standard C libraries.
+</P>
+
+<h2>Console Input/Output</h2>
+
+<P>
+Basic console I/O is provided through a set of functions defined in the <CODE>console.h</CODE> and <CODE>stdio.h</CODE> include files. Note that console I/O uses most of the tiles and sprites of the GameBoy, and thus is not easily mixable with graphics programs.
+</P>
+
+<h2>Simple Graphic Library</h2>
+
+<P>
+Simple graphic functions for drawing points and images on the screen are defined in the <CODE>drawing.h</CODE> include file. Note that the graphic library uses most of the tiles and sprites of the GameBoy.
+</P>
+
+<h2>Misc Libraries</h2>
+
+<P>
+The <CODE>rand.h</CODE> include file defines functions for using the GBDK random generator.
+</P>
+<!-- begin footer -->
+    <hr>
+    <a href="default.htm">Back</a>
+    <address><a href="mailto:michaelh@earthling.net">Michael Hope</a></address>
+<!-- end footer -->
+<!-- Created: Mon May 10 20:14:00 NZST 1999 -->
+<!-- hhmts start -->
+Last modified: Tue May 18 13:29:04 NZST 1999
+<!-- hhmts end -->
+      </FONT>
+  </body>
+</html>
