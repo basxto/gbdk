@@ -125,15 +125,56 @@ remove_JOY(int_handler h);
 void
 add_VBL(int_handler h);
 
+/** Adds a LCD interrupt handler.
+    Called when the LCD interrupt occurs, which is normally
+    when LY_REG == LYC_REG.
+
+    From pan/k0Pa:
+    There are various reasons for this interrupt to occur
+    as described by the STAT register ($FF40). One very
+    popular reason is to indicate to the user when the
+    video hardware is about to redraw a given LCD line.
+    This can be useful for dynamically controlling the SCX/
+    SCY registers ($FF43/$FF42) to perform special video
+    effects.
+
+    @see add_VBL
+*/
 void
 add_LCD(int_handler h);
 
+/** Adds a timer interrupt handler.
+
+    From pan/k0Pa:
+    This interrupt occurs when the TIMA register ($FF05)
+    changes from $FF to $00.
+
+    @see add_VBL
+*/    
 void
 add_TIM(int_handler h);
 
+/** Adds a serial transmit complete interrupt handler.
+
+    From pan/k0Pa:
+    This interrupt occurs when a serial transfer has
+    completed on the game link port.
+    
+    @see send_byte, receive_byte, add_VBL
 void
 add_SIO(int_handler h);
 
+/** Adds a pad tranisition interrupt handler.
+    
+    From pan/k0Pa:
+    This interrupt occurs on a transition of any of the
+    keypad input lines from high to low. Due to the fact
+    that keypad "bounce" is virtually always present,
+    software should expect this interrupt to occur one
+    or more times for every button press and one or more
+    times for every button release.
+
+    @see joypad
 void
 add_JOY(int_handler h);
 
@@ -193,7 +234,16 @@ extern UINT8 _io_out;
 
 /* Multiple banks */
 
-/** MBC1 */
+/** Switches the upper 16k bank of the 32k rom to bank rombank 
+    using the MBC1 controller. 
+    By default the upper 16k bank is 1. Make sure the rom you compile 
+    has more than just bank 0 and bank 1, a 32k rom. This is done by 
+    feeding lcc.exe the following switches:
+
+    -Wl-yt# where # is the type of cartridge. 1 for ROM+MBC1.
+
+    -Wl-yo# where # is the number of rom banks. 2,4,8,16,32.
+*/
 #define SWITCH_ROM_MBC1(b) \
   *(unsigned char *)0x2000 = (b)
 
@@ -331,37 +381,88 @@ hiramcpy(UINT8 dst,
 #define DISPLAY_OFF \
   display_off();
 
+/** Turns on the background layer.
+    Sets bit 0 of the LCDC register to 1.
+*/
 #define SHOW_BKG \
   LCDC_REG|=0x01U
 
+/** Turns off the background layer.
+    Sets bit 0 of the LCDC register to 0.
+*/
 #define HIDE_BKG \
   LCDC_REG&=0xFEU
 
+/** Turns on the window layer
+    Sets bit 5 of the LCDC register to 1.
+*/
 #define SHOW_WIN \
   LCDC_REG|=0x20U
 
+/** Turns off the window layer.
+    Clears bit 5 of the LCDC register to 0.
+*/
 #define HIDE_WIN \
   LCDC_REG&=0xDFU
 
+/** Turns on the sprites layer.
+    Sets bit 1 of the LCDC register to 1.
+*/
 #define SHOW_SPRITES \
   LCDC_REG|=0x02U
 
+/** Turns off the sprites layer.
+    Clears bit 1 of the LCDC register to 0.
+*/
 #define HIDE_SPRITES \
   LCDC_REG&=0xFDU
 
+/** Sets sprite size to 8x16 pixels, two tiles one above the other.
+    Sets bit 2 of the LCDC register to 1.
+*/
 #define SPRITES_8x16 \
   LCDC_REG|=0x04U
 
+/** Sets sprite size to 8x8 pixels, one tile.
+    Clears bit 2 of the LCDC register to 0.
+*/
 #define SPRITES_8x8 \
   LCDC_REG&=0xFBU
 
 /* ************************************************************ */
 
+/** Sets the tile patterns in the Background Tile Pattern table.
+    Starting with the tile pattern x and carrying on for n number of
+    tile patterns.Taking the values starting from the pointer
+    data. Note that patterns 128-255 overlap with patterns 128-255
+    of the sprite Tile Pattern table.  
+
+    GBC: Depending on the VBK_REG this determines which bank of
+    Background tile patterns are written to. VBK_REG=0 indicates the
+    first bank, and VBK_REG=1 indicates the second.
+
+    @param first_tile	Range 0 - 255
+    @param nb_tiles	Range 0 - 255
+*/
 void
 set_bkg_data(UINT8 first_tile,
 	     UINT8 nb_tiles,
 	     unsigned char *data);
 
+/** Sets the tiles in the background tile table.
+    Starting at position x,y in tiles and writing across for w tiles
+    and down for h tiles. Taking the values starting from the pointer
+    data.
+
+    For the GBC, also see the pan/k00Pa section on VBK_REG.
+
+    @param x		Range 0 - 31
+    @param y		Range 0 - 31
+    @param w		Range 0 - 31
+    @param h		Range 0 - 31
+    @param data		Pointer to an unsigned char. Usually the 
+    			first element in an array.
+*/
 void
 set_bkg_tiles(UINT8 x,
 	      UINT8 y,
@@ -376,21 +477,64 @@ get_bkg_tiles(UINT8 x,
 	      UINT8 h,
 	      unsigned char *tiles);
 
+/** Moves the background layer to the position specified in x and y in pixels.
+    Where 0,0 is the top left corner of the GB screen. You'll notice the screen
+    wraps around in all 4 directions, and is always under the window layer.
+*/
 void
 move_bkg(UINT8 x,
 	 UINT8 y);
 
+/** Moves the background relative to it's current position.
+
+    @see move_bkg
+*/
 void
 scroll_bkg(INT8 x,
 	   INT8 y);
 
 /* ************************************************************ */
 
+/** Sets the window tile data.
+    This is the same as set_bkg_data, as both the window layer and background
+    layer share the same Tile Patterns.
+    @see set_bkg_data
+*/
 void
 set_win_data(UINT8 first_tile,
 	     UINT8 nb_tiles,
 	     unsigned char *data);
 
+/** Sets the tiles in the win tile table. 
+    Starting at position x,y in
+    tiles and writing across for w tiles and down for h tiles. Taking the
+    values starting from the pointer data. Note that patterns 128-255 overlap
+    with patterns 128-255 of the sprite Tile Pattern table.
+	
+    GBC only.
+    Depending on the VBK_REG this determines if you're setting the tile numbers
+    VBK_REG=0; or the attributes for those tiles VBK_REG=1;. The bits in the
+    attributes are defined as:
+    Bit 7 - 	Priority flag. When this is set, it puts the tile above the sprites
+    		with colour 0 being transparent. 0: below sprites, 1: above sprites
+		Note SHOW_BKG needs to be set for these priorities to take place.
+    Bit 6 - 	Vertical flip. Dictates which way up the tile is drawn vertically.
+    		0: normal, 1: upside down.
+    Bit 5 - 	Horizontal flip. Dictates which way up the tile is drawn
+    		horizontally. 0: normal, 1:back to front.
+    Bit 4 - 	Not used.
+    Bit 3 - 	Character Bank specification. Dictates from which bank of
+    		Background Tile Patterns the tile is taken. 0: Bank 0, 1: Bank 1
+    Bit 2 - 	See bit 0.
+    Bit 1 - 	See bit 0. 
+    Bit 0 - 	Bits 0-2 indicate which of the 7 BKG colour palettes the tile is
+		assigned.
+
+    @param x		Range 0 - 31
+    @param y		Range 0 - 31
+    @param w		Range 0 - 31
+    @param h		Range 0 - 31
+*/
 void
 set_win_tiles(UINT8 x,
 	      UINT8 y,
@@ -405,16 +549,35 @@ get_win_tiles(UINT8 x,
 	      UINT8 h,
 	      unsigned char *tiles);
 
+/** Moves the window layer to the position specified in x and y in pixels.
+    Where 7,0 is the top left corner of the GB screen. The window is locked to
+    the bottom right corner, and is always over the background layer.
+    @see SHOW_WIN, HIDE_WIN
+*/
 void
 move_win(UINT8 x,
 	 UINT8 y);
 
+/** Move the window relative to its current position.
+    @see move_win
+*/
 void
 scroll_win(INT8 x,
 	   INT8 y);
 
 /* ************************************************************ */
 
+/** Sets the tile patterns in the Sprite Tile Pattern table.
+    Starting with the tile pattern x and carrying on for n number of
+    tile patterns.Taking the values starting from the pointer
+    data. Note that patterns 128-255 overlap with patterns 128-255 of
+    the Background Tile Pattern table.
+    
+    GBC only.
+    Depending on the VBK_REG this determines which bank of Background tile
+    patterns are written to. VBK_REG=0 indicates the first bank, and VBK_REG=1
+    indicates the second.
+*/
 void
 set_sprite_data(UINT8 first_tile,
 		UINT8 nb_tiles,
@@ -425,6 +588,11 @@ get_sprite_data(UINT8 first_tile,
 		UINT8 nb_tiles,
 		unsigned char *data);
 
+/** Sets sprite n to display tile number t, from the sprite tile data. 
+    If the GB is in 8x16 sprite mode then it will display the next
+    tile, t+1, below the first tile.
+    @param nb		Sprite number, range 0 - 39
+*/
 void
 set_sprite_tile(UINT8 nb,
 		UINT8 tile);
@@ -432,6 +600,25 @@ set_sprite_tile(UINT8 nb,
 UINT8
 get_sprite_tile(UINT8 nb);
 
+/** Sets the property of sprite n to those defined in p.
+    Where the bits in p represent:
+    Bit 7 - 	Priority flag. When this is set the sprites appear behind the
+		background and window layer. 0: infront, 1: behind.
+    Bit 6 - 	GBC only. Vertical flip. Dictates which way up the sprite is drawn
+		vertically. 0: normal, 1:upside down.
+    Bit 5 - 	GBC only. Horizontal flip. Dictates which way up the sprite is
+    drawn horizontally. 0: normal, 1:back to front.
+    Bit 4 - 	DMG only. Assigns either one of the two b/w palettes to the sprite.
+		0: OBJ palette 0, 1: OBJ palette 1.
+    Bit 3 -	GBC only. Dictates from which bank of Sprite Tile Patterns the tile
+		is taken. 0: Bank 0, 1: Bank 1
+    Bit 2 -	See bit 0.
+    Bit 1 -	See bit 0. 
+    Bit 0 - 	GBC only. Bits 0-2 indicate which of the 7 OBJ colour palettes the
+		sprite is assigned.
+    
+    @param nb		Sprite number, range 0 - 39
+*/
 void
 set_sprite_prop(UINT8 nb,
 		UINT8 prop);
@@ -450,7 +637,7 @@ move_sprite(UINT8 nb,
 	    UINT8 x,
 	    UINT8 y);
 
-/** Moves the given sprite relative to it's current position.
+/** Moves the given sprite relative to its current position.
  */
 void
 scroll_sprite(INT8 nb,

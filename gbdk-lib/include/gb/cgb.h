@@ -64,12 +64,16 @@ set_sprite_palette_entry(UINT8 palette,
                          UINT16 rgb_data);
 
 /** Set CPU speed to slow operation.
-    (Make sure interrupts are disabled before call!)
+    Make sure interrupts are disabled before call.
+
+    @see cpu_fast
  */
 void cpu_slow(void);
 
 /** Set CPU speed to fast operation.
-    (Make sure interrupts are disabled before call!)
+    Make sure interrupts are disabled before call.
+
+    @see cpu_slow
 */
 void cpu_fast(void);
 
