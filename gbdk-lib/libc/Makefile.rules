@@ -14,7 +14,7 @@ ifneq ($(LIB_APPEND), 1)
 endif
 	xlib $(LIB) a $(OBJ)
 ifdef CRT0
-	cp -f $(CRT0) $(TOPDIR)/build/$(THIS)
+	cp -f $(CRT0) $(BUILD)
 endif
 
 pre:
@@ -31,15 +31,15 @@ pre:
 
 else
 $(LIB): $(OBJ) $(CRT0) dummy
-	mkdir -p $(TOPDIR)/build/$(THIS)
-	cp -f $(OBJ) $(TOPDIR)/build/$(THIS)
+	mkdir -p $(BUILD)
+	cp -f $(OBJ) $(BUILD)
 ifneq ($(LIB_APPEND), 1)
 	ls $(OBJ) > $(LIB)
 else
 	ls $(OBJ) >> $(LIB)
 endif
 ifdef CRT0
-	cp -f $(CRT0) $(TOPDIR)/build/$(THIS)
+	cp -f $(CRT0) $(BUILD)
 endif
 
 endif
