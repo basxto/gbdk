@@ -58,15 +58,9 @@ sdcc/sdccconf.h: sdcc/configure
 	cd sdcc; \
 	./configure --datadir=$(GBDK_ROOT);
 
-_gbdk-lib: _sdcc build-lcc
+_gbdk-lib: _sdcc _gbdk-support
 	cp -r gbdk-lib/include $(BUILD)
 	make -C gbdk-lib SDCCLIB=$(SDCCLIB) PORTS=gbz80 PLATFORMS=gb
-
-build-lcc:
-	make -C gbdk-support/lcc clean
-	make -C gbdk-support/lcc SDCCLIB=$(SDCCLIB)/
-	mkdir -p $(BUILD)/bin
-	cp gbdk-support/lcc/lcc$(SE) $(BUILD)/bin/lcc$(E)
 
 _gbdk-support:
 	make -C gbdk-support/lcc clean
@@ -79,11 +73,14 @@ dist: _sdcc _gbdk-lib _gbdk-support
 	mkdir -p $(BUILD)/lib
 	cp -r gbdk-lib/build/gbz80 $(BUILD)/lib
 	cp -r gbdk-lib/build/gb $(BUILD)/lib
+	make -C gbdk-lib/libc clean
+	make -C gbdk-lib/examples/gb make.bat
 	cp -r gbdk-lib/examples $(BUILD)
 	cp -r gbdk-lib/libc $(BUILD)
 	cp -r sdcc/doc $(BUILD)
 	cp gbdk-support/README $(BUILD)
 	strip $(BUILD)/bin/*
+	rm -rf `find gbdk -name "CVS"`
 
 zdist: dist
 	tar czf gbdk-$(VER).tar.gz gbdk

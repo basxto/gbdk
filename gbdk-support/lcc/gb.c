@@ -10,7 +10,7 @@
 #endif
 
 #ifndef GBDKLIBDIR
-#define GBDKLIBDIR "/home/michaelh/projects/gbdk-lib/"
+#define GBDKLIBDIR "\\gbdk"
 #endif
 
 extern char *progname;
@@ -65,7 +65,6 @@ static void setTokenVal(const char *key, const char *val)
     int i;
     for (i=0; i<NUM_TOKENS; i++) {
 	if (!strcmp(_tokens[i].name, key)) {
-	    printf("Setting token \"%s\" to \"%s\"\n", key, val);
 	    _tokens[i].val = strdup(val);
 	    return;
 	}
@@ -269,7 +268,7 @@ void set_gbdk_dir(void)
 	char *p = strrchr(buf, '\\');
 	if (p) {
 	    *p = '\0';
-	    p = strrchr(p, '\\');
+	    p = strrchr(buf, '\\');
 	    if (p) {
 		*++p = '\0';
 		setTokenVal("prefix", buf);
