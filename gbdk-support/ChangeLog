@@ -1,7 +1,7 @@
 gbdk3-2.95
 	* Fixed 'a >> c' for c = [9..15]
 	* Fixed 'a << c' for c = [9..15]
-	* no$gmb doesnt support labels of > 32 chars.  The linker now
+	* no$gmb doesn't support labels of > 32 chars.  The linker now
 	trims all labels to 31 chars long.
 	* Fixed wait_vbl for the case where you miss a vbl
 	* Fixed + and - for any type where sizeof == 2 and one of the
@@ -27,6 +27,7 @@ gbdk3-2.95
 	rgbds compatible.
 	The libraries are _not_ fully tested.  Trust nothing.  But give it
 	a go :)
+	* Ran a spell checker across the README and ChangeLog
 
 gbdk3-2.94
 	* Fixed 
@@ -48,7 +49,7 @@ gbdk3-2.94
 	example.  It should be possible with a bit of work to make high
 	ram directly usable by the compiler; at the moment it is
 	experimental.  You can test sfr's by enabling USE_SFR_FOR_REG=1
-	* Added remove_VBL etc funtions.
+	* Added remove_VBL etc functions.
 	* Documented the libs - see the gbdk-doc tarball distributed
 	seperatly.
 	* Two dimensional arrays seem to be broken.
@@ -73,7 +74,7 @@ gbdk3-2.93
   
 gbdk3-2.92-2:
 	* win32 only.  Takes care of some of the install bugs, including:
-	   - Now autodetects where it is installed.
+	   - Now auto detects where it is installed.
 		This can be overridden using set GBDKDIR=...
 	   - Problems with the installer (now uses WinZip)
 	   - Problems with the temp directory
@@ -90,7 +91,7 @@ gbdk3-2.92:
 	marked volatile.
 	* More register packing - should be a bit faster.
 	* You can now install somewhere except c:\gbdk | /usr/lib/gbdk
-	* Arrays initalised with constant addresses a'la galaxy.c now
+	* Arrays initialised with constant addresses a'la galaxy.c now
 	work.
 	* Fixed minor bug with 104$: labels in as.
 	* Up to 167d/s...
