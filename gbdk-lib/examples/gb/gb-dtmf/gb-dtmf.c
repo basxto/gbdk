@@ -607,7 +607,7 @@ void main()
 				/* decremental button */
 				/* appear the delay during press A button */
 				if(i == 5 && (j == 1 || j == 2) && !non_flick){
-					sprintf(str_ms, "%lu MS", on_time);
+					sprintf(str_ms, "%u MS", on_time);
 					disp(str_ms);
 					non_flick = ON;
 				}
