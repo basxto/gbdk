@@ -161,6 +161,7 @@ add_TIM(int_handler h);
     completed on the game link port.
     
     @see send_byte, receive_byte, add_VBL
+*/
 void
 add_SIO(int_handler h);
 
@@ -175,6 +176,7 @@ add_SIO(int_handler h);
     times for every button release.
 
     @see joypad
+*/
 void
 add_JOY(int_handler h);
 
