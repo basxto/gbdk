@@ -33,14 +33,14 @@ static struct {
 			"-DSDCC_PLAT=%plat%",
     },
     { "includedefault",	"-I%includedir%" },
-    { "includedir", 	"%gbdkdir%include" },
-    { "gbdkdir",	GBDKLIBDIR },
+    { "includedir", 	"%prefix%include" },
+    { "prefix",		GBDKLIBDIR },
     { "com",		"%bindir%sdcc" },
     { "comdefault",	"-m%port% --c1mode" },
     { "as",		"%bindir%as-%port%" },
     { "ld",		"%bindir%link-%port%" },
-    { "libdir",		"%gbdkdir%lib/" },
-    { "bindir",		"%gbdkdir%bin/" },
+    { "libdir",		"%prefix%lib/" },
+    { "bindir",		"%prefix%bin/" },
 };
 
 #define NUM_TOKENS	(sizeof(_tokens)/sizeof(_tokens[0]))
@@ -86,7 +86,7 @@ static CLASS classes[] = {
       "%includedefault%",
       "%com% %comdefault% $1 $2 $3",
       "%as% -pog $1 $3 $2",
-      "%ld% -n -- -i $1 -k%libdir%%port%/ -l%port%.lib "
+      "%ld% -n -- -i $1 -b_DATA=0x8000 -b_CODE=0x200 -k%libdir%%port%/ -l%port%.lib "
         "-k%libdir%%plat%/ -l%plat%.lib $3 %libdir%%plat%/crt0.o $2",
     }
 };      
@@ -202,9 +202,9 @@ const char *starts_with(const char *s1, const char *s2)
 
 int option(char *arg) {
     const char *tail;
-    if ((tail = starts_with(arg, "--gbdkdir="))) {
+    if ((tail = starts_with(arg, "--prefix="))) {
 	/* Go through and set all of the paths */
-	setTokenVal("gbdkdir", tail);
+	setTokenVal("prefix", tail);
 	return 1;
     }
     else if ((tail = starts_with(arg, "--gbdklibdir="))) {

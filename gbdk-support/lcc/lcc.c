@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
 	plist = append("-D__LCC__", 0);
 	initinputs();
 	if (getenv("GBDKDIR"))
-		option(stringf("--gbdkdir=%s", getenv("GBDKDIR")));
+		option(stringf("--prefix=%s", getenv("GBDKDIR")));
 	for (nf = 0, i = j = 1; i < argc; i++) {
 		if (strcmp(argv[i], "-o") == 0) {
 			if (++i < argc) {

@@ -36,7 +36,7 @@ update:
 
 _sdcc: sdcc/sdccconf.h
 	cd sdcc; \
-	for i in support/gc support/cpp src as/z80 link/z80; \
+	for i in support/gc support/cpp src as link; \
 	do make -C $$i; done
 	mkdir -p $(BUILD)/bin
 	for i in sdcc sdcpp link-gbz80 as-gbz80; \
