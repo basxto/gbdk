@@ -1,5 +1,0 @@
-# Automagically generated Makefile
-
-CC = ../bin/lcc -Wa-l
-
-PRECOMPILE = \
