@@ -14,6 +14,8 @@ ifndef PLATFORMS
 PLATFORMS = gb consolez80 rrgb
 endif
 
+PORT = z80
+
 ifndef SDCCLIB
 SDCCLIB = /home/michaelh/projects/sdcc
 endif
