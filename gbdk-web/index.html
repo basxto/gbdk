@@ -21,7 +21,7 @@
 		    <td align="center">
 		      <p align="right">
 			<font face="Arial,Helvetica" size="+1"><b>GameBoy Developers Kit (GBDK)</b></font><br>
-			<font face="Arial,Helvetica" size="-3">Page version 10</font></p>
+			<font face="Arial,Helvetica" size="-3">Page version 11</font></p>
 		      <font face="Arial,Helvetica" size=-1>
 			<a href="#Highlights">Highlights</a> | 
 			<a href="https://sourceforge.net/bugs/?group_id=1249">Bug tracking/FAQ</a> | 
@@ -37,9 +37,9 @@
 		      <a href="#Links">Links</a> | 
 		      <a href="mailto:michaelh@earthling.net">Contact</a>
 		      <p>
-		      <b>Download (latest is 2.92)</b><br>
+		      <b>Download (latest is 2.92-2)</b><br>
 		      <a href="install.html">CVS</a> | 
-		      <a href="http://sourceforge.net/project/filelist.php?group_id=1249">Source / Linux / win32</a> |
+		      <a href="http://sourceforge.net/project/filelist.php?group_id=1249">Source / Linux / win32</a> <a href="http://earthling.net.nz/~michaelh/gbdk/mirror/">(mirror)</a> |
 		      <a href="doc/gbdk-doc.pdf">Documentation (PDF)</a>
 		    </font>
 		  </tr>
@@ -60,6 +60,19 @@
 		      <h2>
 			<font face="Arial,Helvetica" size=-1>News</font></h2>
 		      <font face="Arial,Helvetica" size=-1>
+<b>26th March - 2.92-2 for win32 available</b>.
+This is a maintenance release for win32 which fixes some of the niggly
+install problems, especially:
+<ul>
+<li>WORDS are now back to signed.  <tt>GBDK_2_COMPAT</tt> is no longer needed.</li>
+<li>Temporary files are created in TMP, TEMP, or TMPDIR instead of c:\tmp</li>
+<li>The installer is no more as it's not needed.  There is a WinZip
+wrapped version for those with the extra bandwidth :).</li>
+<li>gbdk autodetects where it is installed - no more environment varibles.</li>
+<li>cygwin1.dll and make are no longer required - gbdk is now compiled with mingw32.</li>
+</ul>
+See the ChangeLog section in the <a href="http://cvs.sourceforge.net/cgi-bin/cvsweb.cgi/~checkout~/gbdk-support/README?cvsroot=gbdk">README</a> for more information.
+<p>
 <b>21st March - Problems with the installer</b>.  It seems that the demo of
 InstallVISE has an unreasonably short time limit.  I
 had planed to use the demo until the license key came through, but theres
@@ -249,7 +262,7 @@ will be looking for some way to do far calls.
 		      <p align="right">
 			<a href="mailto:michaelh@earthling.net">Michael Hope</a>
 		      <!-- Created: Mon May 10 20:34:32 NZST 1999 --><!-- hhmts start -->
-Last modified: Sat Mar 18 15:46:22 PST 2000
+Last modified: Tue Mar 28 15:05:28 PST 2000
 <!-- hhmts end -->
 		      <A href="http://sourceforge.net/">
 			<IMG src="http://sourceforge.net/sflogo.php?group_id=1249&type=1" width="88" height="31" border="0"></A></p>
