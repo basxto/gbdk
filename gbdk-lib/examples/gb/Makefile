@@ -1,4 +1,4 @@
-CC	= ../../bin/lcc -v -Wa-l -Wl-m -Wl-j -DUSE_SFR_FOR_REG
+CC	= ../../bin/lcc -Wa-l -Wl-m -Wl-j -DUSE_SFR_FOR_REG
 
 BINS	= galaxy.gb \
 	space.gb \
@@ -19,7 +19,8 @@ OTHER = sound.gb \
 all:	$(BINS)
 
 make.bat: Makefile
-	make -sn | sed y/\\//\\\\/ | grep -v make > make.bat
+	echo "REM Automatically generated from Makefile" > make.bat
+	make -sn | sed y/\\//\\\\/ | grep -v make >> make.bat
 
 %.o:	%.c
 	$(CC) -c -o $@ $<
