@@ -62,9 +62,9 @@ dist: _sdcc _gbdk-lib _gbdk-support
 	mkdir -p $(BUILD)/lib
 	cp -r gbdk-lib/build/gbz80 $(BUILD)/lib
 	cp -r gbdk-lib/build/gb $(BUILD)/lib
-	cp -r gbdk-lib/examples $(BUILD)/examples
-	cp -r gbdk-lib/libc $(BUILD)/libc
-	cp -r sdcc/doc $(BUILD)/doc
+	cp -r gbdk-lib/examples $(BUILD)
+	cp -r gbdk-lib/libc $(BUILD)
+	cp -r sdcc/doc $(BUILD)
 	cp gbdk-support/README $(BUILD)
 
 zdist: dist
