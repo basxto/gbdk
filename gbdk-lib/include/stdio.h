@@ -39,6 +39,10 @@ void puts(const char *s);
     either a terminating newline or EOF, which it replaces with '\0'.  No
     check for buffer overrun is per­ formed.
 */
-char *gets(char *s);
+char *gets(char *s) BANKED;
+
+/** getchar() gets a single character from stdin.
+ */
+char getchar(void) BANKED;
 
 #endif
