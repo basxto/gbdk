@@ -18,12 +18,12 @@ initrand(UINT16 seed);
 /** Returns a random value.
  */
 INT8
-rand(void);
+rand(void) BANKED;
 
 /** Returns a random word.
  */
 UINT16
-randw(void);
+randw(void) BANKED;
 
 /** Random generator using the linear lagged additive method
     Note that 'initarand()' calls 'initrand()' with the same seed value, and
@@ -32,11 +32,11 @@ randw(void);
     @author	Luc Van den Borre
 */
 void
-initarand(UINT16 seed);
+initarand(UINT16 seed) BANKED;
 
 /** Generates a random number using the linear lagged additive method.
  */
 INT8
-arand(void);
+arand(void) BANKED;
 
 #endif
