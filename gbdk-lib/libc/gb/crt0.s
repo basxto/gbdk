@@ -256,6 +256,8 @@ _exit::
 	;; ****************************************
 
 	;; Ordering of segments for the linker
+	;; Code that really needs to be in bank 0
+	.area	_HOME
 	;; Code
 	.area	_CODE
 	;; Constant data
