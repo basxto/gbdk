@@ -12,7 +12,7 @@ CC = $(SCC)
 
 all: ports platforms
 
-clean: port-clean platform-clean
+clean: port-clean ports-clean platform-clean
 
 ports:
 	for i in $(PORTS); do make port PORT=$$i; done
@@ -22,7 +22,7 @@ platforms:
 
 # Make all the std libs
 # Make all the port specific libs
-port: $(LIBC_OBJ)
+port: port-clean $(LIBC_OBJ)
 	mkdir -p $(TOPDIR)/build/$(PORT)
 	cp $(LIBC_OBJ) $(TOPDIR)/build/$(PORT)
 	cd $(TOPDIR)/build/$(PORT); ls $(LIBC_OBJ) > $(PORT).lib
@@ -30,6 +30,8 @@ port: $(LIBC_OBJ)
 
 port-clean:
 	rm -f $(LIBC_OBJ) $(CLEANSPEC)
+
+ports-clean:
 	for i in $(PORTS); do make -C asm/$$i clean PORT=$$i; done
 
 platform-clean:
