@@ -69,9 +69,14 @@ gbdk3-2.93
   untested as I dont have access to the real assembler.
 * RSH is fixed
 * AND is fixed
-* The missing parts of 2.1.0's libs are there
+* The missing parts of 2.1.0's libs are there.  Note: They are untested.
 * The dscan demo now fully works (with a hack :)
-
+* There is a bug with cached computed values which are later used as pointers.
+  When the value is first used as a BYTE arg, then later as a pointer
+  the pointer fails as the high byte was never computed and is now missing.
+  A temporary fix is to declare something appropriate as 'volatile' to
+  stop the value being cached.  See dscan.c/bombs() for an example.
+  
 gbdk3-2.92-2:
 * win32 only.  Takes care of some of the install bugs, including:
    - Now autodetects where it is installed.
