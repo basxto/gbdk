@@ -1,8 +1,20 @@
+# Top level Makefile for GBDK that combines the builds for sdcc,
+# gbdk-lib, and gbdk-support
+#
+# 2001  Michael Hope <michaelh@juju.net.nz>
+#
+
 TOPDIR = $(shell pwd)
 
+# Package name, used for tarballs and cvs
 PKG = gbdk
+# Version, used for tarballs
 VER = 2.96
+# Short version, used for cvs tags
+SHORTVER = 296
 
+# Prefix to add to the standard tools.  Usefull for a standard gcc
+# cross-compile.
 TOOLSPREFIX =
 
 TARGETCC = $(TOOLSPREFIX)gcc
@@ -10,18 +22,28 @@ TARGETRANLIB = $(TOOLSPREFIX)ranlib
 TARGETAR = $(TOOLSPREFIX)ar
 TARGETCXX = $(TOOLSPREFIX)g++
 TARGETSTRIP = $(TOOLSPREFIX)strip
+# Add extra flags here.  g++ 2.95.4 requires -fdollars-in-identifiers
 TARGETCXXFLAGS =
 
+# Directory containing the source to sdcc
 SDCCDIR = $(TOPDIR)/sdcc
+# Directory containing the source to gbdk-lib
 GBDKLIBDIR = $(TOPDIR)/gbdk-lib
+# Directory containing the source to gbdk-support
 GBDKSUPPORTDIR = $(TOPDIR)/gbdk-support
 
 # Base setup
+# Extension to add to executables
 EXEEXTENSION = 
+# Host operating system identifier.  The one below should work for
+# most systems.
 HOSTOS = ppc-unknown-linux2.2
+# Target operating system identifier.  Used in the output zip name.
 TARGETOS = ppc-unknown-linux2.2
 
+# Directory that gbdk should finally end up in
 TARGETDIR = /opt/gbdk
+# Directory that gbdk for this target is built into.
 BUILDDIR = $(TOPDIR)/build/$(TARGETOS)/gbdk
 
 NOISELOG = $(TOPDIR)/noise.log
@@ -71,11 +93,18 @@ build-dir-clean:
 	rm -r $(BUILDDIR)
 
 # Setup rules
+CVSFLAGS = -r $(PKG)-$(SHORTVER)
+
 setup-from-local:
 	rm -rf sdcc gbdk-lib gbdk-support
 	ln -s ../sdcc
 	ln -s ../gbdk-lib
 	ln -s ../gbdk-support
+
+setup-from-cvs:
+	cvs -d :pserver:anonymous@cvs.sdcc.sourceforge.net:/cvsroot/sdcc -q co $(CVSFLAGS) sdcc
+	cvs -d :pserver:anonymous@cvs.gbdk.sourceforge.net:/cvsroot/sdcc -q co $(CVSFLAGS) gbdk-lib
+	cvs -d :pserver:anonymous@cvs.gbdk.sourceforge.net:/cvsroot/sdcc -q co $(CVSFLAGS) gbdk-support
 
 # Rules for sdcc
 SDCCCONFIGUREFLAGS = \
@@ -98,8 +127,6 @@ sdcc-build: $(SDCCDIR)/sdccconf.h
 
 $(SDCCDIR)/sdccconf.h:
 	cd $(SDCCDIR); CC=$(TARGETCC) CXX=$(TARGETCXX) STRIP=$(TARGETSTRIP) RANLIB=$(TARGETRANLIB) CXXFLAGS=$(TARGETCXXFLAGS) ./configure $(SDCCCONFIGUREFLAGS) --host=$(HOSTOS)
-
-# > $(NOISELOG)
 
 sdcc-install: sdcc-build build-bin-dir
 	$(MAKE) -C $(SDCCDIR) install prefix=$(TOPDIR)/tmp
